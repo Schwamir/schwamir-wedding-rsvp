@@ -3,31 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Wedding RSVP</title>
+    <title>Our RSVP Site</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="rsvp-container">
-        <h1>You're Invited!</h1>
-        <p>Please let us know if you can make it.</p>
-        
-        <!-- REPLACE THE ACTION URL LATER IN STEP 3 -->
-        <form action="https://formspree.io" method="POST">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" required placeholder="John Doe">
+        <!-- Form Container -->
+        <div id="form-wrapper">
+            <h1>You're Invited!</h1>
+            <p>Please let us know if you can make it.</p>
+            
+            <form id="rsvp-form">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required placeholder="John Doe">
 
-            <label for="attendance">Will you attend?</label>
-            <select id="attendance" name="attendance" required>
-                <option value="" disabled selected>Select an option</option>
-                <option value="yes">Joyfully Accept</option>
-                <option value="no">Regretfully Decline</option>
-            </select>
+                <label for="attendance">Will you attend?</label>
+                <select id="attendance" name="attendance" required>
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="yes">Joyfully Accept</option>
+                    <option value="no">Regretfully Decline</option>
+                </select>
 
-            <label for="diet">Dietary Restrictions (Optional)</label>
-            <input type="text" id="diet" name="diet" placeholder="e.g., Vegan, Nut Allergy">
+                <label for="diet">Dietary Restrictions (Optional)</label>
+                <input type="text" id="diet" name="diet" placeholder="e.g., Vegan, Nut Allergy">
 
-            <button type="submit">Submit RSVP</button>
-        </form>
+                <button type="submit" id="submit-btn">Submit RSVP</button>
+            </form>
+        </div>
+
+        <!-- Success Message (Hidden by default) -->
+        <div id="success-message" style="display: none; text-align: center;">
+            <h1>Thank You!</h1>
+            <p>Your response has been successfully saved.</p>
+        </div>
     </div>
+
+    <!-- JavaScript to handle submission without page refresh -->
+    <script>
+        const form = document.getElementById('rsvp-form');
+        const formWrapper = document.getElementById('form-wrapper');
+        const successMessage = document.getElementById('success-message');
+        const submitBtn = document.getElementById('submit-btn');
+
+        // PASTE YOUR GOOGLE WEB APP URL HERE
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyBiMiOarFO_g_gYkEAxNGVw4GgsZ9aFIHBJrlO4WwAXq9Fh9rzJpbXm7izyqXcwh8/exec';
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevents the page from redirecting
+            
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            // Gather form data
+            const formData = new FormData(form);
+            
+            // Send data to Google Sheets via fetch API
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                // Hide the form and show the success message
+                formWrapper.style.display = 'none';
+                successMessage.style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert('Something went wrong. Please try again.');
+                submitBtn.textContent = 'Submit RSVP';
+                submitBtn.disabled = false;
+            });
+        });
+    </script>
 </body>
 </html>
