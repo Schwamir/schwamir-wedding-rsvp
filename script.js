@@ -1,5 +1,4 @@
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzvNqjXa3NXjy8tp5MqyuITZJ3Agp_vpLmFVwsyRhkmyZlNw_rX4DH8S7RYr-radJ9I/exec';
-const PROXY_URL = 'https://allorigins.win';
 
 let currentReservationData = null;
 let selections = {};
@@ -18,16 +17,16 @@ function switchScreen(targetScreen, name) {
     window.scrollTo(0, 0);
 }
 
-// --- STEP 1: GUEST LOOKUP WITH STEP LOGS ---
+// --- STEP 1: DIRECT GUEST LOOKUP (NO PROXY DEPENDENCY) ---
 document.getElementById('btn-find-invite').addEventListener('click', function() {
     const nameInput = document.getElementById('search-input').value.trim();
     const errorElement = document.getElementById('search-error');
     const btn = this;
     
-    console.log(`[LOOKUP START] User clicked Search. Input value gathered: "${nameInput}"`);
+    console.log(`[LOOKUP START] User clicked Search. Gathering name: "${nameInput}"`);
     
     if (!nameInput) {
-        console.warn("[LOOKUP WARN] Search was clicked but the text input field was empty.");
+        console.warn("[LOOKUP WARN] Input field is empty.");
         return;
     }
     
@@ -35,36 +34,25 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
     btn.textContent = 'Searching...';
     errorElement.style.display = 'none';
 
-    const targetApiUrl = `${SCRIPT_URL}?name=${encodeURIComponent(nameInput)}`;
-    const fullProxyUrl = `${PROXY_URL}${encodeURIComponent(targetApiUrl)}`;
+    // Build standard, clean query parameters 
+    const finalUrl = `${SCRIPT_URL}?name=${encodeURIComponent(nameInput)}`;
+    console.log(`[LOOKUP NETWORK] Dispatching pipeline directly to Google: ${finalUrl}`);
     
-    console.log(`[LOOKUP NETWORK] Target Apps Script URL: ${targetApiUrl}`);
-    console.log(`[LOOKUP NETWORK] Channelling request through Proxy: ${fullProxyUrl}`);
-    
-    fetch(fullProxyUrl)
+    fetch(finalUrl)
         .then(res => {
-            console.log(`[LOOKUP NETWORK HTTP] Proxy connection response received. Status code: ${res.status}`);
-            if (!res.ok) throw new Error(`HTTP network response failed with status ${res.status}`);
+            console.log(`[LOOKUP NETWORK HTTP] Server connected. HTTP status code: ${res.status}`);
             return res.json();
         })
-        .then(wrapper => {
-            console.log("[LOOKUP NETWORK DATA] Raw wrapper object package pulled from AllOrigins:", wrapper);
-            
-            if (!wrapper.contents) {
-                throw new Error("Proxy returned a successful envelope package but the '.contents' field is completely empty.");
-            }
-            
-            const data = JSON.parse(wrapper.contents);
-            console.log("[LOOKUP PARSED RESULT] Decoded database sheet response object payload:", data);
-            
+        .then(data => {
+            console.log("[LOOKUP RESULT] Decoded payload data from sheet:", data);
             btn.disabled = false;
             btn.textContent = 'Find My Invitation';
             
             if (data.error) {
-                console.error(`[LOOKUP ERROR] Database matched failure response status: ${data.error}`);
+                console.error(`[LOOKUP ERROR] Match stopped: ${data.error}`);
                 errorElement.style.display = 'block';
             } else {
-                console.log("[LOOKUP SUCCESS] Valid guest mapping found. Proceeding to layout builder...");
+                console.log("[LOOKUP SUCCESS] Match confirmed. Rendering selection cards...");
                 currentReservationData = data;
                 setupConfigurationScreen(data);
             }
@@ -72,10 +60,11 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
         .catch(err => {
             btn.disabled = false;
             btn.textContent = 'Find My Invitation';
-            console.error("[LOOKUP CRITICAL FAILURE] Execution loop caught an error exception:", err);
-            alert(`Could not reach the database. Error diagnostic logs trace: ${err.message}`);
+            console.error("[LOOKUP CRITICAL FAILURE] Browser intercepted execution routing:", err);
+            alert(`Diagnostic trace alert: ${err.message}`);
         });
 });
+
 
 // --- STEP 2: BUILD SELECTION MATRIX LOGS ---
 function setupConfigurationScreen(data) {
