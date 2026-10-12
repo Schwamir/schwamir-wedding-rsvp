@@ -101,7 +101,7 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
         });
 });
 
-// --- STEP 2: GROUP SELECTION WITH MAX SEAT ENFORCEMENT ---
+// --- STEP 2: GROUP SELECTION WITH BUILT-IN MAIN GUEST LOGIC PATCH ---
 function setupConfigurationScreen(data) {
     document.getElementById('config-guest-title').textContent = data.mainGuest.toUpperCase();
     document.getElementById('allowed-seats-count').textContent = data.seats;
@@ -118,10 +118,25 @@ function setupConfigurationScreen(data) {
         selections = {};
     }
     
+    // --- LOGIC PATCH START ---
+    // Cleanly pull group members list array from data package
+    let finalMembersList = [...data.members];
+    const mainGuestName = data.mainGuest.trim();
+
+    // Check if the main guest's name is already listed in the group members array
+    const isMainGuestInList = finalMembersList.some(m => m.toLowerCase() === mainGuestName.toLowerCase());
+
+    // If it's missing, inject the main guest right at the very beginning of the array loop!
+    if (!isMainGuestInList) {
+        finalMembersList.unshift(mainGuestName);
+    }
+    // --- LOGIC PATCH END ---
+    
     const container = document.getElementById('dynamic-guest-list');
     container.innerHTML = '';
 
-    data.members.forEach((member) => {
+    // Loop through the fixed, complete finalMembersList array instead
+    finalMembersList.forEach((member) => {
         if(!data.savedResponses) selections[member] = null;
         const currentChoice = selections[member];
 
