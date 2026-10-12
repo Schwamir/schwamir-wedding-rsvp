@@ -1,5 +1,5 @@
 // PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw-eeh9028ywg2FCwbpemLQQ1VW6q--CFmnk2Mj6dby1UClxZ57etbZ_MqOHVCKV5kX/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbymhG4VNOXT3rr7w6lsHk7iA2sb41kuaFkKVr3v7U_91aNYctNHG_lunEZFd69y5SyX/exec';
 
 let currentReservationData = null;
 let selections = {};
