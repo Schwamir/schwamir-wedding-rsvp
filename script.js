@@ -1,5 +1,5 @@
-// PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbymhG4VNOXT3rr7w6lsHk7iA2sb41kuaFkKVr3v7U_91aNYctNHG_lunEZFd69y5SyX/exec';
+// YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxopcXSHxDHpRJwSFDkUnTDr53PsdZd0ZZZItsHh7udzy0xx_Tx3Lh9vp3ZrDD1ooCt/exec';
 
 let currentReservationData = null;
 let selections = {};
@@ -17,7 +17,7 @@ function switchScreen(targetScreen) {
     window.scrollTo(0,0);
 }
 
-// --- STEP 1: GUEST SELECTION FETCH ---
+// --- STEP 1: CORS-BYPASS GUEST LOOKUP (JSONP) ---
 document.getElementById('btn-find-invite').addEventListener('click', function() {
     const nameInput = document.getElementById('search-input').value.trim();
     const errorElement = document.getElementById('search-error');
@@ -29,24 +29,32 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
     btn.textContent = 'Searching...';
     errorElement.style.display = 'none';
 
-    fetch(`${SCRIPT_URL}?name=${encodeURIComponent(nameInput)}`)
-        .then(res => res.json())
-        .then(data => {
-            btn.disabled = false;
-            btn.textContent = 'Find My Invitation';
-            
-            if(data.error) {
-                errorElement.style.display = 'block';
-            } else {
-                currentReservationData = data;
-                setupConfigurationScreen(data);
-            }
-        })
-        .catch(err => {
-            btn.disabled = false;
-            btn.textContent = 'Find My Invitation';
-            alert("Network error. Please try again.");
-        });
+    // Define a global fallback function for Google to trigger
+    window.handleRSVPResponse = function(data) {
+        btn.disabled = false;
+        btn.textContent = 'Find My Invitation';
+        
+        // Clean up the temporary injected script element
+        document.getElementById('jsonp-script').remove();
+        
+        if(data.error) {
+            errorElement.style.display = 'block';
+        } else {
+            currentReservationData = data;
+            setupConfigurationScreen(data);
+        }
+    };
+
+    // Inject a script tag to safely fetch cross-origin data bypass
+    const script = document.createElement('script');
+    script.id = 'jsonp-script';
+    script.src = `${SCRIPT_URL}?name=${encodeURIComponent(nameInput)}&callback=handleRSVPResponse`;
+    script.onerror = function() {
+        btn.disabled = false;
+        btn.textContent = 'Find My Invitation';
+        alert("Network error or script URL incorrect. Please check your script deployment permissions.");
+    };
+    document.body.appendChild(script);
 });
 
 // --- STEP 2: BUILD SELECTION MATRIX ---
@@ -144,11 +152,11 @@ document.getElementById('btn-submit-rsvp').addEventListener('click', function() 
         mainGuest: currentReservationData.mainGuest,
         mobile: document.getElementById('mobile-input').value.trim(),
         responses: selections
-            };
+    };
 
     fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
+        mode: 'no-cors', // Bypasses CORS tracking block on uploads seamlessly
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     })
@@ -158,6 +166,6 @@ document.getElementById('btn-submit-rsvp').addEventListener('click', function() 
     .catch(err => {
         btn.disabled = false;
         btn.textContent = 'Submit RSVP';
-        alert("An error occurred. Please check network logs.");
+        alert("An error occurred during submission.");
     });
 });
