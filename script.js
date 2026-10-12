@@ -1,5 +1,4 @@
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxbfWZJojYuKCDlmZIztb3xDWmN1VrTLET_qCB4_OcUtRtb-7rVqjphUk19WNNFhCp0/exec';
-const PROXY_URL = 'https://allorigins.win';
 
 let currentReservationData = null;
 let selections = {};
@@ -20,16 +19,18 @@ function switchScreen(targetScreen) {
 
 // --- PRE-LOAD ALL GUEST NAMES FOR AUTOCOMPLETE ---
 window.addEventListener('DOMContentLoaded', () => {
-    console.log("[INIT] Pre-loading guest database names for autocomplete...");
+    console.log("[INIT] Pre-loading guest database names directly from Google...");
     const targetUrl = `${SCRIPT_URL}?action=getAll`;
     
-    fetch(`${PROXY_URL}${encodeURIComponent(targetUrl)}`)
-        .then(res => res.json())
-        .then(wrapper => {
-            const data = JSON.parse(wrapper.contents);
+    fetch(targetUrl)
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            return res.json();
+        })
+        .then(data => {
             if (data.names) {
                 allGuestNames = data.names;
-                console.log(`[INIT] Loaded ${allGuestNames.length} names successfully.`);
+                console.log(`[INIT] Loaded ${allGuestNames.length} names successfully into memory.`);
             }
         })
         .catch(err => console.error("[INIT ERROR] Autocomplete pre-load failed:", err));
@@ -57,12 +58,11 @@ searchInput.addEventListener('input', function() {
     });
 });
 
-// Close autocomplete dropdown when clicking outside the input field
 document.addEventListener('click', (e) => {
     if (e.target !== searchInput) autocompleteList.innerHTML = '';
 });
 
-// --- STEP 1: GUEST ENGINE FETCH ---
+// --- STEP 1: GUEST LOOKUP HANDLER ---
 document.getElementById('btn-find-invite').addEventListener('click', function() {
     const nameInput = searchInput.value.trim();
     const errorElement = document.getElementById('search-error');
@@ -74,18 +74,21 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
     btn.textContent = 'Searching...';
     errorElement.style.display = 'none';
 
-    const targetApiUrl = `${SCRIPT_URL}?name=${encodeURIComponent(nameInput)}`;
+    const finalUrl = `${SCRIPT_URL}?name=${encodeURIComponent(nameInput)}`;
+    console.log(`[LOOKUP NETWORK] Dispatching pipeline directly to Google: ${finalUrl}`);
     
-    fetch(`${PROXY_URL}${encodeURIComponent(targetApiUrl)}`)
+    fetch(finalUrl)
         .then(res => res.json())
-        .then(wrapper => {
-            const data = JSON.parse(wrapper.contents);
+        .then(data => {
+            console.log("[LOOKUP RESULT] Decoded payload data from sheet:", data);
             btn.disabled = false;
             btn.textContent = 'Find My Invitation';
             
-            if(data.error) {
+            if (data.error) {
+                console.error(`[LOOKUP ERROR] Match stopped: ${data.error}`);
                 errorElement.style.display = 'block';
             } else {
+                console.log("[LOOKUP SUCCESS] Match confirmed. Rendering selection cards...");
                 currentReservationData = data;
                 setupConfigurationScreen(data);
             }
@@ -93,7 +96,8 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
         .catch(err => {
             btn.disabled = false;
             btn.textContent = 'Find My Invitation';
-            alert("Network connection error. Please refresh.");
+            console.error("[LOOKUP CRITICAL FAILURE] Browser intercepted execution routing:", err);
+            alert(`Diagnostic trace alert: ${err.message}`);
         });
 });
 
@@ -102,7 +106,6 @@ function setupConfigurationScreen(data) {
     document.getElementById('config-guest-title').textContent = data.mainGuest.toUpperCase();
     document.getElementById('allowed-seats-count').textContent = data.seats;
     
-    // Set initial phone state securely
     const phoneInput = document.getElementById('mobile-input');
     phoneInput.value = data.mobile ? data.mobile : "+63 ";
     
@@ -166,32 +169,28 @@ function tallySelections() {
 
 // Mobile Number Mask Formatting Engine (+63 9XX XXX XXXX)
 document.getElementById('mobile-input').addEventListener('input', function(e) {
-    let raw = this.value.replace(/\D/g, ''); // Strip all non-digits
+    let raw = this.value.replace(/\D/g, ''); 
     
-    // Ensure the number always starts with country code 63
     if (!raw.startsWith('63')) {
         raw = '63' + raw;
     }
     
-    // Truncate to maximum length (2-digit country code + 10-digit mobile number = 12 digits total)
     if (raw.length > 12) raw = raw.substring(0, 12);
     
-    // Build the formatted layout string step by step
     let formatted = '+63 ';
     if (raw.length > 2) {
-        formatted += raw.substring(2, 5); // 3-digit prefix (e.g., 917)
+        formatted += raw.substring(2, 5); 
     }
     if (raw.length > 5) {
-        formatted += ' ' + raw.substring(5, 8); // Next 3 digits
+        formatted += ' ' + raw.substring(5, 8); 
     }
     if (raw.length > 8) {
-        formatted += ' ' + raw.substring(8, 12); // Final 4 digits
+        formatted += ' ' + raw.substring(8, 12); 
     }
     
     this.value = formatted;
 });
 
-// Block users from backspacing or deleting the initial "+63 " text prefix
 document.getElementById('mobile-input').addEventListener('keydown', function(e) {
     if (this.selectionStart < 5 && (e.key === 'Backspace' || e.key === 'Delete')) {
         e.preventDefault();
@@ -244,7 +243,7 @@ document.getElementById('btn-submit-rsvp').addEventListener('click', function() 
         mainGuest: currentReservationData.mainGuest,
         mobile: document.getElementById('mobile-input').value.trim(),
         responses: selections,
-        totalConfirmed: countAttending // Sends exact verified attending count to Column G
+        totalConfirmed: countAttending 
     };
 
     fetch(SCRIPT_URL, {
