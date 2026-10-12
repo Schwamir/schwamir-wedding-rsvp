@@ -1,5 +1,6 @@
-// YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwE933JWARtDaqTU8sNduWtK7ZzZHk0w-uxiPoXQK5rjqP4uJ75j5LsDsr6IlDQUciK/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFm1HdQGLgBrlr4dYm2QIrvqSv5HTjmEktEgrrTaSWz-KWge0GSE3dlP9x6BRr4rEv/exec';
+// Clean cloud proxy to bypass browser security sandboxing
+const PROXY_URL = 'https://allorigins.win';
 
 let currentReservationData = null;
 let selections = {};
@@ -14,47 +15,49 @@ const screens = {
 function switchScreen(targetScreen) {
     Object.values(screens).forEach(s => s.classList.remove('active'));
     targetScreen.classList.add('active');
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
 }
 
-// --- STEP 1: CORS-BYPASS GUEST LOOKUP (JSONP) ---
+// --- STEP 1: CLEAN SECURE GUEST LOOKUP ---
 document.getElementById('btn-find-invite').addEventListener('click', function() {
     const nameInput = document.getElementById('search-input').value.trim();
     const errorElement = document.getElementById('search-error');
     const btn = this;
     
-    if(!nameInput) return;
+    if (!nameInput) return;
     
     btn.disabled = true;
     btn.textContent = 'Searching...';
     errorElement.style.display = 'none';
 
-    // Define a global fallback function for Google to trigger
-    window.handleRSVPResponse = function(data) {
-        btn.disabled = false;
-        btn.textContent = 'Find My Invitation';
-        
-        // Clean up the temporary injected script element
-        document.getElementById('jsonp-script').remove();
-        
-        if(data.error) {
-            errorElement.style.display = 'block';
-        } else {
-            currentReservationData = data;
-            setupConfigurationScreen(data);
-        }
-    };
-
-    // Inject a script tag to safely fetch cross-origin data bypass
-    const script = document.createElement('script');
-    script.id = 'jsonp-script';
-    script.src = `${SCRIPT_URL}?name=${encodeURIComponent(nameInput)}&callback=handleRSVPResponse`;
-    script.onerror = function() {
-        btn.disabled = false;
-        btn.textContent = 'Find My Invitation';
-        alert("Network error or script URL incorrect. Please check your script deployment permissions.");
-    };
-    document.body.appendChild(script);
+    // Construct request through the proxy to prevent browser blocks
+    const targetApiUrl = `${SCRIPT_URL}?name=${encodeURIComponent(nameInput)}`;
+    
+    fetch(`${PROXY_URL}${encodeURIComponent(targetApiUrl)}`)
+        .then(res => {
+            if (!res.ok) throw new Error('Network response failure');
+            return res.json();
+        })
+        .then(wrapper => {
+            // AllOrigins wraps the data inside a stringified .contents object
+            const data = JSON.parse(wrapper.contents);
+            
+            btn.disabled = false;
+            btn.textContent = 'Find My Invitation';
+            
+            if (data.error) {
+                errorElement.style.display = 'block';
+            } else {
+                currentReservationData = data;
+                setupConfigurationScreen(data);
+            }
+        })
+        .catch(err => {
+            btn.disabled = false;
+            btn.textContent = 'Find My Invitation';
+            console.error(err);
+            alert("Could not reach the database. Please try running in an Incognito window or clear cache.");
+        });
 });
 
 // --- STEP 2: BUILD SELECTION MATRIX ---
@@ -66,7 +69,7 @@ function setupConfigurationScreen(data) {
     document.getElementById('group-notice').style.display = data.members.length > 1 ? 'block' : 'none';
     
     const banner = document.getElementById('already-submitted-banner');
-    if(data.savedResponses) {
+    if (data.savedResponses) {
         banner.style.display = 'block';
         selections = data.savedResponses; 
     } else {
@@ -78,7 +81,7 @@ function setupConfigurationScreen(data) {
     container.innerHTML = '';
 
     data.members.forEach((member) => {
-        if(!data.savedResponses) {
+        if (!data.savedResponses) {
             selections[member] = null;
         }
 
@@ -109,7 +112,7 @@ function makeSelection(member, decision, clickedBtn) {
 // --- STEP 3: ARRANGE SUMMARY LISTS ---
 document.getElementById('btn-go-to-review').addEventListener('click', function() {
     const unanswered = Object.values(selections).some(val => val === null);
-    if(unanswered) {
+    if (unanswered) {
         alert("Please make a selection for every guest before moving forward.");
         return;
     }
@@ -126,7 +129,7 @@ document.getElementById('btn-go-to-review').addEventListener('click', function()
         totalGuests++;
         const li = document.createElement('li');
         li.textContent = name;
-        if(decision === 'yes') {
+        if (decision === 'yes') {
             countAttending++;
             attendingList.appendChild(li);
         } else {
@@ -142,7 +145,7 @@ document.getElementById('btn-edit-answers').addEventListener('click', function()
     switchScreen(screens.config);
 });
 
-// --- STEP 4: FINAL POST OVERWRITE TRANSACTION ---
+// --- STEP 4: SUBMIT TRANSACTION ---
 document.getElementById('btn-submit-rsvp').addEventListener('click', function() {
     const btn = this;
     btn.disabled = true;
@@ -156,7 +159,7 @@ document.getElementById('btn-submit-rsvp').addEventListener('click', function() 
 
     fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors', // Bypasses CORS tracking block on uploads seamlessly
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     })
