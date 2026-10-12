@@ -197,30 +197,46 @@ document.getElementById('mobile-input').addEventListener('keydown', function(e) 
     }
 });
 
-// --- STEP 3: ARRANGE SUMMARY LISTS ---
+// --- STEP 3: ARRANGE SUMMARY LISTS WITH VISIBLE NAMES ---
 document.getElementById('btn-go-to-review').addEventListener('click', function() {
+    console.log("[REVIEW ACTION] Processing verification steps. Evaluating current selections list:", selections);
+    
     const unanswered = Object.values(selections).some(val => val === null);
-    if(unanswered) {
+    if (unanswered) {
         alert("Please make a selection for every guest before moving forward.");
         return;
     }
 
     const attendingList = document.getElementById('review-list-attending');
     const declinedList = document.getElementById('review-list-declined');
+    
+    // Clear out any old lingering list elements
     attendingList.innerHTML = '';
     declinedList.innerHTML = '';
 
     let countAttending = 0;
 
-    for (const [name, decision] of Object.entries(selections)) {
+    // Loop through selections correctly using explicit key-value parameters
+    Object.keys(selections).forEach(name => {
+        const decision = selections[name];
         const li = document.createElement('li');
         li.textContent = name;
-        if(decision === 'yes') {
+        li.style.margin = "8px 0"; // Clean vertical spacing for list items
+        
+        if (decision === 'yes') {
             countAttending++;
             attendingList.appendChild(li);
         } else {
             declinedList.appendChild(li);
         }
+    });
+
+    // Make sure empty lists don't look weird by showing a placeholder text if count is 0
+    if (attendingList.children.length === 0) {
+        attendingList.innerHTML = '<li style="color:#aaa; list-style:none;">None</li>';
+    }
+    if (declinedList.children.length === 0) {
+        declinedList.innerHTML = '<li style="color:#aaa; list-style:none;">None</li>';
     }
 
     document.getElementById('review-attendance-summary').textContent = `${countAttending} attending`;
