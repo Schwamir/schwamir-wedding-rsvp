@@ -1,7 +1,9 @@
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzvNqjXa3NXjy8tp5MqyuITZJ3Agp_vpLmFVwsyRhkmyZlNw_rX4DH8S7RYr-radJ9I/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxbfWZJojYuKCDlmZIztb3xDWmN1VrTLET_qCB4_OcUtRtb-7rVqjphUk19WNNFhCp0/exec';
+const PROXY_URL = 'https://allorigins.win';
 
 let currentReservationData = null;
 let selections = {};
+let allGuestNames = [];
 
 const screens = {
     search: document.getElementById('step-search'),
@@ -10,49 +12,80 @@ const screens = {
     success: document.getElementById('step-success')
 };
 
-function switchScreen(targetScreen, name) {
-    console.log(`[NAVIGATION] Switching UI layout screen to: ${name}`);
+function switchScreen(targetScreen) {
     Object.values(screens).forEach(s => s.classList.remove('active'));
     targetScreen.classList.add('active');
-    window.scrollTo(0, 0);
+    window.scrollTo(0,0);
 }
 
-// --- STEP 1: DIRECT GUEST LOOKUP (NO PROXY DEPENDENCY) ---
+// --- PRE-LOAD ALL GUEST NAMES FOR AUTOCOMPLETE ---
+window.addEventListener('DOMContentLoaded', () => {
+    console.log("[INIT] Pre-loading guest database names for autocomplete...");
+    const targetUrl = `${SCRIPT_URL}?action=getAll`;
+    
+    fetch(`${PROXY_URL}${encodeURIComponent(targetUrl)}`)
+        .then(res => res.json())
+        .then(wrapper => {
+            const data = JSON.parse(wrapper.contents);
+            if (data.names) {
+                allGuestNames = data.names;
+                console.log(`[INIT] Loaded ${allGuestNames.length} names successfully.`);
+            }
+        })
+        .catch(err => console.error("[INIT ERROR] Autocomplete pre-load failed:", err));
+});
+
+// Autocomplete Input Listening Logic
+const searchInput = document.getElementById('search-input');
+const autocompleteList = document.getElementById('autocomplete-list');
+
+searchInput.addEventListener('input', function() {
+    const val = this.value.trim().toLowerCase();
+    autocompleteList.innerHTML = '';
+    if (!val) return;
+
+    const filtered = allGuestNames.filter(name => name.toLowerCase().includes(val));
+    filtered.forEach(name => {
+        const item = document.createElement('div');
+        item.className = 'autocomplete-item';
+        item.textContent = name;
+        item.addEventListener('click', () => {
+            searchInput.value = name;
+            autocompleteList.innerHTML = '';
+        });
+        autocompleteList.appendChild(item);
+    });
+});
+
+// Close autocomplete dropdown when clicking outside the input field
+document.addEventListener('click', (e) => {
+    if (e.target !== searchInput) autocompleteList.innerHTML = '';
+});
+
+// --- STEP 1: GUEST ENGINE FETCH ---
 document.getElementById('btn-find-invite').addEventListener('click', function() {
-    const nameInput = document.getElementById('search-input').value.trim();
+    const nameInput = searchInput.value.trim();
     const errorElement = document.getElementById('search-error');
     const btn = this;
     
-    console.log(`[LOOKUP START] User clicked Search. Gathering name: "${nameInput}"`);
-    
-    if (!nameInput) {
-        console.warn("[LOOKUP WARN] Input field is empty.");
-        return;
-    }
+    if(!nameInput) return;
     
     btn.disabled = true;
     btn.textContent = 'Searching...';
     errorElement.style.display = 'none';
 
-    // Build standard, clean query parameters 
-    const finalUrl = `${SCRIPT_URL}?name=${encodeURIComponent(nameInput)}`;
-    console.log(`[LOOKUP NETWORK] Dispatching pipeline directly to Google: ${finalUrl}`);
+    const targetApiUrl = `${SCRIPT_URL}?name=${encodeURIComponent(nameInput)}`;
     
-    fetch(finalUrl)
-        .then(res => {
-            console.log(`[LOOKUP NETWORK HTTP] Server connected. HTTP status code: ${res.status}`);
-            return res.json();
-        })
-        .then(data => {
-            console.log("[LOOKUP RESULT] Decoded payload data from sheet:", data);
+    fetch(`${PROXY_URL}${encodeURIComponent(targetApiUrl)}`)
+        .then(res => res.json())
+        .then(wrapper => {
+            const data = JSON.parse(wrapper.contents);
             btn.disabled = false;
             btn.textContent = 'Find My Invitation';
             
-            if (data.error) {
-                console.error(`[LOOKUP ERROR] Match stopped: ${data.error}`);
+            if(data.error) {
                 errorElement.style.display = 'block';
             } else {
-                console.log("[LOOKUP SUCCESS] Match confirmed. Rendering selection cards...");
                 currentReservationData = data;
                 setupConfigurationScreen(data);
             }
@@ -60,79 +93,115 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
         .catch(err => {
             btn.disabled = false;
             btn.textContent = 'Find My Invitation';
-            console.error("[LOOKUP CRITICAL FAILURE] Browser intercepted execution routing:", err);
-            alert(`Diagnostic trace alert: ${err.message}`);
+            alert("Network connection error. Please refresh.");
         });
 });
 
-
-// --- STEP 2: BUILD SELECTION MATRIX LOGS ---
+// --- STEP 2: GROUP SELECTION WITH MAX SEAT ENFORCEMENT ---
 function setupConfigurationScreen(data) {
-    console.log("[RENDER CONFIG] Building selection cards layout for payload matrix:", data);
+    document.getElementById('config-guest-title').textContent = data.mainGuest.toUpperCase();
+    document.getElementById('allowed-seats-count').textContent = data.seats;
     
-    try {
-        document.getElementById('config-guest-title').textContent = data.mainGuest.toUpperCase() + (data.members.length > 1 ? " & FAMILY" : "");
-        document.getElementById('allowed-seats-count').textContent = data.seats;
-        document.getElementById('mobile-input').value = data.mobile || "";
-        
-        document.getElementById('group-notice').style.display = data.members.length > 1 ? 'block' : 'none';
-        
-        const banner = document.getElementById('already-submitted-banner');
-        if (data.savedResponses) {
-            console.log("[RENDER CONFIG] Detected historical entry response database fields:", data.savedResponses);
-            banner.style.display = 'block';
-            selections = data.savedResponses; 
-        } else {
-            console.log("[RENDER CONFIG] Clean instance: No historical response profiles found for guest row.");
-            banner.style.display = 'none';
-            selections = {};
-        }
-        
-        const container = document.getElementById('dynamic-guest-list');
-        container.innerHTML = '';
-
-        data.members.forEach((member, index) => {
-            if (!data.savedResponses) {
-                selections[member] = null;
-            }
-
-            const currentChoice = selections[member];
-            console.log(`[RENDER CONFIG] Appending target member box index [${index}]: "${member}" | Active Pre-Selection state: ${currentChoice}`);
-
-            const guestBox = document.createElement('div');
-            guestBox.className = 'guest-decision-card';
-            guestBox.innerHTML = `
-                <div class="guest-name">${member}</div>
-                <div class="decision-buttons">
-                    <button type="button" class="btn-toggle opt-yes ${currentChoice === 'yes' ? 'selected' : ''}" onclick="makeSelection('${member}', 'yes', this)">Attending</button>
-                    <button type="button" class="btn-toggle opt-no ${currentChoice === 'no' ? 'selected' : ''}" onclick="makeSelection('${member}', 'no', this)">Not Attending</button>
-                </div>
-            `;
-            container.appendChild(guestBox);
-        });
-
-        switchScreen(screens.config, "Guest Configuration Screen");
-    } catch(err) {
-        console.error("[RENDER CONFIG CRITICAL ERROR] Failure processing UI component injections:", err);
+    // Set initial phone state securely
+    const phoneInput = document.getElementById('mobile-input');
+    phoneInput.value = data.mobile ? data.mobile : "+63 ";
+    
+    const banner = document.getElementById('already-submitted-banner');
+    if(data.savedResponses) {
+        banner.style.display = 'block';
+        selections = data.savedResponses; 
+    } else {
+        banner.style.display = 'none';
+        selections = {};
     }
+    
+    const container = document.getElementById('dynamic-guest-list');
+    container.innerHTML = '';
+
+    data.members.forEach((member) => {
+        if(!data.savedResponses) selections[member] = null;
+        const currentChoice = selections[member];
+
+        const guestBox = document.createElement('div');
+        guestBox.className = 'guest-decision-card';
+        guestBox.innerHTML = `
+            <div class="guest-name">${member}</div>
+            <div class="decision-buttons">
+                <button type="button" class="btn-toggle opt-yes ${currentChoice === 'yes' ? 'selected' : ''}" onclick="makeSelection('${member}', 'yes', this)">Attending</button>
+                <button type="button" class="btn-toggle opt-no ${currentChoice === 'no' ? 'selected' : ''}" onclick="makeSelection('${member}', 'no', this)">Not Attending</button>
+            </div>
+        `;
+        container.appendChild(guestBox);
+    });
+
+    tallySelections();
+    switchScreen(screens.config);
 }
 
 function makeSelection(member, decision, clickedBtn) {
     selections[member] = decision;
-    console.log(`[INTERACTION SELECT] Registered entry change: "${member}" status updated to -> ${decision.toUpperCase()}`);
-    
     const parent = clickedBtn.parentElement;
     Array.from(parent.children).forEach(btn => btn.classList.remove('selected'));
     clickedBtn.classList.add('selected');
+    tallySelections();
 }
 
-// --- STEP 3: REVIEW SUMMARY LOGS ---
-document.getElementById('btn-go-to-review').addEventListener('click', function() {
-    console.log("[REVIEW ACTION] Processing verification steps. Evaluating current selections list:", selections);
+function tallySelections() {
+    const totalSelectedAttending = Object.values(selections).filter(v => v === 'yes').length;
+    document.getElementById('current-selection-tally').textContent = totalSelectedAttending;
     
+    const maxAllowed = currentReservationData.seats;
+    const warningBanner = document.getElementById('seat-warning-banner');
+    
+    if (totalSelectedAttending > maxAllowed) {
+        warningBanner.style.display = 'block';
+        document.getElementById('btn-go-to-review').disabled = true;
+        document.getElementById('btn-go-to-review').style.opacity = '0.5';
+    } else {
+        warningBanner.style.display = 'none';
+        document.getElementById('btn-go-to-review').disabled = false;
+        document.getElementById('btn-go-to-review').style.opacity = '1';
+    }
+}
+
+// Mobile Number Mask Formatting Engine (+63 9XX XXX XXXX)
+document.getElementById('mobile-input').addEventListener('input', function(e) {
+    let raw = this.value.replace(/\D/g, ''); // Strip all non-digits
+    
+    // Ensure the number always starts with country code 63
+    if (!raw.startsWith('63')) {
+        raw = '63' + raw;
+    }
+    
+    // Truncate to maximum length (2-digit country code + 10-digit mobile number = 12 digits total)
+    if (raw.length > 12) raw = raw.substring(0, 12);
+    
+    // Build the formatted layout string step by step
+    let formatted = '+63 ';
+    if (raw.length > 2) {
+        formatted += raw.substring(2, 5); // 3-digit prefix (e.g., 917)
+    }
+    if (raw.length > 5) {
+        formatted += ' ' + raw.substring(5, 8); // Next 3 digits
+    }
+    if (raw.length > 8) {
+        formatted += ' ' + raw.substring(8, 12); // Final 4 digits
+    }
+    
+    this.value = formatted;
+});
+
+// Block users from backspacing or deleting the initial "+63 " text prefix
+document.getElementById('mobile-input').addEventListener('keydown', function(e) {
+    if (this.selectionStart < 5 && (e.key === 'Backspace' || e.key === 'Delete')) {
+        e.preventDefault();
+    }
+});
+
+// --- STEP 3: ARRANGE SUMMARY LISTS ---
+document.getElementById('btn-go-to-review').addEventListener('click', function() {
     const unanswered = Object.values(selections).some(val => val === null);
-    if (unanswered) {
-        console.warn("[REVIEW WARN] Verification blocked: Some party group members remain unassigned.");
+    if(unanswered) {
         alert("Please make a selection for every guest before moving forward.");
         return;
     }
@@ -143,13 +212,11 @@ document.getElementById('btn-go-to-review').addEventListener('click', function()
     declinedList.innerHTML = '';
 
     let countAttending = 0;
-    let totalGuests = 0;
 
     for (const [name, decision] of Object.entries(selections)) {
-        totalGuests++;
         const li = document.createElement('li');
         li.textContent = name;
-        if (decision === 'yes') {
+        if(decision === 'yes') {
             countAttending++;
             attendingList.appendChild(li);
         } else {
@@ -157,31 +224,28 @@ document.getElementById('btn-go-to-review').addEventListener('click', function()
         }
     }
 
-    console.log(`[REVIEW GENERATED] Layout verification finished. Tally total counts: ${countAttending} of ${totalGuests} attending.`);
-    document.getElementById('review-attendance-summary').textContent = `${countAttending} of ${totalGuests} attending`;
-    switchScreen(screens.review, "Review Summary Confirmation Screen");
+    document.getElementById('review-attendance-summary').textContent = `${countAttending} attending`;
+    switchScreen(screens.review);
 });
 
 document.getElementById('btn-edit-answers').addEventListener('click', function() {
-    console.log("[REVIEW CANCEL] Edit answers requested. Returning to selection view map.");
-    switchScreen(screens.config, "Guest Configuration Screen");
+    switchScreen(screens.config);
 });
 
-// --- STEP 4: SUBMIT LOGS ---
+// --- STEP 4: SUBMIT SELECTION TRANSACTION ---
 document.getElementById('btn-submit-rsvp').addEventListener('click', function() {
     const btn = this;
-    console.log("[SUBMIT DATA] Initiating transaction commit database post flow...");
-    
     btn.disabled = true;
     btn.textContent = 'Saving updates...';
+
+    const countAttending = Object.values(selections).filter(v => v === 'yes').length;
 
     const payload = {
         mainGuest: currentReservationData.mainGuest,
         mobile: document.getElementById('mobile-input').value.trim(),
-        responses: selections
+        responses: selections,
+        totalConfirmed: countAttending // Sends exact verified attending count to Column G
     };
-
-    console.log("[SUBMIT PAYLOAD] Bundled data packet object targeting cloud sheet server:", payload);
 
     fetch(SCRIPT_URL, {
         method: 'POST',
@@ -190,13 +254,11 @@ document.getElementById('btn-submit-rsvp').addEventListener('click', function() 
         body: JSON.stringify(payload)
     })
     .then(() => {
-        console.log("[SUBMIT COMPLETE] Transaction executed under 'no-cors' delivery layer successfully.");
-        switchScreen(screens.success, "Success Frame Confirmation View");
+        switchScreen(screens.success);
     })
     .catch(err => {
         btn.disabled = false;
         btn.textContent = 'Submit RSVP';
-        console.error("[SUBMIT CRITICAL FAILURE] Execution engine failed to resolve transaction delivery:", err);
-        alert(`An error occurred during submission trace route: ${err.message}`);
+        alert("An error occurred during submission.");
     });
 });
