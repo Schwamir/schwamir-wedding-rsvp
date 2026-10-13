@@ -4,15 +4,25 @@
     --bg-light: #f7f9fa;
     --success-green: #2d6a4f;
 }
-
+h1{
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.5rem;
+    color: #4A3E3D; /* Soft elegant color */
+    text-align: center;    
+}
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #eaeef1;
     margin: 0;
     padding: 15px;
     display: flex;
     justify-content: center;
+    background-image: linear-gradient(rgba(243, 239, 250, 0.7), rgba(243, 239, 250, 0.7)), url(images/greeting_card_with_watercolor_purple_floral_frame.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
 }
+
 
 .rsvp-card {
     background: #ffffff;
@@ -310,3 +320,4 @@ input:focus {
     text-align: center;
     margin: 15px 0;
 }
+
