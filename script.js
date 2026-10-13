@@ -388,14 +388,30 @@ document.getElementById('btn-submit-rsvp').addEventListener('click', function() 
         body: JSON.stringify(payload)
     })
     .then(() => {
+        // 1. Instantly drop user down to screen 4 layout
         switchScreen(screens.success);
+        
+        // 2. Fetch the newly injected marvel blackout window wrapper element
+        const cinematicScreen = document.getElementById('marvel-cinematic-intro');
+        
+        if (cinematicScreen) {
+            // Reset the layout filter classes just in case of historical re-clicks
+            cinematicScreen.classList.remove('fade-out-curtain');
+            
+            // 3. The letter animations run for ~3.5 seconds.
+            // We wait exactly 5.5 seconds total (3.5s transition + 2s holding delay)
+            // before smoothly fading the blackout curtain out of view!
+            setTimeout(() => {
+                cinematicScreen.classList.add('fade-out-curtain');
+            }, 5500); 
+        }
     })
     .catch(err => {
         btn.disabled = false;
         btn.textContent = 'Submit RSVP';
-        console.error("[SUBMIT CRITICAL FAILURE] Final post transaction aborted:", err);
-        showCustomAlert("An error occurred while saving your RSVP. Please try clicking Submit again.");
+        showCustomAlert("An error occurred during submission.");
     });
+
 });
 
 // --- DYNAMIC RETRO FLIP-CLOCK TIMER INTERVAL LOGIC ---
