@@ -1,15 +1,13 @@
 :root {
-    --primary-color: #8b2635;
-    --text-dark: #2b2d42;
-    --bg-light: #f7f9fa;
-    --success-green: #2d6a4f;
+    --primary-color: #523D5A;      /* Rich Deep Amethyst Plum (New Theme Primary) */
+    --lavender-dark: #2A1E2D;      /* Deep Charcoal Velvet */
+    --lavender-medium: #705D78;    /* Muted Lavender Amethyst */
+    --lavender-light: #F6F1FA;     /* Soft Pastel Cream Lavender */
+    --lavender-slate: #4E4952;     /* Muted Slate Purple */
+    --success-green: #2D6A4F;      /* Clean RSVP Acceptance Green */
+    --transition-speed: 0.4s;      /* Smooth animation speed clock */
 }
-h1{
-    font-family: 'Great Vibes', cursive;
-    font-size: 3.5rem;
-    color: #4A3E3D; /* Soft elegant color */
-    text-align: center;    
-}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
@@ -21,7 +19,54 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
+    color: var(--lavender-slate);
 }
+
+/* ✒️ TYPOGRAPHY HIERARCHY UPGRADES */
+h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.8rem;
+    color: var(--lavender-dark); /* Elegant Deep Plum */
+    text-align: center;    
+    margin-top: 10px;
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
+}
+
+
+h2, h3 {
+    font-family: "Georgia", serif;
+    color: var(--primary-color); /* Deep Crimson focus text */
+    text-align: center;
+}
+
+h2.guest-highlight {
+    font-size: 24px;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 18px;
+    margin-top: 25px;
+    color: var(--lavender-dark);
+}
+
+p {
+    color: var(--lavender-slate); /* Indigo Slate for ultimate squint-free reading */
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.event-meta {
+    text-align: center;
+    color: var(--lavender-medium); /* Soft Amethyst metadata */
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
 
 
 .rsvp-card {
@@ -29,11 +74,13 @@ body {
     width: 100%;
     max-width: 450px;
     min-height: 85vh;
-    border-radius: 24px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-    padding: 30px 20px;
+    border-radius: 28px; /* Slightly rounder edges for a premium card aesthetic */
+    box-shadow: 0 15px 35px rgba(58, 50, 71, 0.1); /* Indigo-tinted soft drop shadow */
+    padding: 35px 22px;
     box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.7);
 }
+
 
 .step-container {
     display: none;
@@ -51,28 +98,13 @@ body {
     margin-bottom: 5px;
 }
 
-.event-meta {
+/*.event-meta {
     text-align: center;
     color: #666;
     font-size: 13px;
     line-height: 1.5;
     margin-bottom: 30px;
-}
-
-.greeting-intro {
-    text-align: center;
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 2px;
-}
-
-.guest-highlight {
-    text-align: center;
-    font-family: "Georgia", serif;
-    color: var(--primary-color);
-    font-size: 22px;
-    margin-top: 0;
-}
+}*/
 
 .seats-banner {
     text-align: center;
@@ -161,13 +193,25 @@ input:focus {
     font-size: 15px;
     color: var(--text-dark);
     margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between; /* Pushes name to left, emoji to right */
+    align-items: center;
 }
+
+/* Base style for the indicator badge to allow a soft transition bounce */
+.status-emoji-indicator {
+    font-size: 18px;
+    display: inline-block;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
 
 .decision-buttons {
     display: flex;
     gap: 10px;
 }
 
+/* KEEP YOUR WORKING BASE LAYOUT EXACTLY AS IS: */
 .btn-toggle {
     flex: 1;
     padding: 12px;
@@ -176,20 +220,25 @@ input:focus {
     border-radius: 10px;
     font-size: 14px;
     font-weight: 500;
+    color: var(--lavender-slate); /* Set a clean default unselected text color */
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
+/* 🤩 ADD CLEAR WHITE TEXT COLOR WHEN ATTENDING IS ACTIVE */
 .btn-toggle.selected.opt-yes {
     background: var(--success-green);
-    color: white;
+    color: #ffffff !important; 
     border-color: var(--success-green);
+    font-weight: 600; /* Makes the active selection pop just a bit more */
 }
 
+/* 🥺 ADD CLEAR WHITE TEXT COLOR WHEN NOT ATTENDING IS ACTIVE */
 .btn-toggle.selected.opt-no {
     background: var(--primary-color);
-    color: white;
+    color: #ffffff !important; 
     border-color: var(--primary-color);
+    font-weight: 600;
 }
 
 .btn-primary {
@@ -223,36 +272,9 @@ input:focus {
     text-align: center;
 }
 
-.summary-box {
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 15px;
-    background: var(--bg-light);
-}
-
-.status-label {
-    font-size: 11px;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    display: block;
-    margin-top: 10px;
-}
-
 .status-attending { color: var(--success-green); }
 .status-declined { color: var(--primary-color); }
 
-.summary-list {
-    margin: 5px 0 15px 0;
-    padding-left: 20px;
-    font-size: 14px;
-}
-
-.footer-note {
-    text-align: center;
-    font-size: 12px;
-    color: #666;
-    margin: 20px 0;
-}
 
 .success-banner {
     background: var(--primary-color);
@@ -269,17 +291,20 @@ input:focus {
 }
 
 .info-alert-banner {
-    background-color: #e2f0d9;
-    color: #385723;
-    border: 1px solid #c5e0b4;
-    padding: 12px;
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: 500;
+    /* SWAPPED GREEN TONES FOR A PREMIUM PASTEL LAVENDER THEME */
+    background-color: var(--lavender-light);
+    color: var(--primary-color); /* Rich Deep Amethyst Plum text color */
+    border: 1px dashed rgba(82, 61, 90, 0.3);
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 13.5px;
+    font-weight: 600;
     text-align: center;
-    margin-bottom: 20px;
-    line-height: 1.4;
+    margin-bottom: 25px;
+    line-height: 1.5;
+    box-shadow: 0 4px 10px rgba(92, 78, 112, 0.04);
 }
+
 /* Autocomplete Dropdown Menu Layout */
 .autocomplete-wrapper {
     position: relative;
@@ -290,13 +315,20 @@ input:focus {
     left: 0;
     right: 0;
     background: white;
-    border: 1px solid #dcdcdc;
-    border-top: none;
+    border: none; /* Removed permanent border to hide the ghost line completely */
     border-radius: 0 0 12px 12px;
     max-height: 200px;
     overflow-y: auto;
     z-index: 1000;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: none; /* Remove shadows when empty */
+    transition: box-shadow 0.2s ease;
+}
+
+/* NEW CLASS: Only injected via JavaScript when names are active in the dropdown list */
+.autocomplete-dropdown.visible {
+    border: 1.5px solid #dcdcdc;
+    border-top: none;
+    box-shadow: 0 4px 12px rgba(58, 50, 71, 0.08);
 }
 .autocomplete-item {
     padding: 12px 16px;
@@ -325,5 +357,800 @@ input:focus {
     color: #555;
     margin-bottom: 10px;
     text-align: center;
+}
+/* ==========================================================================
+   EVENT LOGISTICS & DETAIL CARDS STYLING 
+   ========================================================================== */
+
+/* Main layout wrapper block */
+.event-details-guide {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+
+/* Soft font style adjustment for Option C gifting description */
+.friendly-gifting {
+    font-style: italic;
+    color: #666;
+    border-left: 2.5px solid var(--primary-color);
+    padding-left: 10px;
+}
+
+/* 🗺️ Minimalist Map Route Navigation Buttons */
+.btn-outline-link {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 16px;
+    border: 1.5px solid var(--primary-color);
+    border-radius: 10px;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    background-color: white;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* 👗 CSS Color Palette Swatch Layouts */
+.color-palette-container {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.color-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: 2px solid white;
+}
+
+/* 💬 Contact Helpline Card Modifications */
+.contact-card {
+    background-color: #f0f4f8; /* Soft blue highlight hint box */
+    text-align: center;
+}
+
+.contact-messenger-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: #0084ff; /* Messenger Brand Blue */
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.contact-messenger-link:hover {
+    text-decoration: none;
+}
+/* Converts the standard card into a 2-column horizontal split card */
+.location-grid-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px !important;
+}
+
+.card-details-column {
+    flex: 1.4; /* Gives the text description more room */
+}
+
+.card-map-column {
+    flex: 1; /* Locks the map column to a clean balance */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Keeps the visible square viewport box small and clean */
+.mini-map-wrapper {
+    position: relative;
+    display: block;
+    width: 150px;   /* Your excellent updated layout width constraint */
+    height: 110px;  /* Keeps the sleek, wide rectangular ratio look */
+    border-radius: 14px;
+    overflow: hidden; /* Slices off everything outside your new 150px boundary */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    border: 1px solid #e2e8f0;
+}
+
+.mini-map-wrapper iframe {
+    position: absolute;
+    width: 240px;   /* Expanded from 190px to easily cover the new 150px frame width */
+    height: 190px;  
+    top: -45px;     /* Keeps Google's header card pushed up out of bounds */
+    left: -45px;    /* Centers the main pin point beautifully inside the wider viewport */
+    border: none;
+    pointer-events: none; 
+}
+
+
+/* Floating helper label displayed underneath or inside the map image */
+.map-overlay-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* SWAPPED BURGUNDY RED FOR THE THEMED DEEP AMETHYST PLUM AT 90% OPACITY */
+    background: rgba(82, 61, 90, 0.9); 
+    color: white;
+    font-size: 9px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 5px 0;
+    letter-spacing: 0.5px;
+    z-index: 10;
+}
+/* ==========================================================================
+   SMOOTH MICRO-ANIMATIONS ENGINE
+   ========================================================================== */
+
+/* Define the base hidden state for inactive containers */
+.step-container {
+    display: none;
+    opacity: 0;
+    transform: translateY(15px); /* Starts slightly lower down the screen */
+    transition: opacity var(--transition-speed) ease, transform var(--transition-speed) ease;
+}
+
+/* Define the active entry performance state */
+.step-container.active {
+    display: block;
+    animation: slideUpFadeIn var(--transition-speed) forwards cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes slideUpFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Interactive Hover Feedback animations for Form Elements */
+.guest-decision-card {
+    background-color: var(--lavender-light) !important; /* Soft Pastel Lavender tint background */
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.guest-decision-card:hover {
+    transform: translateY(-2px); /* Gentle float upward on finger tap/hover */
+    box-shadow: 0 4px 12px rgba(92, 78, 112, 0.08);
+}
+
+.btn-toggle {
+    transition: transform 0.1s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-toggle:active {
+    transform: scale(0.97); /* Tactile click response spring */
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(82, 61, 90, 0.2); /* Soft amethyst drop shadow shadow */
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #3E2D44; /* Slightly deeper purple on hover hover */
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(82, 61, 90, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(1px);
+}
+
+/* ==========================================================================
+   STEP 1: BEAUTIFIED HOME VIEW COMPONENT STYLES
+   ========================================================================== */
+
+/* Intersecting Gold & Crimson Monogram Crest */
+.wedding-monogram-badge {
+    width: 65px;
+    height: 65px;
+    border: 1.5px solid #d4af37; /* Clean Metallic Gold tint */
+    border-radius: 50%;
+    margin: 15px auto 25px auto; /* Spacious margins separate it from elements */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Georgia", serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary-color);
+    background-color: var(--lavender-light);
+    box-shadow: 0 4px 10px rgba(92, 78, 112, 0.06);
+    letter-spacing: 0.5px;
+}
+
+/* Elegant script greeting header */
+.welcome-tagline {
+    text-align: center;
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.8rem;
+    color: var(--lavender-medium);
+    margin: 0 0 -15px 0; /* Tightened negative baseline spacing pulls heading down naturally */
+    opacity: 0.9;
+}
+
+/* Main names heading adjustments */
+.main-wedding-heading {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.8rem;
+    color: var(--lavender-dark);
+    text-align: center;    
+    margin: 0 auto 10px auto;
+    text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
+}
+
+/* Isolated dynamic countdown box component */
+.countdown-ticker-box {
+    text-align: center;
+    background-color: var(--lavender-light);
+    padding: 10px 20px;
+    border-radius: 12px;
+    width: fit-content;
+    margin: 20px auto 10px auto; /* Generous spacing blocks out overcrowding */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px dashed rgba(139, 38, 53, 0.2);
+}
+
+.countdown-days-number {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary-color);
+    background: white;
+    padding: 2px 6px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+.countdown-days-label {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--lavender-medium);
+    letter-spacing: 0.2px;
+}
+/* ==========================================================================
+   RETRO MECHANICAL FLIP-CLOCK TIMER COMPONENT STYLES
+   ========================================================================== */
+
+.countdown-flip-container {
+    margin: 25px auto 15px auto;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+}
+
+.countdown-header-tag {
+    font-size: 12.5px;
+    color: var(--lavender-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.flip-clock-grid {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Perfectly gaps columns evenly on small iPhone sizes */
+}
+
+.flip-unit-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Individual dark flip card numbers blocks */
+.flip-digit-card {
+    background-color: var(--lavender-dark); /* Elegant Deep Charcoal Plum background */
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    padding: 8px 10px;
+    border-radius: 8px;
+    min-width: 42px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    position: relative;
+    letter-spacing: 0.5px;
+}
+
+/* Simulated center horizontal splitting card seam track line */
+.flip-digit-card::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.25); /* Clean fold impression trace shadow */
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.flip-unit-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--lavender-medium);
+    text-transform: uppercase;
+    margin-top: 6px;
+    letter-spacing: 0.3px;
+}
+/* ==========================================================================
+   STEP 2: PREMIUM LAYOUT & SECTION CONTRAST STYLES
+   ========================================================================== */
+
+/* Clean, spaced-out introduction tagline */
+.greeting-intro {
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px; /* Adds elegant breathing room between letters */
+    color: var(--lavender-medium);
+    margin-bottom: 8px;
+    margin-top: 15px;
+}
+
+/* Elegant, highly readable guest title heading */
+.guest-highlight {
+    text-align: center;
+    font-family: "Georgia", serif; /* Elegant, readable serif font */
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--lavender-dark); /* Dark plum velvet for maximum readability contrast */
+    margin-top: 0;
+    margin-bottom: 25px;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+}
+
+/* Main Questionnaire Section Labels */
+#step-configure h3 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--lavender-dark);
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-top: 35px;
+    margin-bottom: 5px;
+}
+
+
+/* Instructional helpful subtitle rows */
+.instruction-sub {
+    text-align: center;
+    font-size: 13px;
+    color: var(--lavender-medium);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* --- LOGISTICS MAP CARDS VISUAL UPGRADES --- */
+.event-details-guide {
+    margin-top: 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Gives the cards a clean, soft border instead of feeling like random text blocks */
+.info-card {
+    background-color: var(--lavender-light) !important;
+    border-radius: 18px;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 1px solid rgba(112, 93, 120, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.info-card:hover {
+    transform: scale(1.01); /* Soft tactile float on focus tracking */
+}
+
+.info-card-title {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary-color); /* Premium Deep Amethyst Plum */
+    text-transform: uppercase;
+    letter-spacing: 1.8px; /* High-end luxury label letter spacing */
+    margin: 0 0 8px 0;
+    opacity: 0.85;
+}
+
+/* Clear, bold focal text for Venue Names */
+.venue-name-highlight {
+    display: block;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--lavender-dark); /* Velvet Plum for maximum legibility contrast */
+    margin-bottom: 4px;
+    letter-spacing: -0.2px;
+}
+
+/* Softer, beautifully spaced subtext for addresses & operational notes */
+.venue-address-subtext {
+    display: block;
+    font-size: 12.5px;
+    color: var(--lavender-slate);
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+/* Global card description text container adjustments */
+.info-card-text {
+    font-size: 13.5px;
+    color: var(--lavender-slate);
+    line-height: 1.6;
+    margin: 0;
+}
+
+
+/* Special styling for Option C quote card */
+.friendly-gifting {
+    font-family: "Georgia", serif;
+    font-style: italic;
+    color: var(--lavender-medium);
+    font-size: 14px;
+    line-height: 1.7;
+    border-left: 3px solid var(--primary-color);
+    padding-left: 12px;
+}
+
+/* Help desk contact links custom button wrap */
+.contact-card {
+    background-color: #f1ecf7 !important; /* Slightly richer contrast background shade for help footer */
+    border: 1px dashed rgba(82, 61, 90, 0.25);
+    text-align: center;
+}
+
+.contact-messenger-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: var(--primary-color);
+    background-color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    transition: all 0.2s ease;
+}
+
+.contact-messenger-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+/* ==========================================================================
+   DYNAMIC KINETIC EMOJI ANIMATION ENGINE 
+   ========================================================================== */
+
+/* 🤩 STAR-EYES POP-ZOOM ANIMATION EFFECT */
+.emoji-pop-zoom {
+    animation: popZoomSpring 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.3) forwards;
+}
+
+@keyframes popZoomSpring {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.4) rotate(8deg); /* Quick playful zoom scale burst */
+    }
+    100% {
+        transform: scale(1) rotate(0deg); /* Settles gently back to regular frame scale */
+    }
+}
+
+/* 🥺 PLEADING SLAM-AND-ROLL EFFECT */
+.emoji-slam-roll {
+    animation: slamRollSpring 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes slamRollSpring {
+    0% {
+        transform: scale(1) translateY(0) rotate(0deg);
+    }
+    20% {
+        transform: scale(1.3) translateY(-10px) rotate(-15deg); /* Winds up backward slightly */
+    }
+    40% {
+        transform: scale(0.9) translateY(2px) rotate(10deg);  /* Quick downward drop slam step */
+    }
+    70% {
+        transform: scale(1.1) translateY(0) rotate(-8deg);   /* Soft horizontal rebound bounce wobble */
+    }
+    100% {
+        transform: scale(1) translateY(0) rotate(0deg);       /* Resolves cleanly back to dead center alignment */
+    }
+}
+/* ==========================================================================
+   CUSTOM ELEGANT MODAL COMPONENT STYLES
+   ========================================================================== */
+
+/* The dark background overlay wash */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(42, 30, 45, 0.4); /* Translucent charcoal plum wash */
+    backdrop-filter: blur(4px); /* Modern frosted-glass effect */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000; /* Guarantees it sits above all maps and inputs */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+/* Turns visibility active toggled via JavaScript */
+.modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* The actual center alert box */
+.modal-box {
+    background: #ffffff;
+    width: 85%;
+    max-width: 340px;
+    padding: 30px 20px;
+    border-radius: 24px;
+    box-shadow: 0 15px 40px rgba(42, 30, 45, 0.15);
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    transform: scale(0.85);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.show .modal-box {
+    transform: scale(1); /* Bounces out slightly on arrival */
+}
+
+.modal-emoji {
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+
+.modal-title {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: var(--lavender-dark) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    margin: 0 0 8px 0 !important;
+}
+
+.modal-message {
+    font-size: 14px;
+    color: var(--lavender-slate);
+    line-height: 1.5;
+    margin: 0 0 24px 0;
+}
+
+/* Button override to make it fit inside the card spacing constraints */
+.modal-btn {
+    padding: 12px 30px !important;
+    width: auto !important;
+    min-width: 120px;
+    display: inline-block;
+}
+
+/* ==========================================================================
+   STEP 3: PREMIUM REVIEW SCREEN STYLES OVERHAUL
+   ========================================================================== */
+
+/* Main Page Heading Accent */
+#step-review h2 {
+    font-family: "Georgia", serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--lavender-dark); /* Velvet Plum */
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+}
+
+/* Dynamic attendance headcount subtitle */
+.summary-head {
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--primary-color); /* Amethyst purple headcount highlight */
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+/* Completely restructure the old plain box into separate elegant mini-cards */
+.summary-box {
+    border: none; /* Remove old generic gray outline border */
+    background: transparent;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px; /* Spacious separation gap between cards */
+}
+
+/* Individual list layout containers for Attending vs Declined statuses */
+.summary-section {
+    background-color: var(--lavender-light);
+    border: 1px solid rgba(112, 93, 120, 0.1);
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-sizing: border-box;
+}
+
+/* Distinct Status Badges inside the summary cards */
+.status-label {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    display: block;
+    margin-top: 0;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+/* Soft inline checkmark or bullet points formatting list elements */
+.summary-list {
+    margin: 0;
+    padding: 0;
+    list-style: none; /* Remove basic black circle bullet points */
+}
+
+.summary-list li {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14.5px;
+    color: var(--lavender-dark);
+    font-weight: 600;
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* CSS pseudo-elements automatically add custom icons right in front of the names */
+#review-list-attending li::before {
+    content: '🎉'; /* Energetic celebratory marker for yes responses */
+    font-size: 14px;
+}
+
+#review-list-declined li::before {
+    content: '🕊️'; /* Soft, graceful peaceful marker for declined responses */
+    font-size: 14px;
+}
+
+/* Soft modifier for empty "None" placeholders */
+.summary-list li.empty-placeholder {
+    color: var(--lavender-medium);
+    font-weight: 400;
+    font-style: italic;
+}
+.summary-list li.empty-placeholder::before {
+    content: '' !important; /* Strips out the icons if nobody is on the list */
+}
+
+/* Mid-page descriptive tagline */
+.footer-note {
+    text-align: center;
+    font-size: 13px;
+    color: var(--lavender-slate);
+    margin: 25px 0;
+}
+.footer-note strong {
+    color: var(--lavender-dark);
+}
+/* ==========================================================================
+   STEP 4: SUCCESS HUB DESIGN INTEGRATIONS
+   ========================================================================== */
+
+/* Gives cards on the final page uniform spacing */
+.success-hub-card {
+    text-align: left;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
+
+/* Secondary smaller contextual lines inside cards */
+.hub-sub-note {
+    font-size: 12px;
+    color: var(--lavender-medium);
+    margin-top: 8px;
+    margin-bottom: 0;
+    line-height: 1.4;
+}
+
+/* Custom button sizing overrides for the in-card actions */
+.hub-edit-btn {
+    width: auto !important;
+    display: inline-block;
+    padding: 8px 16px;
+    margin-top: 12px;
+    margin-bottom: 10px;
+    font-size: 12.5px;
+}
+
+/* Deadline text string styling */
+.hub-deadline-warning {
+    font-size: 11.5px;
+    color: var(--lavender-slate);
+    margin: 4px 0 0 0;
+}
+
+/* Floating custom styled messenger badge button link for Josh */
+.hub-messenger-btn {
+    background-color: #ffffff;
+    color: #0084ff !important; /* Authentic Messenger Brand Blue */
+    padding: 10px 18px !important;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 3px 8px rgba(0, 132, 255, 0.08);
+    margin-top: 4px;
+    border: 1px solid rgba(0, 132, 255, 0.15);
+}
+
+.hub-messenger-btn:hover {
+    background-color: #0084ff;
+    color: #ffffff !important;
+    border-color: #0084ff;
+    text-decoration: none;
+}
+
+/* Beautiful closing script paragraph at the bottom baseline */
+.warm-closing-tag {
+    text-align: center;
+    font-family: 'Great Vibes', cursive;
+    font-size: 2rem;
+    color: var(--lavender-dark);
+    margin: 20px auto 10px auto;
+    line-height: 1.2;
 }
 

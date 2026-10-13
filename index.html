@@ -21,10 +21,56 @@
 <body>
     <div class="rsvp-card">
         
-        <!-- STEP 1: SEARCH PAGE WITH AUTOCOMPLETE -->
+         <!-- STEP 1: SEARCH PAGE WITH AUTOCOMPLETE (ELEGANT UPGRADE) -->
         <div id="step-search" class="step-container active">
-            <h1 class="brand-title">Josh & Mir's Wedding</h1>
-            <p class="event-meta">Saturday, March 13, 2027 • 3:00 PM<br><strong>RSVP by January 17, 2027</strong></p>
+            
+            <!-- THE WEDDING MONOGRAM CREST -->
+            <div class="wedding-monogram-badge">J & M</div>
+            
+            <!-- THE SCRIPT WELCOME INTRODUCTION -->
+            <p class="welcome-tagline">Welcome to the wedding celebration of</p>
+            
+            <h1 class="main-wedding-heading">Joshua & Jonahmir</h1>
+            
+            <!-- EVEN METADATA WITH SEPARATED TICKER ELEMENT -->
+            <p class="event-meta">
+                Saturday, March 13, 2027 • 3:00 PM<br>
+                <strong>Sacred Heart Parish • Bayfront Hotel Cebu</strong>
+            </p>
+            
+            <!-- RETRO FLIP-CLOCK STYLE COUNTDOWN GRID -->
+            <div class="countdown-flip-container">
+                <p class="countdown-header-tag text-center">Counting down to our special day ✨</p>
+                
+                <div class="flip-clock-grid">
+                    <!-- DAYS COLUMN -->
+                    <div class="flip-unit-wrapper">
+                        <div id="flip-days" class="flip-digit-card">00</div>
+                        <span class="flip-unit-label">Days</span>
+                    </div>
+                    
+                    <!-- HOURS COLUMN -->
+                    <div class="flip-unit-wrapper">
+                        <div id="flip-hours" class="flip-digit-card">00</div>
+                        <span class="flip-unit-label">Hours</span>
+                    </div>
+                    
+                    <!-- MINUTES COLUMN -->
+                    <div class="flip-unit-wrapper">
+                        <div id="flip-minutes" class="flip-digit-card">00</div>
+                        <span class="flip-unit-label">Mins</span>
+                    </div>
+                    
+                    <!-- SECONDS COLUMN -->
+                    <div class="flip-unit-wrapper">
+                        <div id="flip-seconds" class="flip-digit-card">00</div>
+                        <span class="flip-unit-label">Secs</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-divider"></div>
+
             <div class="form-group autocomplete-wrapper">
                 <label for="search-input">Search your name to view your reservation</label>
                 <input type="text" id="search-input" placeholder="Start typing your name..." autocomplete="off">
@@ -36,18 +82,20 @@
 
         <!-- STEP 2: CONFIGURE GUESTS PAGE -->
         <div id="step-configure" class="step-container">
+            <!-- PLAYFUL RETURNING USER ALERT BANNER -->
             <div id="already-submitted-banner" class="info-alert-banner" style="display:none;">
-                You previously submitted an RSVP. You can update your choices below.
+                ✨ Look who's back! Changed your mind? You can update your choices below.
             </div>
+
 
             <p class="greeting-intro">Josh & Mir are excited to celebrate with</p>
             <h2 id="config-guest-title" class="guest-highlight">GUEST NAME</h2>
             
-            <!-- UPDATED SEATS DISPLAY BANNER LAYER -->
+            <!-- UPDATED SEATS DISPLAY BANNER LAYER WITH GRAMMAR ID MARKERS -->
             <div class="seats-banner">
-                <p class="seats-honor-text">We have reserved <span id="text-seats-count">0</span> seats in your honor.</p>
+                <p class="seats-honor-text">We have reserved <span id="text-seats-count">0</span> <span id="text-seats-word">seats</span> in your honor.</p>
                 <span id="allowed-seats-count" class="seats-number">0</span>
-                <span class="seats-label">RESERVED SEATS</span>
+                <span id="allowed-seats-label" class="seats-label">RESERVED SEATS</span>
             </div>
             <p id="group-notice" class="sub-notice">Only the guest/s listed below are included in this reservation.</p>
             <div id="seat-warning-banner" class="warning-alert-banner" style="display:none;">
@@ -58,12 +106,88 @@
             <div class="section-divider"></div>
             
             <h3>Confirm each guest (<span id="current-selection-tally">0</span> selected)</h3>
+            <p class="instruction-sub">Choose Attending or Not Attending for every name below.</p>
             <div id="dynamic-guest-list"></div>
 
             <div class="form-group" style="margin-top: 25px;">
-                <label for="mobile-input">PHILIPPINE MOBILE NUMBER</label>
+                <label for="mobile-input">MOBILE NUMBER (Optional)</label>
                 <input type="tel" id="mobile-input" value="+63 ">
                 <p class="input-tip">Format: +63 917 123 4567</p>
+            </div>
+
+            <!-- ==========================================
+                 UPDATED LOGISTICS INSERTION SECTION
+                 ========================================== -->
+            <div class="event-details-guide">
+                <div class="section-divider"></div>
+                
+                <!-- 🏛️ CEREMONY LOCATION CARD (MAP LEFT, TEXT LEFT) -->
+                <div class="info-card location-grid-card">
+                    <div class="card-map-column">
+                        <a href="https://maps.app.goo.gl/Gc2RGobbnrWvrydt8" target="_blank" class="mini-map-wrapper">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7246.6653338077795!2d123.89750428114355!3d10.3094354627568!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a99945a8c6b021%3A0x8b5d0f001d6ce9a1!2sThe%20Archdiocesan%20Shrine%20of%20the%20Most%20Sacred%20Heart%20of%20Jesus!5e1!3m2!1sen!2sph!4v1791924511979!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                            <div class="map-overlay-label">Directions 🗺️</div>
+                        </a>
+                    </div>
+                    <div class="card-details-column">
+                        <h4 class="info-card-title">✨ The Ceremony</h4>
+                        <p class="info-card-text">
+                            <span class="venue-name-highlight">Sacred Heart Parish</span>
+                            <span class="venue-address-subtext">242 Dionisio Jakosalem St, Cebu City</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 🏨 RECEPTION LOCATION CARD (MAP LEFT, TEXT LEFT) -->
+                <div class="info-card location-grid-card">
+                    <div class="card-map-column">
+                        <a href="https://maps.app.goo.gl/gjRMYw3MVkj2Nfqp7" target="_blank" class="mini-map-wrapper">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d154529.24575425163!2d123.8917503!3d10.3761867!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a99972f04ee017%3A0x239e29fd87e52e92!2sBayfront%20Hotel%20Cebu%20North%20Reclamation!5e1!3m2!1sen!2sph!4v1791924537681!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                            <div class="map-overlay-label">Directions 📍</div>
+                        </a>
+                    </div>
+                    <div class="card-details-column">
+                        <h4 class="info-card-title">🏨 The Reception</h4>
+                        <p class="info-card-text">
+                            <span class="venue-name-highlight">Bayfront Hotel Cebu</span>
+                            <span class="venue-address-subtext">North Reclamation Area, Kaohsiung St, Cebu City</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 🚗 PARKING CARD -->
+                <div class="info-card">
+                    <h4 class="info-card-title">🚗 Parking Advisory</h4>
+                    <p class="info-card-text">Hotel parking is free for all wedding guests but will be accommodated on a first-come, first-served basis. We highly recommend arriving a bit early!</p>
+                </div>
+
+                <!-- 👗 DRESS CODE CARD -->
+                <div class="info-card">
+                    <h4 class="info-card-title">👗 Dress Code</h4>
+                    <p class="info-card-text">We kindly invite you to celebrate with us in your formal attire matching our wedding color palette:</p>
+                    
+                    <div class="color-palette-container">
+                        <span class="color-swatch" style="background-color: #8b2635;" title="Dusty Crimson"></span>
+                        <span class="color-swatch" style="background-color: #d8a48f;" title="Muted Rose"></span>
+                        <span class="color-swatch" style="background-color: #e2e8f0;" title="Soft Slate"></span>
+                        <span class="color-swatch" style="background-color: #b5c2b7;" title="Sage Green"></span>
+                        <span class="color-swatch" style="background-color: #2b2d42;" title="Navy Blue"></span>
+                    </div>
+                </div>
+
+                <!-- 🎁 GIFTING CARD -->
+                <div class="info-card">
+                    <h4 class="info-card-title">🎁 Wedding Gifting</h4>
+                    <p class="info-card-text friendly-gifting">"We are blessed to already have a home full of love. If you were thinking of giving a gift to help us on our way, a monetary contribution toward our future together would be deeply appreciated, though your presence is our truest treasure."</p>
+                </div>
+
+                <!-- ✉️ HELPLINE LINK -->
+                <div class="info-card contact-card">
+                    <p class="info-card-text">Have questions or need help with your invitation?</p>
+                    <a href="https://m.me" target="_blank" class="contact-messenger-link">
+                        💬 Message Joshua & Jonahmir
+                    </a>
+                </div>
             </div>
 
             <button id="btn-go-to-review" class="btn-primary" style="margin-top:20px;">Review Answers</button>
@@ -90,19 +214,62 @@
             <button id="btn-submit-rsvp" class="btn-primary">Submit RSVP</button>
             <button id="btn-edit-answers" class="btn-secondary">Edit Answers</button>
         </div>
-
-        <!-- STEP 4: SUCCESS PAGE -->
+        
+        <!-- STEP 4: SUCCESS PAGE (THE CONFIRMATION HUB OVERHAUL) -->
         <div id="step-success" class="step-container">
             <div class="success-banner">RSVP Submitted</div>
-            <p class="success-intro">Your RSVP has been safely saved!</p>
-            <div class="section-divider"></div>
-            <p style="text-align:center; color:#555;">Thank you for responding. We look forward to celebrating together!</p>
+            <p class="success-intro">Your responses have been safely saved to our guest list!</p>
             
-            <!-- BUTTON INJECTION TO RE-TRIGGER CLEAN SEARCH HOME STATE -->
-            <button onclick="window.location.reload();" class="btn-primary" style="margin-top: 25px;">Back to Homepage</button>
+            <div class="section-divider"></div>
+            
+            <!-- 🗓️ TIME REMINDER CARD -->
+            <div class="info-card success-hub-card">
+                <h4 class="info-card-title">⏰ Timeline Reminder</h4>
+                <p class="info-card-text">
+                    <span class="venue-name-highlight">3:00 PM • Saturday</span>
+                    <span class="venue-address-subtext">March 13, 2027</span>
+                </p>
+                <p class="hub-sub-note">Please arrive a bit early to secure your parking and find your seats before the ceremony begins!</p>
+            </div>
+
+            <!-- 🔄 EDIT DEADLINE INFORMATION CARD -->
+            <div class="info-card success-hub-card">
+                <h4 class="info-card-title">🔄 Changed Your Mind?</h4>
+                <p class="info-card-text">Unforeseen events happen! If you need to add a guest, change an attendance selection, or modify your details, you are free to update your reservation anytime.</p>
+                
+                <!-- Quick Re-routing Navigation Action Link Button -->
+                <button onclick="window.location.reload();" class="btn-outline-link hub-edit-btn">
+                    Update My RSVP 📝
+                </button>
+                <p class="hub-deadline-warning">Changes are allowed until the deadline on <strong>January 17, 2027</strong>.</p>
+            </div>
+
+            <!-- 💬 DIRECT WEDDING HELPLINE CARD -->
+            <div class="info-card contact-card success-hub-card">
+                <h4 class="info-card-title" style="color: var(--lavender-dark);">💡 Need Assistance?</h4>
+                <p class="info-card-text" style="margin-bottom: 12px;">If you encounter any issues or have questions regarding seats, please reach out to Josh directly.</p>
+                <a href="https://m.me" target="_blank" class="contact-messenger-link hub-messenger-btn">
+                    💬 Contact Josh on Messenger
+                </a>
+            </div>
+
+            <div class="section-divider"></div>
+            
+            <p class="warm-closing-tag">Thank you for responding. We look forward to celebrating together!</p>
         </div>
 
+
     </div>
+    <!-- CUSTOM MODAL ALERT WINDOW (ELEGANT UPGRADE) -->
+    <div id="custom-alert-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-emoji">🥺</div>
+            <h3 class="modal-title">Selection Required</h3>
+            <p id="modal-alert-message" class="modal-message">Please make a selection for every guest before moving forward.</p>
+            <button id="btn-close-modal" class="btn-primary modal-btn">OK</button>
+        </div>
+    </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
