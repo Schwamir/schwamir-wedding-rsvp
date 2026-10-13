@@ -1,4 +1,4 @@
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxbfWZJojYuKCDlmZIztb3xDWmN1VrTLET_qCB4_OcUtRtb-7rVqjphUk19WNNFhCp0/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycM8xWelpv4rrGKvxXivVnf9ZEB5hL1ePpxpVJmjwKaqXLpY75eqI8aQvTC21D6a0J/exec';
 
 let currentReservationData = null;
 let selections = {};
