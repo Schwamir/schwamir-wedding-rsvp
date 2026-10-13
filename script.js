@@ -118,15 +118,15 @@ function setupConfigurationScreen(data) {
         selections = {};
     }
     
-    // --- LOGIC PATCH START ---
-    // Cleanly pull group members list array from data package
-    let finalMembersList = [...data.members];
+    // --- LOGIC PATCH START (CLEANS GHOST GUESTS) ---
+    // Pull the members array, but immediately filter out any completely empty strings or trailing spaces!
+    let finalMembersList = [...data.members].map(m => m.trim()).filter(m => m !== "");
     const mainGuestName = data.mainGuest.trim();
 
-    // Check if the main guest's name is already listed in the group members array
+    // Check if the main guest's name is already listed in the cleaned group members array
     const isMainGuestInList = finalMembersList.some(m => m.toLowerCase() === mainGuestName.toLowerCase());
 
-    // If it's missing, inject the main guest right at the very beginning of the array loop!
+    // If it's missing (or if the list was completely empty because the cell was blank), add the main guest to the top
     if (!isMainGuestInList) {
         finalMembersList.unshift(mainGuestName);
     }
