@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Open Graph Data / Facebook Messenger Link Preview Markers -->
+    <meta property="og:title" content="Josh & Mir's Wedding RSVP" />
+    <meta property="og:description" content="We are excited to celebrate with you! Please view your invitation and confirm your RSVP by January 17, 2027." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://schwamir.github.io/schwamir-wedding-rsvp/" />
+    <meta property="og:image" content="https://schwamir.github.io/schwamir-wedding-rsvp/images/icon.jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Josh & Mir's Wedding RSVP</title>
     <link rel="icon" type="image/png" href="images/icon.png">
@@ -35,15 +43,18 @@
             <p class="greeting-intro">Josh & Mir are excited to celebrate with</p>
             <h2 id="config-guest-title" class="guest-highlight">GUEST NAME</h2>
             
+            <!-- UPDATED SEATS DISPLAY BANNER LAYER -->
             <div class="seats-banner">
+                <p class="seats-honor-text">We have reserved <span id="text-seats-count">0</span> seats in your honor.</p>
                 <span id="allowed-seats-count" class="seats-number">0</span>
-                <span class="seats-label">MAXIMUM ALLOWED SEATS FOR YOUR PARTY</span>
+                <span class="seats-label">RESERVED SEATS</span>
             </div>
+            <p id="group-notice" class="sub-notice">Only the guest/s listed below are included in this reservation.</p>
             <div id="seat-warning-banner" class="warning-alert-banner" style="display:none;">
                 ⚠️ You have selected more guests than your allocated seats. Please adjust your selections.
             </div>
             
-            <p class="deadline-tag">RSVP DEADLINE: <strong>June 14, 2027</strong></p>
+            <p class="deadline-tag">RSVP DEADLINE: <strong>January 17, 2027</strong></p>
             <div class="section-divider"></div>
             
             <h3>Confirm each guest (<span id="current-selection-tally">0</span> selected)</h3>

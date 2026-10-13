@@ -101,9 +101,12 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
         });
 });
 
-// --- STEP 2: GROUP SELECTION WITH BUILT-IN MAIN GUEST LOGIC PATCH ---
+// --- STEP 2: GROUP SELECTION WITH IN-HONOR SENTENCE MATRIX ---
 function setupConfigurationScreen(data) {
     document.getElementById('config-guest-title').textContent = data.mainGuest.toUpperCase();
+    
+    // PASSES THE SEAT VALUE TO BOTH THE UPPER SENTENCE AND THE BIG NUMBER
+    document.getElementById('text-seats-count').textContent = data.seats;
     document.getElementById('allowed-seats-count').textContent = data.seats;
     
     const phoneInput = document.getElementById('mobile-input');

@@ -320,4 +320,10 @@ input:focus {
     text-align: center;
     margin: 15px 0;
 }
+.seats-honor-text {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 10px;
+    text-align: center;
+}
 
