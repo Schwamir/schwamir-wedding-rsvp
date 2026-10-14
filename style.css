@@ -578,23 +578,28 @@ input:focus {
    STEP 1: BEAUTIFIED HOME VIEW COMPONENT STYLES
    ========================================================================== */
 
-/* Intersecting Gold & Crimson Monogram Crest */
+/* Intersecting Gold Border Framing Container */
 .wedding-monogram-badge {
-    width: 65px;
-    height: 65px;
-    border: 1.5px solid #d4af37; /* Clean Metallic Gold tint */
-    border-radius: 50%;
-    margin: 15px auto 25px auto; /* Spacious margins separate it from elements */
+    width: 120px;    /* Upscaled the frame width slightly to make the photo details pop nicely */
+    height: 120px;   /* Keeps a strict 1:1 square ratio constraint */
+    border: 2px solid #d4af37; /* Your beautiful high-contrast metallic gold border */
+    border-radius: 50%;       /* Instantly curves the square frame container into a clean circle */
+    margin: 10px auto 20px auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: "Georgia", serif;
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--primary-color);
-    background-color: var(--lavender-light);
-    box-shadow: 0 4px 10px rgba(92, 78, 112, 0.06);
-    letter-spacing: 0.5px;
+    overflow: hidden;         /* ACTS LIKE A SCISSOR: Slices away anything outside the gold circle bounds */
+    box-shadow: 0 6px 16px rgba(58, 50, 71, 0.1); /* Soft lavender-tinted drop shadow */
+    background-color: #ffffff;
+}
+
+/* Smart circular cropping layout engine rules */
+.crest-profile-photo {
+    width: 100%;       /* Spreads width smoothly across the inner container boundaries */
+    height: 100%;      /* Stretches height smoothly across inner container boundaries */
+    object-fit: cover; /* THE FIX: Keeps aspect ratio stable, zooms center, and crops out everything else else */
+    object-position: center; /* Explicitly locks the center coordinates of your image to focal point focus */
+    display: block;
 }
 
 /* Elegant script greeting header */
@@ -603,18 +608,48 @@ input:focus {
     font-family: 'Great Vibes', cursive;
     font-size: 1.8rem;
     color: var(--lavender-medium);
-    margin: 0 0 -15px 0; /* Tightened negative baseline spacing pulls heading down naturally */
+    margin: 0 0 -5px 0; /* Tightened negative baseline spacing pulls heading down naturally */
     opacity: 0.9;
 }
 
-/* Main names heading adjustments */
+/* Converts the single heading row into a beautifully spaced 3-line vertical stack */
 .main-wedding-heading {
     font-family: 'Great Vibes', cursive;
-    font-size: 3.8rem;
-    color: var(--lavender-dark);
-    text-align: center;    
-    margin: 0 auto 10px auto;
+    display: flex;
+    flex-direction: column;    /* Switches layout from side-by-side to stacked lines */
+    align-items: center;        /* Locks every element onto the exact center vertical axis */
+    justify-content: center;
+    width: 100%;
+    margin: 10px auto 20px auto; /* Spacious margins separate it cleanly from the metadata layout */
+    padding: 0 70px;
+    box-sizing: border-box;
+}
+
+/* Base style settings for your main names */
+.partner-name {
+    font-size: 3.5rem;          /* Large, legible cursive focus footprint */
+    color: var(--lavender-dark); /* Velvet Plum text color */
     text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
+    line-height: 1.1;           /* Tightens vertical line spacing to prevent gaps */
+    text-align: center;
+    width: 100%;
+}
+
+/* Removes the specific side text-alignments so they center stack naturally */
+.name-left {
+    text-align: left;
+}
+.name-right {
+    text-align: right;
+}
+
+/* ⚜️ THE TINY SANDWICHED AMPERSAND */
+.ampersand-divider {
+    font-size: 1.9rem;          /* Scaled down beautifully to sit small in the middle */
+    color: var(--lavender-medium); /* Soft amethyst color matches your metadata palette */
+    margin: 5px 0;            /* Negative top/bottom margins bring the names gracefully closer */
+    text-align: center;
+    text-shadow: none;
 }
 
 /* Isolated dynamic countdown box component */

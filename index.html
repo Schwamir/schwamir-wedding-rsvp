@@ -21,17 +21,20 @@
 <body>
     <div class="rsvp-card">
         <!-- 🎚️ CONTINUOUS BACKGROUND MUSIC TRACK ENGINE -->
-        <audio id="bg-wedding-music" src="audio/wedding-instrumental.mp3" loop preload="auto"></audio>
+        <audio id="bg-wedding-music" src="audio/wedding-instrumental-2.mp3" loop preload="auto"></audio>
 
-        <!-- 🌟 WELCOME ENTRYWAY CURTAIN (BYPASSES BROWSER AUTOPLAY PROTOCOLS) -->
+        <!-- 🌟 WELCOME ENTRYWAY CURTAIN (UPGRADED WITH MATCHING PORTRAIT CREST) -->
         <div id="music-permission-overlay" class="welcome-music-curtain">
             <div class="welcome-curtain-box">
-                <div class="wedding-monogram-badge" style="margin-top:0;">J & M</div>
+                
+                <!-- EXCACT PORTRAIT IMAGE CREST MATCHING STEP 1 -->
+                <div class="wedding-monogram-badge" style="margin-top:0;">
+                    <img src="images/icon.png" alt="Joshua & Jonahmir" class="crest-profile-photo">
+                </div>
+                
                 <p class="welcome-tagline" style="margin-bottom:10px;">You are invited to celebrate with us</p>
-                <!-- UPDATED LUZURIOUS OPEN BUTTON WITH DEFINED HIGH-CONTRAST ICON -->
                 <button id="btn-enter-invitation" class="btn-primary" style="width:auto !important; padding:12px 30px; display:inline-flex; align-items:center; gap:8px; justify-content:center; margin-top:15px;">
                     <span>Open Invitation</span>
-                    <!-- High-contrast pure vector envelope symbol -->
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; color:#ffffff;">
                         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                         <polyline points="22,6 12,13 2,6"></polyline>
@@ -43,13 +46,21 @@
          <!-- STEP 1: SEARCH PAGE WITH AUTOCOMPLETE (ELEGANT UPGRADE) -->
         <div id="step-search" class="step-container active">
             
-            <!-- THE WEDDING MONOGRAM CREST -->
-            <div class="wedding-monogram-badge">J & M</div>
+            <!-- THE WEDDING COUPLING IMAGE CREST CARD OVERLAY -->
+            <div class="wedding-monogram-badge">
+                <!-- Replace 'images/your-photo.png' with your actual image file path path -->
+                <img src="images/icon.png" alt="Joshua & Jonahmir" class="crest-profile-photo">
+            </div>
             
             <!-- THE SCRIPT WELCOME INTRODUCTION -->
             <p class="welcome-tagline">Welcome to the wedding celebration of</p>
             
-            <h1 class="main-wedding-heading">Joshua & Jonahmir</h1>
+            <!-- UPGRADED STACKED VERTICAL SCRIPT HEADING -->
+            <h1 class="main-wedding-heading">
+                <span class="partner-name name-left">Joshua</span>
+                <span class="ampersand-divider">&amp;</span>
+                <span class="partner-name name-right">Jonahmir</span>
+            </h1>
             
             <!-- EVEN METADATA WITH SEPARATED TICKER ELEMENT -->
             <p class="event-meta">
