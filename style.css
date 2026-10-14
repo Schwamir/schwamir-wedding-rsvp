@@ -14,7 +14,7 @@ body {
     padding: 15px;
     display: flex;
     justify-content: center;
-    background-image: linear-gradient(rgba(243, 239, 250, 0.7), rgba(243, 239, 250, 0.7)), url(images/greeting_card_with_watercolor_purple_floral_frame.jpg);
+    background-image: linear-gradient(rgba(243, 239, 250, 0.85), rgba(243, 239, 250, 0.85)), url(images/greeting_card_with_watercolor_purple_floral_frame.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -72,13 +72,9 @@ p {
    ========================================================================== */
 
 .rsvp-card {
-    /* 🧼 THE FIX: Injects an explicit semi-transparent background layer to satisfy the webkit engine */
-    background: rgba(251, 249, 252, 0.65); 
-    
-    /* Hardware-accelerated blur engines now run flawlessly */
-    backdrop-filter: blur(14px);
+    background: rgba(251, 249, 252, 0.65);
+    backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(14px); 
-    
     width: 100%;
     max-width: 450px;
     min-height: 85vh;
@@ -1619,6 +1615,9 @@ input:focus {
 
 /* This rule only kicks in when the guest opens the link on a smartphone screen */
 @media (max-width: 480px) {
+    body {
+        background-image: linear-gradient(rgb(214 199 239 / 70%), rgb(196 186 213 / 70%)), url(images/background-6.png);
+    }
     .text-mobile-break span {
         display: block;
         margin-top: 4px; 
@@ -1647,6 +1646,9 @@ input:focus {
     .instruction-line-stack span {
         display: block;      
         margin-top: 4px;    
+    }
+    .section-divider {
+        background: #c2c9d1;
     }
 
 }
