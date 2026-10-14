@@ -1496,6 +1496,74 @@ body.modal-scroll-lock {
     border: 1px solid rgba(255, 255, 255, 0.7);
 }
 /* ==========================================================================
+   🎬 WELCOME TAGLINE KINETIC EDITORIAL SLIDE ENGINE
+   ========================================================================== */
+
+.text-mobile-break {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.6rem !important; 
+    color: var(--lavender-dark);
+    line-height: 1.2;
+    width: 100%;
+    max-width: 380px;
+    margin: 15px auto;
+    display: flex;
+    flex-direction: column; 
+    padding: 0 18px; 
+    overflow: visible !important; 
+    box-sizing: border-box;
+}
+
+
+/* Base style setups for both moving blocks */
+.slide-block {
+    display: block !important;
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+/* ⬅️ LEFT-GLIDING PRIMARY TEXT BLOCK */
+.block-left {
+    text-align: left;
+    width: 100%;
+    transform: translateX(-40px); /* Starts hidden out in the left margin gutter */
+    animation: slideTextToLeftRest 0.9s cubic-bezier(0.25, 1, 0.5, 1) 0.2s forwards;
+}
+
+/* ➡️ RIGHT-GLIDING SECONDARY TEXT BLOCK */
+.block-right {
+    text-align: right;
+    width: 100%;
+    /* Applied your precise negative vertical margin adjustment tracker value */
+    margin-top: -15px !important; 
+    transform: translateX(40px); /* Starts hidden out in the right margin gutter */
+    animation: slideTextToRightRest 0.9s cubic-bezier(0.25, 1, 0.5, 1) 0.5s forwards; /* 0.5s delay creates a gorgeous stagger stagger effect */
+}
+
+/* --- KINETIC ANIMATION KEYFRAMES MATRICES --- */
+@keyframes slideTextToLeftRest {
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0); /* Glides perfectly back to natural left text-alignment text-alignment */
+    }
+}
+
+@keyframes slideTextToRightRest {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0); /* Glides perfectly back to natural right text-alignment text-alignment */
+    }
+}
+
+/* ==========================================================================
    RESPONSIVE TEXT BREAKING CONTROLS FOR MOBILE VIEWPORTS
    ========================================================================== */
 
