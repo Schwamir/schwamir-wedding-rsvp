@@ -403,17 +403,24 @@ input:focus {
 /* 👗 CSS Color Palette Swatch Layouts */
 .color-palette-container {
     display: flex;
-    gap: 12px;
-    margin-top: 12px;
+    justify-content: center; /* Centers the 5 circles horizontally inside the card card */
+    gap: 14px;              /* Even spacing between swatches on mobile mobile */
+    margin-top: 14px;
 }
 
 .color-swatch {
-    width: 32px;
-    height: 32px;
+    width: 34px;           /* Slightly upscale circle size footprint footprint */
+    height: 34px;
     border-radius: 50%;
     display: inline-block;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 3px 6px rgba(58, 50, 71, 0.12); /* Soft lavender-tint shadow shadow */
     border: 2px solid white;
+    transition: transform 0.2s ease;
+}
+
+/* Elegant tactile scale-up response when fingers touch the swatches swatches */
+.color-swatch:hover {
+    transform: scale(1.12);
 }
 
 /* 💬 Contact Helpline Card Modifications */
@@ -1227,3 +1234,43 @@ input:focus {
     }
 }
 
+/* ==========================================================================
+   🎵 CONTINUOUS BACKGROUND MUSIC ENTRYWAY COMPONENT
+   ========================================================================== */
+
+.welcome-music-curtain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(rgba(243, 239, 250, 0.85), rgba(243, 239, 250, 0.85)), url(images/greeting_card_with_watercolor_purple_floral_frame.jpg);
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(8px); /* Beautiful soft frosted entry focus overlay */
+    z-index: 9999999; /* Guarantees absolute topmost screen layer presence */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+/* Fades the curtain away smoothly once clicked clicked */
+.welcome-music-curtain.hide-curtain {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.welcome-curtain-box {
+    background: #ffffff;
+    width: 85%;
+    max-width: 360px;
+    padding: 35px 25px;
+    border-radius: 28px;
+    box-shadow: 0 15px 35px rgba(58, 50, 71, 0.1);
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+}

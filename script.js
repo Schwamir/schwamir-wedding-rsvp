@@ -10,6 +10,25 @@ const screens = {
     review: document.getElementById('step-review'),
     success: document.getElementById('step-success')
 };
+// --- BACKGROUND MUSIC SEAMLESS INTERACTION LOOPER ENGINE ---
+document.addEventListener("DOMContentLoaded", () => {
+    const enterBtn = document.getElementById("btn-enter-invitation");
+    const curtain = document.getElementById("music-permission-overlay");
+    const weddingMusic = document.getElementById("bg-wedding-music");
+
+    if (enterBtn && curtain && weddingMusic) {
+        enterBtn.addEventListener("click", () => {
+            // 1. Trigger continuous looped playback sequence sequence
+            weddingMusic.volume = 0.5; // Set to comfortable 50% background audio scale
+            weddingMusic.play().catch(audioErr => {
+                console.warn("[AUDIO PROMPT WARNING] Playback stalled by device constraint:", audioErr);
+            });
+
+            // 2. Smoothly dissolve the welcoming overlay curtain away
+            curtain.classList.add("hide-curtain");
+        });
+    }
+});
 
 function switchScreen(targetScreen) {
     Object.values(screens).forEach(s => s.classList.remove('active'));
@@ -388,53 +407,32 @@ document.getElementById('btn-submit-rsvp').addEventListener('click', function() 
         body: JSON.stringify(payload)
     })
     .then(() => {
-        // --- SMART CINEMATIC CONDITION ENGINE WITH INTEGRATED AUDIO ---
         const isAnyoneAttending = Object.values(selections).some(decision => decision === 'yes');
         const cinematicScreen = document.getElementById('marvel-cinematic-intro');
-        const weddingAudioTrack = document.getElementById('cinematic-audio-track'); // Fetch audio element
 
         if (isAnyoneAttending && cinematicScreen) {
-            console.log("[SUBMIT SUCCESS] Attendance confirmed. Triggering audio track & slow cinematic sequence...");
-            
-            // --- AUDIO INJECTION LAYER START ---
-            if (weddingAudioTrack) {
-                weddingAudioTrack.currentTime = 0; // Rewinds sound file back to the absolute beginning
-                weddingAudioTrack.volume = 0.8;    // Sets comfortable volume balance (80% master scale)
-                weddingAudioTrack.play().catch(audioErr => {
-                    console.warn("[AUDIO BLOCK] Browser safety protocols intercepted sound autoplay execution:", audioErr);
-                });
-            }
-            // --- AUDIO INJECTION LAYER END ---
-
-            // 1. Lock the global full-screen blackout layer in place
+            // The continuous background wedding music KEEPS PLAYING beautifully in the background 
+            // as the blackout curtain arrives and the cinematic words roll out!
             cinematicScreen.classList.remove('fade-out-curtain');
             cinematicScreen.classList.add('activated-curtain');
-
-            // 2. Drop the screen variables to Step 4 behind the dark curtain layout
             switchScreen(screens.success);
-
-            // 3. Atmospheric time tracks countdown loop (10.4 seconds total)
+            
             setTimeout(() => {
                 cinematicScreen.classList.add('fade-out-curtain');
-                
                 setTimeout(() => {
                     cinematicScreen.classList.remove('activated-curtain');
                 }, 800);
             }, 10400);
 
         } else {
-            console.log("[SUBMIT SUCCESS] Entire group declined invitation. Skipping cinematic intro safely.");
-            
-            // If everyone declined, skip the blackout and show the confirmation screen instantly!
+            console.log("[SUBMIT SUCCESS] Entire group declined. Transitioning instantly.");
             if (cinematicScreen) cinematicScreen.style.display = 'none';
             switchScreen(screens.success);
         }
-        // --- SMART CINEMATIC CONDITION END ---
     })
     .catch(err => {
         btn.disabled = false;
         btn.textContent = 'Submit RSVP';
-        console.error("[SUBMIT CRITICAL FAILURE] Final post transaction aborted:", err);
         showCustomAlert("An error occurred while saving your RSVP. Please try clicking Submit again.");
     });
 

@@ -20,7 +20,26 @@
 </head>
 <body>
     <div class="rsvp-card">
-        
+        <!-- 🎚️ CONTINUOUS BACKGROUND MUSIC TRACK ENGINE -->
+        <audio id="bg-wedding-music" src="audio/wedding-instrumental.mp3" loop preload="auto"></audio>
+
+        <!-- 🌟 WELCOME ENTRYWAY CURTAIN (BYPASSES BROWSER AUTOPLAY PROTOCOLS) -->
+        <div id="music-permission-overlay" class="welcome-music-curtain">
+            <div class="welcome-curtain-box">
+                <div class="wedding-monogram-badge" style="margin-top:0;">J & M</div>
+                <p class="welcome-tagline" style="margin-bottom:10px;">You are invited to celebrate with us</p>
+                <!-- UPDATED LUZURIOUS OPEN BUTTON WITH DEFINED HIGH-CONTRAST ICON -->
+                <button id="btn-enter-invitation" class="btn-primary" style="width:auto !important; padding:12px 30px; display:inline-flex; align-items:center; gap:8px; justify-content:center; margin-top:15px;">
+                    <span>Open Invitation</span>
+                    <!-- High-contrast pure vector envelope symbol -->
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; color:#ffffff;">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
          <!-- STEP 1: SEARCH PAGE WITH AUTOCOMPLETE (ELEGANT UPGRADE) -->
         <div id="step-search" class="step-container active">
             
@@ -166,12 +185,13 @@
                     <h4 class="info-card-title">👗 Dress Code</h4>
                     <p class="info-card-text">We kindly invite you to celebrate with us in your formal attire matching our wedding color palette:</p>
                     
+                    <!-- UPDATED SWATCH CODES WITH CENTRALIZED LAYOUT -->
                     <div class="color-palette-container">
-                        <span class="color-swatch" style="background-color: #8b2635;" title="Dusty Crimson"></span>
-                        <span class="color-swatch" style="background-color: #d8a48f;" title="Muted Rose"></span>
-                        <span class="color-swatch" style="background-color: #e2e8f0;" title="Soft Slate"></span>
-                        <span class="color-swatch" style="background-color: #b5c2b7;" title="Sage Green"></span>
-                        <span class="color-swatch" style="background-color: #2b2d42;" title="Navy Blue"></span>
+                        <span class="color-swatch" style="background-color: #C9BFD3;" title="Pastel Lilac"></span>
+                        <span class="color-swatch" style="background-color: #A08FA8;" title="Muted Amethyst"></span>
+                        <span class="color-swatch" style="background-color: #745277;" title="Deep Plum Lavender"></span>
+                        <span class="color-swatch" style="background-color: #E6D7CE;" title="Almond Cream"></span>
+                        <span class="color-swatch" style="background-color: #BA9E92;" title="Muted Taupe"></span>
                     </div>
                 </div>
 
@@ -280,8 +300,6 @@
             <button id="btn-close-modal" class="btn-primary modal-btn">OK</button>
         </div>
     </div>
-    
-    <audio id="cinematic-audio-track" src="audio/avengers-tone.mp3" preload="auto"></audio>
 
     <script src="script.js"></script>
 </body>
