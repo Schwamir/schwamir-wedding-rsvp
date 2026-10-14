@@ -388,28 +388,54 @@ document.getElementById('btn-submit-rsvp').addEventListener('click', function() 
         body: JSON.stringify(payload)
     })
     .then(() => {
-        // 1. Instantly drop user down to screen 4 layout
-        switchScreen(screens.success);
-        
-        // 2. Fetch the newly injected marvel blackout window wrapper element
+        // --- SMART CINEMATIC CONDITION ENGINE WITH INTEGRATED AUDIO ---
+        const isAnyoneAttending = Object.values(selections).some(decision => decision === 'yes');
         const cinematicScreen = document.getElementById('marvel-cinematic-intro');
-        
-        if (cinematicScreen) {
-            // Reset the layout filter classes just in case of historical re-clicks
-            cinematicScreen.classList.remove('fade-out-curtain');
+        const weddingAudioTrack = document.getElementById('cinematic-audio-track'); // Fetch audio element
+
+        if (isAnyoneAttending && cinematicScreen) {
+            console.log("[SUBMIT SUCCESS] Attendance confirmed. Triggering audio track & slow cinematic sequence...");
             
-            // 3. The letter animations run for ~3.5 seconds.
-            // We wait exactly 5.5 seconds total (3.5s transition + 2s holding delay)
-            // before smoothly fading the blackout curtain out of view!
+            // --- AUDIO INJECTION LAYER START ---
+            if (weddingAudioTrack) {
+                weddingAudioTrack.currentTime = 0; // Rewinds sound file back to the absolute beginning
+                weddingAudioTrack.volume = 0.8;    // Sets comfortable volume balance (80% master scale)
+                weddingAudioTrack.play().catch(audioErr => {
+                    console.warn("[AUDIO BLOCK] Browser safety protocols intercepted sound autoplay execution:", audioErr);
+                });
+            }
+            // --- AUDIO INJECTION LAYER END ---
+
+            // 1. Lock the global full-screen blackout layer in place
+            cinematicScreen.classList.remove('fade-out-curtain');
+            cinematicScreen.classList.add('activated-curtain');
+
+            // 2. Drop the screen variables to Step 4 behind the dark curtain layout
+            switchScreen(screens.success);
+
+            // 3. Atmospheric time tracks countdown loop (10.4 seconds total)
             setTimeout(() => {
                 cinematicScreen.classList.add('fade-out-curtain');
-            }, 5500); 
+                
+                setTimeout(() => {
+                    cinematicScreen.classList.remove('activated-curtain');
+                }, 800);
+            }, 10400);
+
+        } else {
+            console.log("[SUBMIT SUCCESS] Entire group declined invitation. Skipping cinematic intro safely.");
+            
+            // If everyone declined, skip the blackout and show the confirmation screen instantly!
+            if (cinematicScreen) cinematicScreen.style.display = 'none';
+            switchScreen(screens.success);
         }
+        // --- SMART CINEMATIC CONDITION END ---
     })
     .catch(err => {
         btn.disabled = false;
         btn.textContent = 'Submit RSVP';
-        showCustomAlert("An error occurred during submission.");
+        console.error("[SUBMIT CRITICAL FAILURE] Final post transaction aborted:", err);
+        showCustomAlert("An error occurred while saving your RSVP. Please try clicking Submit again.");
     });
 
 });

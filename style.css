@@ -1155,68 +1155,75 @@ input:focus {
 }
 
 /* ==========================================================================
-   🎬 MARVEL CINEMATIC POST-CREDITS ENGINE
+   🎬 CINEMATIC POST-CREDITS WORD ENGINE 
    ========================================================================== */
 
-/* Full blackout screen container clipped precisely to your card proportions */
 .cinematic-blackout {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #0c0b0e; /* Matte cinematic space black */
-    border-radius: 28px;
-    z-index: 9999; /* Masks everything below it completely */
-    display: flex;
+    background-color: #0c0b0e; /* Matte space black */
+    z-index: 999999;
+    display: none; 
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 24px;
     box-sizing: border-box;
-    opacity: 1;
+    opacity: 0;
     transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Hidden state triggered via Javascript timeout function clock */
+.cinematic-blackout.activated-curtain {
+    display: flex !important;
+    opacity: 1;
+}
+
 .cinematic-blackout.fade-out-curtain {
     opacity: 0;
     pointer-events: none;
 }
 
-/* Authentic Marvel Title Text Styles */
+/* Elegant, regular-weight mixed case typography setup */
 .marvel-text-line {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Impact, Arial, sans-serif;
-    font-weight: 800;
-    font-size: 16px;
-    text-transform: uppercase;
-    color: #ffffff;
-    letter-spacing: 4px; /* wide letter spacing matches the cinematic look */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 400; /* Dropped bold thickness back to regular weight */
+    font-size: 22px;  /* Clean, easily readable mobile phone font size */
+    color: #e2e8f0;   /* Softer cinematic white off-tone */
     text-align: center;
-    word-break: keep-all;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+    gap: 8px;        /* Creates perfect spacing gaps between word groups */
+    line-height: 1.5;
 }
 
-/* Individual letter blocks defaults */
-.m-letter {
+/* Accent highlight to make your big wedding date pop elegantly */
+.font-highlight {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* Individual word tracking animation rules adjusted for heavy atmospheric pacing */
+.m-word {
     opacity: 0;
     display: inline-block;
-    transform: scale(1.05);
-    animation: marvelFadeLetter 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    /* Changed animation duration from 0.8s to a slow 2.0s drift clock */
+    animation: wordFadeEntrance 2.0s cubic-bezier(0.25, 1, 0.5, 1) forwards; 
 }
 
-/* The Avengers letter fade keyframes animation layout */
-@keyframes marvelFadeLetter {
+/* Slow cinematic fade entrance keyframes matrix */
+@keyframes wordFadeEntrance {
     from {
         opacity: 0;
-        transform: scale(1.08);
-        filter: blur(2px); /* Soft particle glow dissolve arrival */
+        transform: scale(1.15); /* Starts slightly larger to feel like its drifting inward */
+        filter: blur(4px);      /* Heavier initial atmospheric blur smoke dissolve */
     }
     to {
-        opacity: 0.95;
+        opacity: 0.9;            /* Kept slightly off-white for a moody matte finish */
         transform: scale(1);
         filter: blur(0px);
     }
 }
+
