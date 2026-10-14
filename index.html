@@ -32,7 +32,7 @@
                     <img src="images/icon.png" alt="Joshua & Jonahmir" class="crest-profile-photo">
                 </div>
                 
-                <p class="welcome-tagline" style="margin-bottom:10px;">You are invited to celebrate with us</p>
+                <p class="welcome-tagline text-mobile-break">You are invited to <span>celebrate with us!</span></p>
                 <button id="btn-enter-invitation" class="btn-primary" style="width:auto !important; padding:12px 30px; display:inline-flex; align-items:center; gap:8px; justify-content:center; margin-top:15px;">
                     <span>Open Invitation</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; color:#ffffff;">
@@ -64,38 +64,60 @@
             
             <!-- EVEN METADATA WITH SEPARATED TICKER ELEMENT -->
             <p class="event-meta">
-                Saturday, March 13, 2027 • 3:00 PM<br>
+                Saturday, March 13, 2027 • 2:30 PM<br>
                 <strong>Sacred Heart Parish • Bayfront Hotel Cebu</strong>
             </p>
             
-            <!-- RETRO FLIP-CLOCK STYLE COUNTDOWN GRID -->
+            <!-- 🎬 UPGRADED 3D MECHANICAL FLIP-CLOCK TIME ENGINE (FIXED STACK) -->
             <div class="countdown-flip-container">
                 <p class="countdown-header-tag text-center">Counting down to our special day ✨</p>
                 
                 <div class="flip-clock-grid">
-                    <!-- DAYS COLUMN -->
+                    
+                    <!-- 3D DAYS CARD COMPONENT -->
                     <div class="flip-unit-wrapper">
-                        <div id="flip-days" class="flip-digit-card">00</div>
+                        <div id="clock-days-card" class="flip-digit-card-3d">
+                            <div class="card-flap b-top">00</div>
+                            <div class="card-flap b-bottom">00</div>
+                            <div class="card-flap f-top">00</div>
+                            <div class="card-flap f-bottom">00</div>
+                        </div>
                         <span class="flip-unit-label">Days</span>
                     </div>
                     
-                    <!-- HOURS COLUMN -->
+                    <!-- 3D HOURS CARD COMPONENT -->
                     <div class="flip-unit-wrapper">
-                        <div id="flip-hours" class="flip-digit-card">00</div>
+                        <div id="clock-hours-card" class="flip-digit-card-3d">
+                            <div class="card-flap b-top">00</div>
+                            <div class="card-flap b-bottom">00</div>
+                            <div class="card-flap f-top">00</div>
+                            <div class="card-flap f-bottom">00</div>
+                        </div>
                         <span class="flip-unit-label">Hours</span>
                     </div>
                     
-                    <!-- MINUTES COLUMN -->
+                    <!-- 3D MINUTES CARD COMPONENT -->
                     <div class="flip-unit-wrapper">
-                        <div id="flip-minutes" class="flip-digit-card">00</div>
+                        <div id="clock-minutes-card" class="flip-digit-card-3d">
+                            <div class="card-flap b-top">00</div>
+                            <div class="card-flap b-bottom">00</div>
+                            <div class="card-flap f-top">00</div>
+                            <div class="card-flap f-bottom">00</div>
+                        </div>
                         <span class="flip-unit-label">Mins</span>
                     </div>
                     
-                    <!-- SECONDS COLUMN -->
+                    <!-- 3D SECONDS CARD COMPONENT -->
                     <div class="flip-unit-wrapper">
-                        <div id="flip-seconds" class="flip-digit-card">00</div>
+                        <div id="clock-seconds-card" class="flip-digit-card-3d">
+                            <div class="card-flap b-top">00</div>
+                            <div class="card-flap b-bottom">00</div>
+                            <div class="card-flap f-top">00</div>
+                            <div class="card-flap f-bottom">00</div>
+                        </div>
                         <span class="flip-unit-label">Secs</span>
                     </div>
+
                 </div>
             </div>
             
@@ -191,18 +213,19 @@
                     <p class="info-card-text">Hotel parking is free for all wedding guests but will be accommodated on a first-come, first-served basis. We highly recommend arriving a bit early!</p>
                 </div>
 
-                <!-- 👗 DRESS CODE CARD -->
+                <!-- 👗 DRESS CODE CARD (WITH INTERACTIVE MODAL VALUES) -->
                 <div class="info-card">
                     <h4 class="info-card-title">👗 Dress Code</h4>
                     <p class="info-card-text">We kindly invite you to celebrate with us in your formal attire matching our wedding color palette:</p>
                     
-                    <!-- UPDATED SWATCH CODES WITH CENTRALIZED LAYOUT -->
                     <div class="color-palette-container">
-                        <span class="color-swatch" style="background-color: #C9BFD3;" title="Pastel Lilac"></span>
-                        <span class="color-swatch" style="background-color: #A08FA8;" title="Muted Amethyst"></span>
-                        <span class="color-swatch" style="background-color: #745277;" title="Deep Plum Lavender"></span>
-                        <span class="color-swatch" style="background-color: #E6D7CE;" title="Almond Cream"></span>
-                        <span class="color-swatch" style="background-color: #BA9E92;" title="Muted Taupe"></span>
+                        <span class="color-swatch" style="background-color: #b3bcbc;" data-name="Sage Green"></span>
+                        <span class="color-swatch" style="background-color: #aebccf;" data-name="Dusty Blue"></span>
+                        <span class="color-swatch" style="background-color: #dfc4ce;" data-name="Blush Pink"></span>
+                        <span class="color-swatch" style="background-color: #e5d7c8;" data-name="Champagne"></span>
+                        <span class="color-swatch" style="background-color: #c0b0a6;" data-name="Taupe"></span>
+                        <span class="color-swatch" style="background-color: #bdc3c3;" data-name="Dove Gray"></span>
+                        <span class="color-swatch" style="background-color: #d1c2d9;" data-name="Lilac"></span>
                     </div>
                 </div>
 
@@ -215,8 +238,8 @@
                 <!-- ✉️ HELPLINE LINK -->
                 <div class="info-card contact-card">
                     <p class="info-card-text">Have questions or need help with your invitation?</p>
-                    <a href="https://m.me" target="_blank" class="contact-messenger-link">
-                        💬 Message Joshua & Jonahmir
+                    <a href="https://m.me/chrisha.samantha" target="_blank" class="contact-messenger-link">
+                        💬 Message Jacky Tecson Acebes
                     </a>
                 </div>
             </div>
@@ -257,7 +280,7 @@
             <div class="info-card success-hub-card">
                 <h4 class="info-card-title">⏰ Timeline Reminder</h4>
                 <p class="info-card-text">
-                    <span class="venue-name-highlight">3:00 PM • Saturday</span>
+                    <span class="venue-name-highlight">2:30 PM • Saturday</span>
                     <span class="venue-address-subtext">March 13, 2027</span>
                 </p>
                 <p class="hub-sub-note">Please arrive a bit early to secure your parking and find your seats before the ceremony begins!</p>
@@ -269,24 +292,31 @@
                 <p class="info-card-text">Unforeseen events happen! If you need to add a guest, change an attendance selection, or modify your details, you are free to update your reservation anytime.</p>
                 
                 <!-- Quick Re-routing Navigation Action Link Button -->
-                <button onclick="window.location.reload();" class="btn-outline-link hub-edit-btn">
-                    Update My RSVP 📝
-                </button>
+            <!-- REMOVED WINDOW.LOCATION.RELOAD TO ENGAGE AN INSTANT BACK-ROUTE SWITCH -->
+            <button onclick="switchBackToEditMode();" class="btn-outline-link hub-edit-btn">
+                Update My RSVP 📝
+            </button>
+
                 <p class="hub-deadline-warning">Changes are allowed until the deadline on <strong>January 17, 2027</strong>.</p>
             </div>
 
             <!-- 💬 DIRECT WEDDING HELPLINE CARD -->
             <div class="info-card contact-card success-hub-card">
                 <h4 class="info-card-title" style="color: var(--lavender-dark);">💡 Need Assistance?</h4>
-                <p class="info-card-text" style="margin-bottom: 12px;">If you encounter any issues or have questions regarding seats, please reach out to Josh directly.</p>
-                <a href="https://m.me" target="_blank" class="contact-messenger-link hub-messenger-btn">
-                    💬 Contact Josh on Messenger
+                <p class="info-card-text" style="margin-bottom: 12px;">If you encounter any issues or have questions regarding seats, please reach out to our coordinator directly.</p>
+                <a href="https://m.me/chrisha.samantha" target="_blank" class="contact-messenger-link hub-messenger-btn">
+                    💬 Contact Jacky Acebes on Messenger
                 </a>
             </div>
 
             <div class="section-divider"></div>
             
-            <p class="warm-closing-tag">Thank you for responding. We look forward to celebrating together!</p>
+            <p class="warm-closing-tag split-closing-lines">
+                <span>Thank you for responding.</span>
+                <span>We look forward</span>
+                <span>to celebrating together!</span>
+            </p>
+
         </div>
     </div>
 
@@ -295,7 +325,7 @@
         <div class="marvel-text-line">
             <span class="m-word" style="animation-delay: 0.5s;">See</span>
             <span class="m-word" style="animation-delay: 1.5s;">you</span>
-            <span class="m-word" style="animation-delay: 2.5s;">on:</span>
+            <span class="m-word" style="animation-delay: 2.5s;">on</span>
             <span class="m-word font-highlight" style="animation-delay: 4.0s;">March</span>
             <span class="m-word font-highlight" style="animation-delay: 5.2s;">13,</span>
             <span class="m-word font-highlight" style="animation-delay: 6.4s;">2027</span>
@@ -309,6 +339,21 @@
             <h3 class="modal-title">Selection Required</h3>
             <p id="modal-alert-message" class="modal-message">Please make a selection for every guest before moving forward.</p>
             <button id="btn-close-modal" class="btn-primary modal-btn">OK</button>
+        </div>
+    </div>
+        <!-- ... Rest of your existing .rsvp-card elements finish completely above this line ... -->
+    </div> 
+
+    <!-- 🎬 MARVEL-STYLE CINEMATIC TEXT INTRO -->
+    <div id="marvel-cinematic-intro" class="cinematic-blackout">
+        <!-- Cinematic text structures sit here -->
+    </div>
+
+    <!-- 🎨 DYNAMIC LOUPE COLOR INSPECTOR MODAL LAYER (MOVED HERE FOR FULL-SCREEN BALANCING) -->
+    <div id="swatch-inspector-modal" class="swatch-modal-overlay">
+        <div class="swatch-modal-box">
+            <div id="modal-color-circle" class="swatch-modal-preview"></div>
+            <p id="modal-color-label" class="swatch-modal-text-title">Color Name</p>
         </div>
     </div>
 

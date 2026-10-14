@@ -30,10 +30,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// ==========================================================================
+// 🎬 SILENT OVERRIDE ROUTER (TRIGGERS ONE-TIME CSS SLIDE ANIMATION)
+// ==========================================================================
 function switchScreen(targetScreen) {
+    console.log("[ROUTER STATE] Advancing section focus views...");
+    
+    // 1. Remove the active tag from your screens map exactly like before before
     Object.values(screens).forEach(s => s.classList.remove('active'));
+    
+    // 2. Add active to the incoming screen (this automatically triggers the CSS animation!)
     targetScreen.classList.add('active');
-    window.scrollTo(0,0);
+    
+    // 3. Snap page layout focus tracking back to top margins
+    window.scrollTo(0, 0);
 }
 
 // --- CUSTOM DIALOG MODAL ENGAGEMENT ENGINE ---
@@ -377,6 +387,14 @@ document.getElementById('btn-go-to-review').addEventListener('click', function()
         declinedList.appendChild(fallbackLi);
     }
 
+    // --- BUTTON RESET INJECTION: Clear out old session states before showing review ---
+    const finalSubmitBtn = document.getElementById('btn-submit-rsvp');
+    if (finalSubmitBtn) {
+        finalSubmitBtn.disabled = false;           // Re-enables the button for editing
+        finalSubmitBtn.textContent = 'Submit RSVP'; // Reverts text from "Saving updates..." back to default
+    }
+    // --- END OF INJECTION ---
+
     document.getElementById('review-attendance-summary').textContent = `${countAttending} attending`;
     switchScreen(screens.review);
 });
@@ -422,7 +440,7 @@ document.getElementById('btn-submit-rsvp').addEventListener('click', function() 
                 setTimeout(() => {
                     cinematicScreen.classList.remove('activated-curtain');
                 }, 800);
-            }, 10400);
+            }, 7400);
 
         } else {
             console.log("[SUBMIT SUCCESS] Entire group declined. Transitioning instantly.");
@@ -438,22 +456,26 @@ document.getElementById('btn-submit-rsvp').addEventListener('click', function() 
 
 });
 
-// --- DYNAMIC RETRO FLIP-CLOCK TIMER INTERVAL LOGIC ---
-function runLiveWeddingFlipClock() {
-    const targetDate = new Date("March 13, 2027 15:00:00").getTime(); // Set to exact 3:00 PM start time
+// ==========================================================================
+// 🎬 DYNAMIC 3D RETRO FLIP-CLOCK MECHANICS TIME TRACK ENGINE
+// ==========================================================================
+function runLiveWedding3DFlipClock() {
+    const targetDate = new Date("March 13, 2027 15:00:00").getTime(); // Target Date Tracker
 
-    function updateTicker() {
+    // Core execution runner function
+    function update3DClockCards() {
         const now = new Date().getTime();
         const gap = targetDate - now;
 
-        // Metric mathematical calculations
+        // Metric mathematical structural units
         const second = 1000;
         const minute = second * 60;
         const hour = minute * 60;
         const day = hour * 24;
 
+        // Exit criteria check if wedding date passes successfully live
         if (gap <= 0) {
-            clearInterval(clockInterval);
+            clearInterval(clockEngineInterval);
             const container = document.querySelector(".countdown-flip-container");
             if (container) {
                 container.innerHTML = '<p class="countdown-header-tag" style="color:var(--primary-color);">✨ Today is the Big Day! 🥂</p>';
@@ -461,33 +483,118 @@ function runLiveWeddingFlipClock() {
             return;
         }
 
-        // Calculate time units
-        const d = Math.floor(gap / day);
-        const h = Math.floor((gap % day) / hour);
-        const m = Math.floor((gap % hour) / minute);
-        const s = Math.floor((gap % minute) / second);
+        // Calculate time calculations
+        const d = String(Math.floor(gap / day)).padStart(2, '0');
+        const h = String(Math.floor((gap % day) / hour)).padStart(2, '0');
+        const m = String(Math.floor((gap % hour) / minute)).padStart(2, '0');
+        const s = String(Math.floor((gap % minute) / second)).padStart(2, '0');
 
-        // Map and string pad single digit entries (e.g., 05 instead of 5)
-        const daysEl = document.getElementById("flip-days");
-        const hoursEl = document.getElementById("flip-hours");
-        const minsEl = document.getElementById("flip-minutes");
-        const secsEl = document.getElementById("flip-seconds");
-
-        if (daysEl) daysEl.textContent = String(d).padStart(2, '0');
-        if (hoursEl) hoursEl.textContent = String(h).padStart(2, '0');
-        if (minsEl) minsEl.textContent = String(m).padStart(2, '0');
-        if (secsEl) secsEl.textContent = String(s).padStart(2, '0');
+        // Apply 3D physics execution logic tracks across each section cards group
+        flipCardNodeUpdate(document.getElementById("clock-days-card"), d);
+        flipCardNodeUpdate(document.getElementById("clock-hours-card"), h);
+        flipCardNodeUpdate(document.getElementById("clock-minutes-card"), m);
+        flipCardNodeUpdate(document.getElementById("clock-seconds-card"), s);
     }
 
-    // Run immediately on target screen render, then cycle every second
-    updateTicker();
-    const clockInterval = setInterval(updateTicker, 1000);
+    // --- PERFECTLY SYNCHRONIZED 3D MATRIX SWAPPER ENGINE ---
+    function flipCardNodeUpdate(cardContainer, newStringValue) {
+        if (!cardContainer) return;
+
+        const backgroundTop = cardContainer.querySelector(".b-top");
+        const backgroundBottom = cardContainer.querySelector(".b-bottom");
+        const foregroundTop = cardContainer.querySelector(".f-top");
+        const foregroundBottom = cardContainer.querySelector(".f-bottom");
+
+        // Verify if numeric values actually shifted before re-triggering mechanical flips
+        if (foregroundTop.textContent === newStringValue) return;
+
+        // 1. Load the upcoming new number onto the background layers
+        backgroundTop.textContent = newStringValue;
+        backgroundBottom.textContent = newStringValue;
+
+        // 2. Inject active 3D rotation animation classes safely
+        cardContainer.classList.add("animate-flip");
+
+        // 3. THE MILLISECOND FIX: Updates numbers exactly as the 400ms animation finishes
+        setTimeout(() => {
+            foregroundTop.textContent = newStringValue;
+            foregroundBottom.textContent = newStringValue;
+            cardContainer.classList.remove("animate-flip"); // Strip tag out to prepare for next second
+        }, 390); // Perfectly synced with the 0.4s CSS curve time tracks!
+    }
+
+    // Fire processing metrics immediately on initialization, then set execution cadence loops
+    update3DClockCards();
+    const clockEngineInterval = setInterval(update3DClockCards, 1000);
 }
 
-// Bind live execution tracking initialization layers safely
+// ==========================================================================
+// 🎬 BOOT UP THE UPGRADED 3D CLOCK ENGINE SAFELY
+// ==========================================================================
 if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", runLiveWeddingFlipClock);
+    document.addEventListener("DOMContentLoaded", runLiveWedding3DFlipClock);
 } else {
-    runLiveWeddingFlipClock();
+    runLiveWedding3DFlipClock();
 }
+
+// ==========================================================================
+// 🎨 INTERACTIVE COLOR SWATCH LOUPE ENGINE (SCROLL-LOCKED ENGINE)
+// ==========================================================================
+document.addEventListener("click", function(e) {
+    const swatch = e.target.closest(".color-swatch");
+    const modalOverlay = document.getElementById("swatch-inspector-modal");
+    const modalCircle = document.getElementById("modal-color-circle");
+    const modalLabel = document.getElementById("modal-color-label");
+
+    if (swatch && modalOverlay && modalCircle && modalLabel) {
+        e.stopPropagation();
+
+        // Extract background color properties and custom data attributes
+        const hexColor = swatch.style.backgroundColor;
+        const colorName = swatch.getAttribute("data-name");
+
+        // Sync values directly into the modal nodes
+        modalCircle.style.backgroundColor = hexColor;
+        modalLabel.textContent = colorName;
+
+        // 1. Activate the modal overlay view layer
+        modalOverlay.classList.add("active-view");
+        
+        // 2. THE LOCK FIX: Freezes the entire webpage scrolling background tracks instantly
+        document.body.classList.add("modal-scroll-lock");
+        return; 
+    }
+
+    // 3. DISMISSAL: If the modal overlay frame is active and they click away, dissolve it
+    const activeModal = document.querySelector(".swatch-modal-overlay.active-view");
+    if (activeModal) {
+        activeModal.classList.remove("active-view");
+        
+        // 4. UNLOCK: Restore normal finger thumb scrolling capabilities instantly
+        document.body.classList.remove("modal-scroll-lock");
+    }
+});
+// ==========================================================================
+// 🔄 SMOOTH NAVIGATION BACK-ROUTE FROM SUCCESS HUB TO SCREEN 2
+// ==========================================================================
+function switchBackToEditMode() {
+    console.log("[ROUTER PATH] User requested adjustment. Redirecting back to guest panel view...");
+
+    const submittedBanner = document.getElementById('already-submitted-banner');
+    
+    if (submittedBanner) {
+        // Automatically inject your playful lavender returning-user notice!
+        submittedBanner.style.display = 'block';
+    }
+
+    // Use your existing app screen layout tracker engine to jump straight back to Page 2
+    if (typeof switchScreen === 'function' && screens && screens.config) {
+        switchScreen(screens.config);
+    } else {
+        // Safe robust fallback layout switch logic if configuration objects aren't globally bound
+        switchScreen('step-configure'); 
+    }
+}
+
+
 
