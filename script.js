@@ -30,6 +30,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// --- BACKGROUND MUSIC & ENTRYWAY MOUNT CONTROLLER (SCROLL STABLE) ---
+document.addEventListener("DOMContentLoaded", () => {
+    const enterBtn = document.getElementById("btn-enter-invitation");
+    const curtain = document.getElementById("music-permission-overlay");
+    const weddingMusic = document.getElementById("bg-wedding-music");
+
+    // Add active state to body on boot to tell CSS to hide the card's blur matrix
+    document.body.classList.add("curtain-active");
+
+    if (enterBtn && curtain && weddingMusic) {
+        enterBtn.addEventListener("click", () => {
+            weddingMusic.volume = 0.5; 
+            weddingMusic.play().catch(audioErr => {
+                console.warn("[AUDIO PROMPT WARNING] Playback stalled:", audioErr);
+            });
+
+            // 1. Smoothly dissolve the welcoming overlay curtain away
+            curtain.classList.add("hide-curtain");
+
+            // 2. THE CHROME MATRIX FIX: Strip class from body to instantly activate the card layout layout
+            document.body.classList.remove("curtain-active");
+        });
+    }
+});
+
 // ==========================================================================
 // 🎬 SILENT OVERRIDE ROUTER (TRIGGERS ONE-TIME CSS SLIDE ANIMATION)
 // ==========================================================================
@@ -177,7 +202,9 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
         });
 });
 
-// --- STEP 2: BUILD CONFIG UI WITH SINGULAR GRAMMAR CORRECTOR ---
+// ==========================================================================
+// 👥 STEP 2: BUILD CONFIG UI WITH INTEGRATED STEP ACCORDION ENGINE
+// ==========================================================================
 function setupConfigurationScreen(data) {
     document.getElementById('config-guest-title').textContent = data.mainGuest.toUpperCase();
     
@@ -213,49 +240,83 @@ function setupConfigurationScreen(data) {
     }
     
     // --- LOGIC PATCH START (CLEANS GHOST GUESTS) ---
-    // Pull the members array, but immediately filter out any completely empty strings or trailing spaces!
     let finalMembersList = [...data.members].map(m => m.trim()).filter(m => m !== "");
     const mainGuestName = data.mainGuest.trim();
 
-    // Check if the main guest's name is already listed in the cleaned group members array
     const isMainGuestInList = finalMembersList.some(m => m.toLowerCase() === mainGuestName.toLowerCase());
 
-    // If it's missing (or if the list was completely empty because the cell was blank), add the main guest to the top
     if (!isMainGuestInList) {
         finalMembersList.unshift(mainGuestName);
     }
     // --- LOGIC PATCH END ---
     
+    // CLEANED ENGINE HOOK: One single declaration of container prevents browser crashes
     const container = document.getElementById('dynamic-guest-list');
     container.innerHTML = '';
 
-    // Loop through the fixed, complete finalMembersList array instead (Keeps main guest & filters ghost entries)
-    finalMembersList.forEach((member) => {
+    finalMembersList.forEach((member, index) => {
         if(!data.savedResponses) selections[member] = null;
         const currentChoice = selections[member];
 
-        // Determine pre-loaded emoji state if user is returning to edit an existing RSVP
         let initialEmoji = '';
         if (currentChoice === 'yes') initialEmoji = '🤩';
         if (currentChoice === 'no') initialEmoji = '🥺';
 
         const guestBox = document.createElement('div');
-        guestBox.className = 'guest-decision-card';
+        // INITIAL LOAD: Collapse every single card card automatically EXCEPT the first guest (index 0)
+        guestBox.className = `guest-decision-card ${index > 0 ? 'is-collapsed' : ''}`;
+        guestBox.setAttribute('data-index', index);
+        
         guestBox.innerHTML = `
             <div class="guest-name">
                 <span>${member}</span>
                 <span id="emoji-${member.replace(/\s+/g, '-')}" class="status-emoji-indicator ${currentChoice === 'yes' ? 'emoji-pop-zoom' : currentChoice === 'no' ? 'emoji-slam-roll' : ''}">${initialEmoji}</span>
             </div>
             <div class="decision-buttons">
-                <button type="button" class="btn-toggle opt-yes ${currentChoice === 'yes' ? 'selected' : ''}" onclick="makeSelection('${member}', 'yes', this)">Attending</button>
-                <button type="button" class="btn-toggle opt-no ${currentChoice === 'no' ? 'selected' : ''}" onclick="makeSelection('${member}', 'no', this)">Not Attending</button>
+                <button type="button" class="btn-toggle opt-yes ${currentChoice === 'yes' ? 'selected' : ''}" onclick="makeAccordionSelection('${member}', 'yes', this, ${index})">Attending</button>
+                <button type="button" class="btn-toggle opt-no ${currentChoice === 'no' ? 'selected' : ''}" onclick="makeAccordionSelection('${member}', 'no', this, ${index})">Not Attending</button>
             </div>
         `;
+
+        // MANUAL OVERRIDE: Tapping a name row expands it manually and collapses everyone else
+        const headerRow = guestBox.querySelector('.guest-name');
+        headerRow.addEventListener('click', () => {
+            const allCards = container.querySelectorAll('.guest-decision-card');
+            allCards.forEach(c => {
+                if (c !== guestBox) c.classList.add('is-collapsed');
+            });
+            guestBox.classList.toggle('is-collapsed');
+        });
+
         container.appendChild(guestBox);
     });
 
     tallySelections();
     switchScreen(screens.config);
+}
+
+// ==========================================================================
+// 🔄 ACCORDION ADVANCEMENT STATE TRACKER PIPELINE
+// ==========================================================================
+function makeAccordionSelection(member, choice, buttonElement, currentIndex) {
+    // 1. Run your original selection function safely to save parameters data data
+    if (typeof makeSelection === 'function') {
+        makeSelection(member, choice, buttonElement);
+    }
+
+    // 2. CHAIN REACTION: Collapse current card card and open the next one
+    setTimeout(() => {
+        const currentCard = buttonElement.closest('.guest-decision-card');
+        if (currentCard) {
+            currentCard.classList.add('is-collapsed');
+        }
+
+        const nextCard = document.querySelector(`[data-index="${currentIndex + 1}"]`);
+        if (nextCard) {
+            console.log(`[ACCORDION CHAIN] Automatically opening next guest row: index ${currentIndex + 1}`);
+            nextCard.classList.remove('is-collapsed');
+        }
+    }, 450); // Delay matches your custom emoji animations perfectly perfectly
 }
 
 // --- DYNAMIC SELECTION TRACKER WITH KINETIC EMOJI PHYSICS ENGINES ---
@@ -538,7 +599,7 @@ if (document.readyState === "loading") {
 }
 
 // ==========================================================================
-// 🎨 INTERACTIVE COLOR SWATCH LOUPE ENGINE (SCROLL-LOCKED ENGINE)
+// 🎨 INTERACTIVE COLOR SWATCH LOUPE ENGINE (FIXED ANCHORED STABILITY)
 // ==========================================================================
 document.addEventListener("click", function(e) {
     const swatch = e.target.closest(".color-swatch");
@@ -546,34 +607,38 @@ document.addEventListener("click", function(e) {
     const modalCircle = document.getElementById("modal-color-circle");
     const modalLabel = document.getElementById("modal-color-label");
 
+    // 1. OPENING TRIGGER (GUEST CLICKS A COLOR SWATCH)
     if (swatch && modalOverlay && modalCircle && modalLabel) {
+        // Stops browser anchor redirection or form tracking loops from jumping jumping
+        e.preventDefault();
         e.stopPropagation();
+        e.stopImmediatePropagation(); 
 
-        // Extract background color properties and custom data attributes
         const hexColor = swatch.style.backgroundColor;
         const colorName = swatch.getAttribute("data-name");
 
-        // Sync values directly into the modal nodes
         modalCircle.style.backgroundColor = hexColor;
         modalLabel.textContent = colorName;
 
-        // 1. Activate the modal overlay view layer
+        // Open the dark frosted view. THE STABILITY FIX: Stripped out the document.body scroll lock lock
         modalOverlay.classList.add("active-view");
         
-        // 2. THE LOCK FIX: Freezes the entire webpage scrolling background tracks instantly
-        document.body.classList.add("modal-scroll-lock");
+        console.log("[LOUPE OPEN] Modal active. Viewport layout tracking remains perfectly stable.");
         return; 
     }
 
-    // 3. DISMISSAL: If the modal overlay frame is active and they click away, dissolve it
+    // 2. CLOSING DISMISSAL (GUEST CLICKS OUTSIDE THE BOX TO CLOSE)
     const activeModal = document.querySelector(".swatch-modal-overlay.active-view");
     if (activeModal) {
-        activeModal.classList.remove("active-view");
+        e.preventDefault();
+        e.stopPropagation();
         
-        // 4. UNLOCK: Restore normal finger thumb scrolling capabilities instantly
-        document.body.classList.remove("modal-scroll-lock");
+        activeModal.classList.remove("active-view");
+        console.log("[LOUPE CLOSED] Modal dismissed cleanly.");
     }
 });
+
+
 // ==========================================================================
 // 🔄 SMOOTH NAVIGATION BACK-ROUTE FROM SUCCESS HUB TO SCREEN 2
 // ==========================================================================

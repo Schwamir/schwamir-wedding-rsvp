@@ -72,21 +72,39 @@ p {
    ========================================================================== */
 
 .rsvp-card {
-    background: #fbf9fc;
+    /* 🧼 THE FIX: Injects an explicit semi-transparent background layer to satisfy the webkit engine */
+    background: rgba(251, 249, 252, 0.65); 
+    
+    /* Hardware-accelerated blur engines now run flawlessly */
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px); 
+    
     width: 100%;
     max-width: 450px;
     min-height: 85vh;
     border-radius: 28px;
-    padding: 35px 22px;
     box-sizing: border-box;
-    box-shadow: 
-        0 15px 35px rgba(58, 50, 71, 0.1),
-        inset 0 0 0 10px #ffffff, 
-        inset 0 0 0 11px rgba(112, 93, 120, 0.15); 
-    border: 1px solid rgba(255, 255, 255, 0.7);
-    overflow: hidden; /* Ensures the incoming screen slides in cleanly from the bottom edge */
+    padding: 35px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
     position: relative;
 }
+/* ==========================================================================
+   🎬 BACKDROP-FILTER CLIPPING ISOLATION HOOKS
+   ========================================================================== */
+
+/* While the welcome curtain is closed, hide the card completely to stop its blur from ghosting ghosting */
+body.curtain-active .rsvp-card {
+    visibility: hidden !important;
+    opacity: 0;
+}
+
+/* The moment they hit Open Invitation, the card becomes visible and runs its slide-up animations animation */
+body:not(.curtain-active) .rsvp-card {
+    visibility: visible !important;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+}
+
 
 /* Hidden state: exactly like your original setup */
 .step-container {
@@ -204,11 +222,18 @@ input:focus {
     font-size: 11px;
 }
 
+/* ==========================================================================
+   👥 ACCORDION STYLES (REPLACING OLD GUEST VIEW CARDS)
+   ========================================================================== */
+
 .guest-decision-card {
     background: var(--bg-light);
     border-radius: 14px;
     padding: 16px;
+    border: 1px solid rgba(112, 93, 120, 0.1);
     margin-bottom: 12px;
+    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    box-sizing: border-box;
 }
 
 .guest-name {
@@ -219,6 +244,7 @@ input:focus {
     display: flex;
     justify-content: space-between; /* Pushes name to left, emoji to right */
     align-items: center;
+    cursor: pointer; /* Makes name row clickable to manually edit edit */
 }
 
 /* Base style for the indicator badge to allow a soft transition bounce */
@@ -228,11 +254,32 @@ input:focus {
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-
 .decision-buttons {
     display: flex;
     gap: 10px;
+    max-height: 150px; /* Sized to contain the button heights heights */
+    opacity: 1;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease, margin-top 0.3s ease;
 }
+
+/* --- THE ACCORDION SPACE-SAVER STATE EFFECTS --- */
+.guest-decision-card.is-collapsed {
+    padding: 12px 16px; /* Tightens the card vertically vertically */
+    background: rgba(255, 255, 255, 0.4); /* Subtle faded background for answered steps steps */
+}
+
+.guest-decision-card.is-collapsed .guest-name {
+    margin-bottom: 0; /* Clears bottom space when collapsed collapsed */
+}
+
+/* Smoothly collapses the decision buttons completely out of view view */
+.guest-decision-card.is-collapsed .decision-buttons {
+    max-height: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
 
 /* KEEP YOUR WORKING BASE LAYOUT EXACTLY AS IS: */
 .btn-toggle {
@@ -436,15 +483,22 @@ input:focus {
     padding: 0 5px;         /* Adds a slight breathing gutter protective zone */
 }
 
+/* ==========================================================================
+   👗 ADAPTIVE MULTI-ROW COLOR PALETTE CONTROLLERS (SCROLL JUMP PROTECTION)
+   ========================================================================== */
 .color-swatch {
-    width: 34px;            /* Perfect touch target scale for thumb gestures on phone windows */
+    width: 34px;            
     height: 34px;
     border-radius: 50%;
     display: inline-block;
-    box-shadow: 0 3px 6px rgba(58, 50, 71, 0.12); /* Delicate lavender-gray shadow mist drop shadow */
+    box-shadow: 0 3px 6px rgba(58, 50, 71, 0.12); 
     border: 2px solid #ffffff;
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth spring response clock */
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
     cursor: pointer;
+
+    /* 🛠️ THE MECHANICAL JUMP FIXES: */
+    touch-action: manipulation; /* Blocks mobile double-tap document layout resets */
+    -webkit-tap-highlight-color: transparent; /* Strips away browser anchor highlight artifacts */
 }
 
 /* Elegant kinetic micro-interaction scaling feedback when a guest hovers or taps a color color */
@@ -514,12 +568,6 @@ input:focus {
     margin-top: 18px;
     margin-bottom: 0;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-/* HELPER SCROLL FREEZER CAP: Disables thumb-scrolling gestures globally */
-body.modal-scroll-lock {
-    overflow: hidden !important;
-    height: 100vh !important;
 }
 
 
@@ -681,8 +729,8 @@ body.modal-scroll-lock {
 
 /* Intersecting Gold Border Framing Container */
 .wedding-monogram-badge {
-    width: 120px;    /* Upscaled the frame width slightly to make the photo details pop nicely */
-    height: 120px;   /* Keeps a strict 1:1 square ratio constraint */
+    width: 140px;    /* Upscaled the frame width slightly to make the photo details pop nicely */
+    height: 140px;   /* Keeps a strict 1:1 square ratio constraint */
     border: 2px solid #d4af37; /* Your beautiful high-contrast metallic gold border */
     border-radius: 50%;       /* Instantly curves the square frame container into a clean circle */
     margin: 10px auto 20px auto;
@@ -691,7 +739,7 @@ body.modal-scroll-lock {
     align-items: center;
     overflow: hidden;         /* ACTS LIKE A SCISSOR: Slices away anything outside the gold circle bounds */
     box-shadow: 0 6px 16px rgba(58, 50, 71, 0.1); /* Soft lavender-tinted drop shadow */
-    background-color: #ffffff;
+    background-color: #d4af37
 }
 
 /* Smart circular cropping layout engine rules */
@@ -1486,7 +1534,8 @@ body.modal-scroll-lock {
 }
 
 .welcome-curtain-box {
-    background: #ffffff;
+    background: rgba(251, 249, 252, 0.65);
+    backdrop-filter: blur(14px);
     width: 85%;
     max-width: 360px;
     padding: 35px 25px;
@@ -1571,8 +1620,8 @@ body.modal-scroll-lock {
 /* This rule only kicks in when the guest opens the link on a smartphone screen */
 @media (max-width: 480px) {
     .text-mobile-break span {
-        display: block; /* Forces the text inside the span tags onto a brand new line line */
-        margin-top: 4px; /* Adds a touch of elegant vertical breathing room between lines */
+        display: block;
+        margin-top: 4px; 
     }
     .welcome-tagline {
         font-size: 1.6rem;
@@ -1581,9 +1630,23 @@ body.modal-scroll-lock {
         padding: 0 50px;
     }
     .split-closing-lines span {
-        display: block;      /* Forces each span block onto its own brand new line */
-        margin-bottom: 4px;  /* Injects a touch of elegant vertical breathing room */
+        display: block;      
+        margin-bottom: 4px;  
         text-align: center;
+    }
+    .intro-line-stack span {
+        display: block;     
+        margin-top: 5px;   
+        text-align: inherit; 
+    }
+    .banner-line-stack span {
+        display: block;     
+        margin-top: 5px;   
+        font-weight: 600;   
+    }
+    .instruction-line-stack span {
+        display: block;      
+        margin-top: 4px;    
     }
 
 }
