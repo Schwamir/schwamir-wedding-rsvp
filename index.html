@@ -22,18 +22,11 @@
     <div class="rsvp-card">
         <!-- 🎚️ CONTINUOUS BACKGROUND MUSIC TRACK ENGINE -->
         <audio id="bg-wedding-music" src="audio/wedding-instrumental-2.mp3" loop preload="auto"></audio>
-
          <!-- STEP 1: SEARCH PAGE WITH AUTOCOMPLETE (ELEGANT UPGRADE) -->
         <div id="step-search" class="step-container active">
             
-            <!-- THE WEDDING COUPLING IMAGE CREST CARD OVERLAY -->
-            <div class="wedding-monogram-badge">
-                <!-- Replace 'images/your-photo.png' with your actual image file path path -->
-                <img src="images/icon.png" alt="Joshua & Jonahmir" class="crest-profile-photo">
-            </div>
-            
             <!-- THE SCRIPT WELCOME INTRODUCTION -->
-            <p class="welcome-tagline">Welcome to the wedding celebration of</p>
+            <p class="welcome-tagline">You have an invitation from</p>
             
             <!-- UPGRADED STACKED VERTICAL SCRIPT HEADING -->
             <h1 class="main-wedding-heading">
@@ -41,12 +34,15 @@
                 <span class="ampersand-divider">&amp;</span>
                 <span class="partner-name name-right">Jonahmir</span>
             </h1>
-            
+            <p class="wedding-connector-text">to celebrate their wedding on</p>
             <!-- EVEN METADATA WITH SEPARATED TICKER ELEMENT -->
+            <!-- ELEGANT METADATA WITH SEPARATED ITINERARY LOCATIONS -->
             <p class="event-meta">
-                Saturday, March 13, 2027 • 2:30 PM<br>
+                <span class="meta-date-time">Saturday, March 13, 2027 • 2:30 PM</span>
+                <img src="images/rings.png" alt="Wedding Ring" width="124" height="auto">
                 <strong>Sacred Heart Parish • Bayfront Hotel Cebu</strong>
             </p>
+
             
             <!-- 🎬 UPGRADED 3D MECHANICAL FLIP-CLOCK TIME ENGINE (FIXED STACK) -->
             <div class="countdown-flip-container">
@@ -233,7 +229,7 @@
 
         <!-- STEP 3: REVIEW PAGE -->
         <div id="step-review" class="step-container">
-            <h2>Review Your RSVP</h2>
+            <h2>Double-checking the details...</h2>
             <h4 id="review-attendance-summary" class="summary-head">0 attending</h4>
             
             <div class="summary-box">
@@ -340,27 +336,33 @@
             <p id="modal-color-label" class="swatch-modal-text-title">Color Name</p>
         </div>
     </div>
-    
-    <!-- 🌟 WELCOME ENTRYWAY CURTAIN (MOVED OUTSIDE FOR TOTAL ACCENT ISOLATION) -->
+    <!-- ... Your existing .rsvp-card structure and screens finish completely above this line ... -->
+    </div> 
+
+    <!-- 🎨 DYNAMIC LOUPE COLOR INSPECTOR MODAL LAYER -->
+    <div id="swatch-inspector-modal" class="swatch-modal-overlay"></div>
+
+    <!-- ✉️ WELCOME ENVELOPE CURTAIN (MOVED HERE FOR TRUE GLOBAL FULL-SCREEN WASH) -->
     <div id="music-permission-overlay" class="welcome-music-curtain">
-        <div class="welcome-curtain-box">
-            <div class="wedding-monogram-badge" style="margin-top:0;">
-                <img src="images/icon.png" alt="Joshua & Jonahmir" class="crest-profile-photo">
+        <!-- THE OUTER ENVELOPE WRAPPER MATRIX -->
+        <div id="wedding-envelope" class="envelope-wrapper">
+            <div class="envelope-back-pocket"></div>
+            <div class="envelope-side-flaps"></div>
+            
+            <!-- 🔥 THE FIX: NEW V-SHAPED FRONT POCKET FOREGROUND CONTAINER -->
+            <div class="envelope-front-pocket"></div>
+            
+            <div id="envelope-top-flap" class="envelope-flap-top"></div>
+            
+            <div id="wedding-wax-seal" class="interactive-wax-seal">
+                <div class="wax-seal-inner">
+                    <span class="wax-seal-initials">JM</span>
+                </div>
             </div>
-            <p class="welcome-tagline text-mobile-break">
-                <span class="slide-block block-left">You are invited to</span>
-                <span class="slide-block block-right">celebrate with us!</span>
-            </p>
-            <button id="btn-enter-invitation" class="btn-primary" style="width:auto !important; padding:12px 30px; display:inline-flex; align-items:center; gap:8px; justify-content:center; margin-top:15px;">
-                <span>Open Invitation</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; color:#ffffff;">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                    <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
-            </button>
-        </div>
+        </div> <!-- END OF ENVELOPE CONTAINER WRAPPER -->
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=final"></script>
 </body>
 </html>
+

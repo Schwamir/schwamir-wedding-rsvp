@@ -10,68 +10,41 @@ const screens = {
     review: document.getElementById('step-review'),
     success: document.getElementById('step-success')
 };
-// --- BACKGROUND MUSIC SEAMLESS INTERACTION LOOPER ENGINE ---
+
 document.addEventListener("DOMContentLoaded", () => {
-    const enterBtn = document.getElementById("btn-enter-invitation");
+    const waxSeal = document.getElementById("wedding-wax-seal");
+    const envelope = document.getElementById("wedding-envelope");
     const curtain = document.getElementById("music-permission-overlay");
     const weddingMusic = document.getElementById("bg-wedding-music");
 
-    if (enterBtn && curtain && weddingMusic) {
-        enterBtn.addEventListener("click", () => {
-            // 1. Trigger continuous looped playback sequence sequence
-            weddingMusic.volume = 0.5; // Set to comfortable 50% background audio scale
-            weddingMusic.play().catch(audioErr => {
-                console.warn("[AUDIO PROMPT WARNING] Playback stalled by device constraint:", audioErr);
-            });
-
-            // 2. Smoothly dissolve the welcoming overlay curtain away
-            curtain.classList.add("hide-curtain");
-        });
-    }
-});
-
-// --- BACKGROUND MUSIC & ENTRYWAY MOUNT CONTROLLER (SCROLL STABLE) ---
-document.addEventListener("DOMContentLoaded", () => {
-    const enterBtn = document.getElementById("btn-enter-invitation");
-    const curtain = document.getElementById("music-permission-overlay");
-    const weddingMusic = document.getElementById("bg-wedding-music");
-
-    // Add active state to body on boot to tell CSS to hide the card's blur matrix
     document.body.classList.add("curtain-active");
 
-    if (enterBtn && curtain && weddingMusic) {
-        enterBtn.addEventListener("click", () => {
-            weddingMusic.volume = 0.5; 
-            weddingMusic.play().catch(audioErr => {
-                console.warn("[AUDIO PROMPT WARNING] Playback stalled:", audioErr);
-            });
+    if (waxSeal && envelope && curtain && weddingMusic) {
+        waxSeal.addEventListener("click", () => {
+            weddingMusic.volume = 0.5;
+            weddingMusic.play().catch(audioErr => console.warn(audioErr));
 
-            // 1. Smoothly dissolve the welcoming overlay curtain away
-            curtain.classList.add("hide-curtain");
+            envelope.classList.add("seal-broken");
 
-            // 2. THE CHROME MATRIX FIX: Strip class from body to instantly activate the card layout layout
-            document.body.classList.remove("curtain-active");
+            setTimeout(() => {
+                curtain.classList.add("hide-curtain");
+                document.body.classList.remove("curtain-active"); 
+            }, 500); 
         });
     }
 });
 
 // ==========================================================================
-// 🎬 SILENT OVERRIDE ROUTER (TRIGGERS ONE-TIME CSS SLIDE ANIMATION)
+// PRODUCTION ROUTER VIEWPORT TRANSITION ENGINE
 // ==========================================================================
 function switchScreen(targetScreen) {
-    console.log("[ROUTER STATE] Advancing section focus views...");
-    
-    // 1. Remove the active tag from your screens map exactly like before before
     Object.values(screens).forEach(s => s.classList.remove('active'));
     
-    // 2. Add active to the incoming screen (this automatically triggers the CSS animation!)
     targetScreen.classList.add('active');
-    
-    // 3. Snap page layout focus tracking back to top margins
+
     window.scrollTo(0, 0);
 }
 
-// --- CUSTOM DIALOG MODAL ENGAGEMENT ENGINE ---
 function showCustomAlert(message) {
     const modal = document.getElementById('custom-alert-modal');
     const msgElement = document.getElementById('modal-alert-message');
@@ -81,7 +54,6 @@ function showCustomAlert(message) {
     }
 }
 
-// Bind close element click listener once DOM mounts
 document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('btn-close-modal');
     const modal = document.getElementById('custom-alert-modal');
@@ -90,9 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// --- PRE-LOAD ALL GUEST NAMES FOR AUTOCOMPLETE ---
+// ==========================================================================
+// PRODUCTION PRE-LOAD GUEST NAMES ENGINE
+// ==========================================================================
 window.addEventListener('DOMContentLoaded', () => {
-    console.log("[INIT] Pre-loading guest database names directly from Google...");
     const targetUrl = `${SCRIPT_URL}?action=getAll`;
     
     fetch(targetUrl)
@@ -103,25 +76,20 @@ window.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             if (data.names) {
                 allGuestNames = data.names;
-                console.log(`[INIT] Loaded ${allGuestNames.length} names successfully into memory.`);
             }
         })
         .catch(err => {
-            console.error("[INIT ERROR] Autocomplete pre-load failed:", err);
-            console.warn("[INIT WARN] The search box will fallback to direct row scanning matching rules.");
         });
 });
 
-// Autocomplete Input Listening Logic
+
 const searchInput = document.getElementById('search-input');
 const autocompleteList = document.getElementById('autocomplete-list');
 
-// --- AUTOCOMPLETE DROPDOWN CONDITIONAL SWITCH LOGIC ---
 searchInput.addEventListener('input', function() {
     const val = this.value.trim().toLowerCase();
     autocompleteList.innerHTML = '';
     
-    // If the input box is cleared, strip out the visibility styling and stop execution
     if (!val) {
         autocompleteList.classList.remove('visible');
         return;
@@ -129,9 +97,8 @@ searchInput.addEventListener('input', function() {
 
     const filtered = allGuestNames.filter(name => name.toLowerCase().includes(val));
     
-    // Check if we actually have names to show
     if (filtered.length > 0) {
-        autocompleteList.classList.add('visible'); // Slaps the border and shadows on cleanly
+        autocompleteList.classList.add('visible'); 
         
         filtered.forEach(name => {
             const item = document.createElement('div');
@@ -140,17 +107,15 @@ searchInput.addEventListener('input', function() {
             item.addEventListener('click', () => {
                 searchInput.value = name;
                 autocompleteList.innerHTML = '';
-                autocompleteList.classList.remove('visible'); // Hide after clicking a name
+                autocompleteList.classList.remove('visible'); 
             });
             autocompleteList.appendChild(item);
         });
     } else {
-        // Hide border rules if a user types random letters that don't match any guest names
         autocompleteList.classList.remove('visible');
     }
 });
 
-// Clean up border frames instantly if the user clicks anywhere else outside the search box
 document.addEventListener('click', (e) => {
     if (e.target !== searchInput) {
         autocompleteList.innerHTML = '';
@@ -163,7 +128,9 @@ document.addEventListener('click', (e) => {
     if (e.target !== searchInput) autocompleteList.innerHTML = '';
 });
 
-// --- STEP 1: GUEST LOOKUP HANDLER ---
+// ==========================================================================
+// PRODUCTION STEP 1 GUEST LOOKUP ENGINE
+// ==========================================================================
 document.getElementById('btn-find-invite').addEventListener('click', function() {
     const nameInput = searchInput.value.trim();
     const errorElement = document.getElementById('search-error');
@@ -171,25 +138,27 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
     
     if(!nameInput) return;
     
+    const ringImage = document.querySelector('.event-meta img');
+    if (ringImage) {
+        ringImage.classList.add('spin-active');
+    }
+    
     btn.disabled = true;
     btn.textContent = 'Searching...';
     errorElement.style.display = 'none';
 
     const finalUrl = `${SCRIPT_URL}?name=${encodeURIComponent(nameInput)}`;
-    console.log(`[LOOKUP NETWORK] Dispatching pipeline directly to Google: ${finalUrl}`);
     
     fetch(finalUrl)
         .then(res => res.json())
         .then(data => {
-            console.log("[LOOKUP RESULT] Decoded payload data from sheet:", data);
             btn.disabled = false;
             btn.textContent = 'Find My Invitation';
             
             if (data.error) {
-                console.error(`[LOOKUP ERROR] Match stopped: ${data.error}`);
                 errorElement.style.display = 'block';
+                if (ringImage) ringImage.classList.remove('spin-active');
             } else {
-                console.log("[LOOKUP SUCCESS] Match confirmed. Rendering selection cards...");
                 currentReservationData = data;
                 setupConfigurationScreen(data);
             }
@@ -197,24 +166,23 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
         .catch(err => {
             btn.disabled = false;
             btn.textContent = 'Find My Invitation';
-            console.error("[LOOKUP CRITICAL FAILURE] Browser intercepted execution routing:", err);
+            if (ringImage) ringImage.classList.remove('spin-active');
+            
             showCustomAlert("We couldn't connect to the guest database. Please check your internet connection and try again.");
         });
 });
 
 // ==========================================================================
-// 👥 STEP 2: BUILD CONFIG UI WITH INTEGRATED STEP ACCORDION ENGINE
+// STEP 2: BUILD CONFIG UI WITH INTEGRATED STEP ACCORDION ENGINE
 // ==========================================================================
 function setupConfigurationScreen(data) {
     document.getElementById('config-guest-title').textContent = data.mainGuest.toUpperCase();
     
     const seatCount = parseInt(data.seats) || 0;
     
-    // Inject raw integer numbers
     document.getElementById('text-seats-count').textContent = seatCount;
     document.getElementById('allowed-seats-count').textContent = seatCount;
-    
-    // --- SMART GRAMMAR CHECK ENGINE ---
+
     const textSeatsWord = document.getElementById('text-seats-word');
     const allowedSeatsLabel = document.getElementById('allowed-seats-label');
     
@@ -225,7 +193,6 @@ function setupConfigurationScreen(data) {
         textSeatsWord.textContent = "seats";
         allowedSeatsLabel.textContent = "RESERVED SEATS";
     }
-    // --- SMART GRAMMAR CHECK END ---
     
     const phoneInput = document.getElementById('mobile-input');
     phoneInput.value = data.mobile ? data.mobile : "+63 ";
@@ -239,7 +206,6 @@ function setupConfigurationScreen(data) {
         selections = {};
     }
     
-    // --- LOGIC PATCH START (CLEANS GHOST GUESTS) ---
     let finalMembersList = [...data.members].map(m => m.trim()).filter(m => m !== "");
     const mainGuestName = data.mainGuest.trim();
 
@@ -248,9 +214,7 @@ function setupConfigurationScreen(data) {
     if (!isMainGuestInList) {
         finalMembersList.unshift(mainGuestName);
     }
-    // --- LOGIC PATCH END ---
     
-    // CLEANED ENGINE HOOK: One single declaration of container prevents browser crashes
     const container = document.getElementById('dynamic-guest-list');
     container.innerHTML = '';
 
@@ -263,7 +227,6 @@ function setupConfigurationScreen(data) {
         if (currentChoice === 'no') initialEmoji = '🥺';
 
         const guestBox = document.createElement('div');
-        // INITIAL LOAD: Collapse every single card card automatically EXCEPT the first guest (index 0)
         guestBox.className = `guest-decision-card ${index > 0 ? 'is-collapsed' : ''}`;
         guestBox.setAttribute('data-index', index);
         
@@ -278,7 +241,6 @@ function setupConfigurationScreen(data) {
             </div>
         `;
 
-        // MANUAL OVERRIDE: Tapping a name row expands it manually and collapses everyone else
         const headerRow = guestBox.querySelector('.guest-name');
         headerRow.addEventListener('click', () => {
             const allCards = container.querySelectorAll('.guest-decision-card');
@@ -296,15 +258,12 @@ function setupConfigurationScreen(data) {
 }
 
 // ==========================================================================
-// 🔄 ACCORDION ADVANCEMENT STATE TRACKER PIPELINE
+// ACCORDION ADVANCEMENT STATE TRACKER PIPELINE
 // ==========================================================================
 function makeAccordionSelection(member, choice, buttonElement, currentIndex) {
-    // 1. Run your original selection function safely to save parameters data data
     if (typeof makeSelection === 'function') {
         makeSelection(member, choice, buttonElement);
     }
-
-    // 2. CHAIN REACTION: Collapse current card card and open the next one
     setTimeout(() => {
         const currentCard = buttonElement.closest('.guest-decision-card');
         if (currentCard) {
@@ -316,29 +275,24 @@ function makeAccordionSelection(member, choice, buttonElement, currentIndex) {
             console.log(`[ACCORDION CHAIN] Automatically opening next guest row: index ${currentIndex + 1}`);
             nextCard.classList.remove('is-collapsed');
         }
-    }, 450); // Delay matches your custom emoji animations perfectly perfectly
+    }, 450); 
 }
-
-// --- DYNAMIC SELECTION TRACKER WITH KINETIC EMOJI PHYSICS ENGINES ---
 function makeSelection(member, decision, clickedBtn) {
     selections[member] = decision;
     
-    // Locate the specific emoji tracker element for this person
     const emojiTarget = document.getElementById(`emoji-${member.replace(/\s+/g, '-')}`);
     
     if (emojiTarget) {
-        // Strip out any previous lingering animation classes so the system resets fully
         emojiTarget.classList.remove('emoji-pop-zoom', 'emoji-slam-roll');
         
-        // Force the web browser to register a layout reflow reset (re-triggers clean timeline state)
         void emojiTarget.offsetWidth; 
         
         if (decision === 'yes') {
             emojiTarget.textContent = '🤩';
-            emojiTarget.classList.add('emoji-pop-zoom'); // Triggers springy burst pop
+            emojiTarget.classList.add('emoji-pop-zoom'); 
         } else if (decision === 'no') {
             emojiTarget.textContent = '🥺';
-            emojiTarget.classList.add('emoji-slam-roll'); // Triggers slam and roll shuffle
+            emojiTarget.classList.add('emoji-slam-roll'); 
         }
     }
     
@@ -367,44 +321,39 @@ function tallySelections() {
     }
 }
 
-// --- STRICT PHILIPPINE MOBILE NUMBER MASK ENGINE (+63 9XX XXX XXXX) ---
 document.getElementById('mobile-input').addEventListener('input', function(e) {
-    let raw = this.value.replace(/\D/g, ''); // Strip all non-digits
-    
-    // Force the number to always begin with the country code 63
+    let raw = this.value.replace(/\D/g, ''); 
+
     if (!raw.startsWith('63')) {
         raw = '63' + raw;
     }
     
-    // Truncate to maximum length (2-digit country code + 10-digit mobile = 12 digits max)
     if (raw.length > 12) raw = raw.substring(0, 12);
-    
-    // Build the formatted layout string dynamically with perfect spacing gaps
+
     let formatted = '+63 ';
     if (raw.length > 2) {
-        formatted += raw.substring(2, 5); // 3-digit prefix (e.g., 917)
+        formatted += raw.substring(2, 5); 
     }
     if (raw.length > 5) {
-        formatted += ' ' + raw.substring(5, 8); // Next 3 digits
+        formatted += ' ' + raw.substring(5, 8); 
     }
     if (raw.length > 8) {
-        formatted += ' ' + raw.substring(8, 12); // Final 4 digits
+        formatted += ' ' + raw.substring(8, 12); 
     }
     
     this.value = formatted;
 });
 
-// Strict block to prevent users from accidentally backspacing or deleting the initial "+63 " prefix
 document.getElementById('mobile-input').addEventListener('keydown', function(e) {
     if (this.selectionStart < 5 && (e.key === 'Backspace' || e.key === 'Delete')) {
         e.preventDefault();
     }
 });
 
-// --- STEP 3: ARRANGE SUMMARY LISTS WITH VISIBLE NAMES & THEMED ICONS ---
+// ==========================================================================
+// PRODUCTION RSVP REVIEW VERIFICATION ENGINE
+// ==========================================================================
 document.getElementById('btn-go-to-review').addEventListener('click', function() {
-    console.log("[REVIEW ACTION] Processing verification steps. Evaluating current selections list:", selections);
-    
     const unanswered = Object.values(selections).some(val => val === null);
     if (unanswered) {
         showCustomAlert("Please make a selection for every guest before moving forward.");
@@ -414,13 +363,11 @@ document.getElementById('btn-go-to-review').addEventListener('click', function()
     const attendingList = document.getElementById('review-list-attending');
     const declinedList = document.getElementById('review-list-declined');
     
-    // Clear out any old lingering list elements cleanly
     attendingList.innerHTML = '';
     declinedList.innerHTML = '';
 
     let countAttending = 0;
 
-    // Loop through selections correctly using explicit key-value parameters
     Object.keys(selections).forEach(name => {
         const decision = selections[name];
         const li = document.createElement('li');
@@ -434,7 +381,6 @@ document.getElementById('btn-go-to-review').addEventListener('click', function()
         }
     });
 
-    // Elegant text fallback placeholders if a whole group responds uniformly
     if (attendingList.children.length === 0) {
         const fallbackLi = document.createElement('li');
         fallbackLi.textContent = "None";
@@ -448,23 +394,24 @@ document.getElementById('btn-go-to-review').addEventListener('click', function()
         declinedList.appendChild(fallbackLi);
     }
 
-    // --- BUTTON RESET INJECTION: Clear out old session states before showing review ---
     const finalSubmitBtn = document.getElementById('btn-submit-rsvp');
     if (finalSubmitBtn) {
-        finalSubmitBtn.disabled = false;           // Re-enables the button for editing
-        finalSubmitBtn.textContent = 'Submit RSVP'; // Reverts text from "Saving updates..." back to default
+        finalSubmitBtn.disabled = false;         
+        finalSubmitBtn.textContent = 'Submit RSVP'; 
     }
-    // --- END OF INJECTION ---
 
     document.getElementById('review-attendance-summary').textContent = `${countAttending} attending`;
     switchScreen(screens.review);
 });
 
+
 document.getElementById('btn-edit-answers').addEventListener('click', function() {
     switchScreen(screens.config);
 });
 
-// --- STEP 4: SUBMIT SELECTION TRANSACTION ---
+// ==========================================================================
+// PRODUCTION RSVP SUBMISSION SHEET PUSH ENGINE
+// ==========================================================================
 document.getElementById('btn-submit-rsvp').addEventListener('click', function() {
     const btn = this;
     btn.disabled = true;
@@ -490,8 +437,6 @@ document.getElementById('btn-submit-rsvp').addEventListener('click', function() 
         const cinematicScreen = document.getElementById('marvel-cinematic-intro');
 
         if (isAnyoneAttending && cinematicScreen) {
-            // The continuous background wedding music KEEPS PLAYING beautifully in the background 
-            // as the blackout curtain arrives and the cinematic words roll out!
             cinematicScreen.classList.remove('fade-out-curtain');
             cinematicScreen.classList.add('activated-curtain');
             switchScreen(screens.success);
@@ -504,7 +449,6 @@ document.getElementById('btn-submit-rsvp').addEventListener('click', function() 
             }, 7400);
 
         } else {
-            console.log("[SUBMIT SUCCESS] Entire group declined. Transitioning instantly.");
             if (cinematicScreen) cinematicScreen.style.display = 'none';
             switchScreen(screens.success);
         }
@@ -514,27 +458,23 @@ document.getElementById('btn-submit-rsvp').addEventListener('click', function() 
         btn.textContent = 'Submit RSVP';
         showCustomAlert("An error occurred while saving your RSVP. Please try clicking Submit again.");
     });
-
 });
 
+
 // ==========================================================================
-// 🎬 DYNAMIC 3D RETRO FLIP-CLOCK MECHANICS TIME TRACK ENGINE
+// DYNAMIC 3D RETRO FLIP-CLOCK MECHANICS TIME TRACK ENGINE
 // ==========================================================================
 function runLiveWedding3DFlipClock() {
-    const targetDate = new Date("March 13, 2027 15:00:00").getTime(); // Target Date Tracker
+    const targetDate = new Date("March 13, 2027 15:00:00").getTime(); 
 
-    // Core execution runner function
     function update3DClockCards() {
         const now = new Date().getTime();
         const gap = targetDate - now;
-
-        // Metric mathematical structural units
         const second = 1000;
         const minute = second * 60;
         const hour = minute * 60;
         const day = hour * 24;
 
-        // Exit criteria check if wedding date passes successfully live
         if (gap <= 0) {
             clearInterval(clockEngineInterval);
             const container = document.querySelector(".countdown-flip-container");
@@ -544,20 +484,17 @@ function runLiveWedding3DFlipClock() {
             return;
         }
 
-        // Calculate time calculations
         const d = String(Math.floor(gap / day)).padStart(2, '0');
         const h = String(Math.floor((gap % day) / hour)).padStart(2, '0');
         const m = String(Math.floor((gap % hour) / minute)).padStart(2, '0');
         const s = String(Math.floor((gap % minute) / second)).padStart(2, '0');
 
-        // Apply 3D physics execution logic tracks across each section cards group
         flipCardNodeUpdate(document.getElementById("clock-days-card"), d);
         flipCardNodeUpdate(document.getElementById("clock-hours-card"), h);
         flipCardNodeUpdate(document.getElementById("clock-minutes-card"), m);
         flipCardNodeUpdate(document.getElementById("clock-seconds-card"), s);
     }
 
-    // --- PERFECTLY SYNCHRONIZED 3D MATRIX SWAPPER ENGINE ---
     function flipCardNodeUpdate(cardContainer, newStringValue) {
         if (!cardContainer) return;
 
@@ -566,31 +503,26 @@ function runLiveWedding3DFlipClock() {
         const foregroundTop = cardContainer.querySelector(".f-top");
         const foregroundBottom = cardContainer.querySelector(".f-bottom");
 
-        // Verify if numeric values actually shifted before re-triggering mechanical flips
         if (foregroundTop.textContent === newStringValue) return;
 
-        // 1. Load the upcoming new number onto the background layers
         backgroundTop.textContent = newStringValue;
         backgroundBottom.textContent = newStringValue;
 
-        // 2. Inject active 3D rotation animation classes safely
         cardContainer.classList.add("animate-flip");
 
-        // 3. THE MILLISECOND FIX: Updates numbers exactly as the 400ms animation finishes
         setTimeout(() => {
             foregroundTop.textContent = newStringValue;
             foregroundBottom.textContent = newStringValue;
-            cardContainer.classList.remove("animate-flip"); // Strip tag out to prepare for next second
-        }, 390); // Perfectly synced with the 0.4s CSS curve time tracks!
+            cardContainer.classList.remove("animate-flip"); 
+        }, 390); 
     }
 
-    // Fire processing metrics immediately on initialization, then set execution cadence loops
     update3DClockCards();
     const clockEngineInterval = setInterval(update3DClockCards, 1000);
 }
 
 // ==========================================================================
-// 🎬 BOOT UP THE UPGRADED 3D CLOCK ENGINE SAFELY
+// BOOT UP THE UPGRADED 3D CLOCK ENGINE SAFELY
 // ==========================================================================
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", runLiveWedding3DFlipClock);
@@ -599,7 +531,7 @@ if (document.readyState === "loading") {
 }
 
 // ==========================================================================
-// 🎨 INTERACTIVE COLOR SWATCH LOUPE ENGINE (FIXED ANCHORED STABILITY)
+// PRODUCTION COLOR SWATCH LOUPE ENGINE
 // ==========================================================================
 document.addEventListener("click", function(e) {
     const swatch = e.target.closest(".color-swatch");
@@ -607,9 +539,7 @@ document.addEventListener("click", function(e) {
     const modalCircle = document.getElementById("modal-color-circle");
     const modalLabel = document.getElementById("modal-color-label");
 
-    // 1. OPENING TRIGGER (GUEST CLICKS A COLOR SWATCH)
     if (swatch && modalOverlay && modalCircle && modalLabel) {
-        // Stops browser anchor redirection or form tracking loops from jumping jumping
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation(); 
@@ -619,47 +549,35 @@ document.addEventListener("click", function(e) {
 
         modalCircle.style.backgroundColor = hexColor;
         modalLabel.textContent = colorName;
-
-        // Open the dark frosted view. THE STABILITY FIX: Stripped out the document.body scroll lock lock
         modalOverlay.classList.add("active-view");
-        
-        console.log("[LOUPE OPEN] Modal active. Viewport layout tracking remains perfectly stable.");
         return; 
     }
-
-    // 2. CLOSING DISMISSAL (GUEST CLICKS OUTSIDE THE BOX TO CLOSE)
+    
     const activeModal = document.querySelector(".swatch-modal-overlay.active-view");
     if (activeModal) {
         e.preventDefault();
         e.stopPropagation();
-        
         activeModal.classList.remove("active-view");
-        console.log("[LOUPE CLOSED] Modal dismissed cleanly.");
     }
 });
 
-
 // ==========================================================================
-// 🔄 SMOOTH NAVIGATION BACK-ROUTE FROM SUCCESS HUB TO SCREEN 2
+// PRODUCTION NAVIGATION BACK-ROUTE FROM SUCCESS HUB TO SCREEN 2
 // ==========================================================================
 function switchBackToEditMode() {
-    console.log("[ROUTER PATH] User requested adjustment. Redirecting back to guest panel view...");
-
     const submittedBanner = document.getElementById('already-submitted-banner');
     
     if (submittedBanner) {
-        // Automatically inject your playful lavender returning-user notice!
         submittedBanner.style.display = 'block';
     }
 
-    // Use your existing app screen layout tracker engine to jump straight back to Page 2
     if (typeof switchScreen === 'function' && screens && screens.config) {
         switchScreen(screens.config);
     } else {
-        // Safe robust fallback layout switch logic if configuration objects aren't globally bound
         switchScreen('step-configure'); 
     }
 }
+
 
 
 
