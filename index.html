@@ -23,26 +23,29 @@
         <!-- 🎚️ CONTINUOUS BACKGROUND MUSIC TRACK ENGINE -->
         <audio id="bg-wedding-music" src="audio/wedding-instrumental-2.mp3" loop preload="auto"></audio>
          <!-- STEP 1: SEARCH PAGE WITH AUTOCOMPLETE (ELEGANT UPGRADE) -->
+        <!-- ==========================================================================
+             STEP 1 ENTRY VIEWPORT (CLEAN NO-SEARCH TOKEN ENGINE)
+        ========================================================================= -->
         <div id="step-search" class="step-container active">
             
-            <!-- THE SCRIPT WELCOME INTRODUCTION -->
+            <!-- THE INVITATION TAGLINE HEADER -->
             <p class="welcome-tagline">You have an invitation from</p>
             
-            <!-- UPGRADED STACKED VERTICAL SCRIPT HEADING -->
+            <!-- THE STACKED VERTICAL NAMES HEADING -->
             <h1 class="main-wedding-heading">
                 <span class="partner-name name-left">Joshua</span>
                 <span class="ampersand-divider">&amp;</span>
                 <span class="partner-name name-right">Jonahmir</span>
             </h1>
+
             <p class="wedding-connector-text">to celebrate their wedding on</p>
-            <!-- EVEN METADATA WITH SEPARATED TICKER ELEMENT -->
-            <!-- ELEGANT METADATA WITH SEPARATED ITINERARY LOCATIONS -->
+
+            <!-- SINGLE MINIMALIST DATA BLOCK WITH SPINNING WEDDING RING -->
             <p class="event-meta">
                 <span class="meta-date-time">Saturday, March 13, 2027 • 2:30 PM</span>
                 <img src="images/rings.png" alt="Wedding Ring" width="124" height="auto">
                 <strong>Sacred Heart Parish • Bayfront Hotel Cebu</strong>
             </p>
-
             
             <!-- 🎬 UPGRADED 3D MECHANICAL FLIP-CLOCK TIME ENGINE (FIXED STACK) -->
             <div class="countdown-flip-container">
@@ -99,13 +102,16 @@
             
             <div class="section-divider"></div>
 
-            <div class="form-group autocomplete-wrapper">
-                <label for="search-input">View your reservation</label>
-                <input type="text" id="search-input" placeholder="Start typing your name..." autocomplete="off">
-                <div id="autocomplete-list" class="autocomplete-dropdown"></div>
-            </div>
-            <button id="btn-find-invite" class="btn-primary">Find My Invitation</button>
-            <p id="search-error" class="error-text" style="display:none;">We couldn't find that name. Please select from the suggestions.</p>
+            <!-- ANONYMOUS VERIFICATION BANNER BLOCK -->
+            <p id="search-error" class="error-message" style="display: none; text-align: center; color: var(--accent-red, #ff3b3b); margin-top: 15px;">
+                Invalid link or RSVP details already completed. Please message the couple directly to update your reservation.
+            </p>
+
+            <!-- MAIN CINEMATIC ENTRY INTERACTION ACTION BUTTON -->
+            <button id="btn-find-invite" class="btn-primary" style="margin-top: 25px;">
+                View My Invitation
+            </button>
+            
         </div>
 
         <!-- STEP 2: CONFIGURE GUESTS PAGE -->
