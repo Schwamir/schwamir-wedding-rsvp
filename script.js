@@ -1,4 +1,37 @@
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxY7Rjt5sjbf9b-fJ5dvAn1rKj6erboD1YIiooWMcEhtnf_A7bVlRNxrtcmqOih0d9u/exec';
+let currentReservationData = null;
+let selections = {};
+let allGuestNames = [];
+
+const screens = {
+    search: document.getElementById('step-search'),
+    config: document.getElementById('step-configure'),
+    review: document.getElementById('step-review'),
+    success: document.getElementById('step-success')
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+    const waxSeal = document.getElementById("wedding-wax-seal");
+    const envelope = document.getElementById("wedding-envelope");
+    const curtain = document.getElementById("music-permission-overlay");
+    const weddingMusic = document.getElementById("bg-wedding-music");
+
+    document.body.classList.add("curtain-active");
+
+    if (waxSeal && envelope && curtain && weddingMusic) {
+        waxSeal.addEventListener("click", () => {
+            weddingMusic.volume = 0.5;
+            weddingMusic.play().catch(audioErr => console.warn(audioErr));
+
+            envelope.classList.add("seal-broken");
+
+            setTimeout(() => {
+                curtain.classList.add("hide-curtain");
+                document.body.classList.remove("curtain-active"); 
+            }, 500); 
+        });
+    }
+});
 
 let currentReservationData = null;
 let selections = {};
