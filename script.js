@@ -165,48 +165,60 @@ document.addEventListener('click', (e) => {
 });
 
 // ==========================================================================
-// PRODUCTION STEP 1 GUEST LOOKUP ENGINE
+// 🔍 STEP 2 DIAGNOSTIC: TOKEN-BASED DATA DISPATCH ROUTER
 // ==========================================================================
 document.getElementById('btn-find-invite').addEventListener('click', function() {
-    const nameInput = searchInput.value.trim();
     const errorElement = document.getElementById('search-error');
     const btn = this;
     
-    if(!nameInput) return;
+    // Safety check: Halt if the frontend initialization failed to secure a token
+    if (!guestTokenID) {
+        console.error("[LOOKUP REJECTED] Cannot dispatch pipeline. guestTokenID is empty.");
+        showCustomAlert("Please access this wedding suite using a valid personal link.");
+        return;
+    }
     
+    // Start the weightless ring animation loop immediately on click
     const ringImage = document.querySelector('.event-meta img');
     if (ringImage) {
         ringImage.classList.add('spin-active');
+        console.log("[ANIMATION MATRIX] Variable loading spin sequence initialized.");
     }
     
     btn.disabled = true;
     btn.textContent = 'Searching...';
-    errorElement.style.display = 'none';
+    if (errorElement) errorElement.style.display = 'none';
 
-    const finalUrl = `${SCRIPT_URL}?name=${encodeURIComponent(nameInput)}`;
+    // 🚀 THE PAYLOAD SWAP: Sending the unique ID token instead of a name parameter string
+    const finalUrl = `${SCRIPT_URL}?id=${encodeURIComponent(guestTokenID)}`;
+    console.log(`[LOOKUP NETWORK] Dispatching token validation route to Google Sheets: ${finalUrl}`);
     
     fetch(finalUrl)
         .then(res => res.json())
         .then(data => {
+            console.log("[LOOKUP RESULT] Decoded payload token match response received:", data);
             btn.disabled = false;
-            btn.textContent = 'Find My Invitation';
+            btn.textContent = 'View My Invitation';
             
             if (data.error) {
-                errorElement.style.display = 'block';
+                console.error(`[LOOKUP DATABASE REFUSAL] Match verification stopped: ${data.error}`);
+                if (errorElement) errorElement.style.display = 'block';
                 if (ringImage) ringImage.classList.remove('spin-active');
             } else {
+                console.log("%c[LOOKUP VALIDATED] Success packet verified! Advancing views...", "color: #2be077; font-weight: bold;");
                 currentReservationData = data;
                 setupConfigurationScreen(data);
             }
         })
         .catch(err => {
             btn.disabled = false;
-            btn.textContent = 'Find My Invitation';
+            btn.textContent = 'View My Invitation';
+            console.error("[LOOKUP CRITICAL FAILURE] Connection routing intercepted:", err);
             if (ringImage) ringImage.classList.remove('spin-active');
-            
-            showCustomAlert("We couldn't connect to the guest database. Please check your internet connection and try again.");
+            showCustomAlert("We couldn't connect to the guest database. Please try again.");
         });
 });
+
 
 // ==========================================================================
 // STEP 2: BUILD CONFIG UI WITH INTEGRATED STEP ACCORDION ENGINE
