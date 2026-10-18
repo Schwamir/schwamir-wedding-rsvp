@@ -1,35 +1,38 @@
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxY7Rjt5sjbf9b-fJ5dvAn1rKj6erboD1YIiooWMcEhtnf_A7bVlRNxrtcmqOih0d9u/exec';
-let currentReservationData = null;
-let selections = {};
-let allGuestNames = [];
+// ==========================================================================
+// 🕹️ STEP 1 DIAGNOSTIC: URL TOKEN CAPTURE ENGINE
+// ==========================================================================
+let guestTokenID = null;
 
-const screens = {
-    search: document.getElementById('step-search'),
-    config: document.getElementById('step-configure'),
-    review: document.getElementById('step-review'),
-    success: document.getElementById('step-success')
-};
-
-document.addEventListener("DOMContentLoaded", () => {
-    const waxSeal = document.getElementById("wedding-wax-seal");
-    const envelope = document.getElementById("wedding-envelope");
-    const curtain = document.getElementById("music-permission-overlay");
-    const weddingMusic = document.getElementById("bg-wedding-music");
-
-    document.body.classList.add("curtain-active");
-
-    if (waxSeal && envelope && curtain && weddingMusic) {
-        waxSeal.addEventListener("click", () => {
-            weddingMusic.volume = 0.5;
-            weddingMusic.play().catch(audioErr => console.warn(audioErr));
-
-            envelope.classList.add("seal-broken");
-
-            setTimeout(() => {
-                curtain.classList.add("hide-curtain");
-                document.body.classList.remove("curtain-active"); 
-            }, 500); 
-        });
+window.addEventListener('DOMContentLoaded', () => {
+    console.log("[TOKEN INIT] Booting application frame. Checking URL parameters...");
+    
+    // 1. Extract the ?id= parameter from the address bar
+    const urlParams = new URLSearchParams(window.location.search);
+    guestTokenID = urlParams.get('id') ? urlParams.get('id').trim() : null;
+    
+    const findInviteBtn = document.getElementById('btn-find-invite');
+    
+    if (guestTokenID) {
+        console.log(`%c[TOKEN SUCCESS] Found matching URL token identifier: "${guestTokenID}"`, "color: #2be077; font-weight: bold;");
+        
+        // Ensure our main interactive button is active and displays standard wording
+        if (findInviteBtn) {
+            findInviteBtn.disabled = false;
+            findInviteBtn.textContent = 'View My Invitation';
+        }
+    } else {
+        console.warn("%c[TOKEN LOCKOUT] No unique identification token found in URL address bar.", "color: #ff3b3b; font-weight: bold;");
+        
+        // Clean interface safety clamp: Disables the button to block blind access paths
+        if (findInviteBtn) {
+            findInviteBtn.disabled = true;
+            findInviteBtn.textContent = 'Personal Link Required';
+            findInviteBtn.style.opacity = '0.6';
+            findInviteBtn.style.cursor = 'not-allowed';
+        }
+        
+        showCustomAlert("Please access this wedding suite using the unique personal link sent to you by the couple.");
     }
 });
 
