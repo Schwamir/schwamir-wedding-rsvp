@@ -84,40 +84,32 @@ function showCustomAlert(message) {
     const closeBtn = document.getElementById('btn-close-modal');
 
     if (!modal || !msgElement) return;
-
-    // Convert the incoming error message payload to lowercase to filter it safely
     const checkStr = String(message).toLowerCase().trim();
 
-    // 🔒 SCENARIO 1: The Guest is Locked Out / RSVP Already Completed (Idea C)
     if (checkStr.includes("completed") || checkStr.includes("already") || checkStr.includes("token")) {
         if (modalEmoji) modalEmoji.textContent = "🔒";
         if (modalTitle) modalTitle.textContent = "DETAILS SECURED";
         msgElement.innerHTML = "Oh snap! It looks like an RSVP has already been safely locked in for this household group. If you need to make changes or tweak your choices, just drop Joshua or Jonahmir a message directly and we'll open it right back up for you! 💜";
     } 
-    // 🥺 SCENARIO 2: Form Validation Error / Checkboxes Left Empty
+
     else if (checkStr.includes("selection") || checkStr.includes("every guest") || checkStr.includes("required")) {
         if (modalEmoji) modalEmoji.textContent = "🥺";
         if (modalTitle) modalTitle.textContent = "SELECTION REQUIRED";
         msgElement.innerHTML = "Hold on! Please make a selection for every guest before we can look over the final details. Let's make sure everyone is accounted for! ✨";
     } 
-    // 📡 SCENARIO 3: General Fallback for unexpected network drops
     else {
         if (modalEmoji) modalEmoji.textContent = "📡";
         if (modalTitle) modalTitle.textContent = "NETWORK HICCUP";
         msgElement.textContent = message;
     }
 
-    // Smoothly opens up your modal frame using your original layout class hook
     modal.classList.add('show');
 
-    // Attach click cleanup listener to your original close button ID
     if (closeBtn) {
         closeBtn.onclick = function() {
             modal.classList.remove('show');
         };
     }
-
-    // Close the container safely if they tap the background frosted glass area
     modal.onclick = function(e) {
         if (e.target === modal) {
             modal.classList.remove('show');
@@ -135,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================================================
-// 🔍 UPDATED TOKEN LOOKUP BUTTON EVENT HANDLER (MODAL INTEGRATED)
+// UPDATED TOKEN LOOKUP BUTTON EVENT HANDLER (MODAL INTEGRATED)
 // ==========================================================================
 document.getElementById('btn-find-invite').addEventListener('click', function() {
     const btn = this;
@@ -164,7 +156,6 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
             if (data.error) {
                 if (ringImage) ringImage.classList.remove('spin-active');
                 
-                // 🔥 THE MODAL INTERCEPT TRIGGER: Fires our gorgeous popup window instantly!
                 showCustomAlert("RSVP_ALREADY_COMPLETED");
                 
             } else {

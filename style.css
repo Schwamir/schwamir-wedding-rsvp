@@ -234,7 +234,7 @@ body.curtain-active .rsvp-card {
 
 .section-divider {
     height: 1px;
-    background: #c9c4c9;
+    background: #e4d8eb;
     margin: 20px 0;
 }
 
@@ -1782,7 +1782,7 @@ body:not(.curtain-active) .rsvp-card {
         margin-top: 4px;    
     }
     .section-divider {
-        background: #c2c9d1;
+        background: #e4d8eb;
     }
     .warm-closing-tag.split-closing-lines span:nth-child(2) {
         font-size: 2.4rem !important;
