@@ -1,7 +1,4 @@
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyp9e64X7KTVJ5u6reSLVIAJq1LSmB8AXu-hHGsz2POy3tnbRpdNuPT-oAUqVoshhc6/exec';
-// ==========================================================================
-// PRODUCTION TOKEN CAPTURE ENGINE
-// ==========================================================================
 let guestTokenID = null;
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -25,6 +22,8 @@ window.addEventListener('DOMContentLoaded', () => {
         showCustomAlert("Please access this wedding suite using the unique personal link sent to you by the couple.");
     }
 });
+
+
 
 let currentReservationData = null;
 let selections = {};
