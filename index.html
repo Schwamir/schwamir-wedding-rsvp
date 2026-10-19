@@ -5,7 +5,12 @@
     <meta property="og:title" content="Josh & Mir's Wedding | March 13, 2027" />
     <meta property="og:description" content="From a wonderful journey to a lifetime of love. We can’t wait to celebrate our special day with you! Click here to unlock your reservation card. 🥂" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://schwamir.online/" />
+    <script>
+        const ogUrlMeta = document.createElement('meta');
+        ogUrlMeta.setAttribute('property', 'og:url');
+        ogUrlMeta.setAttribute('content', window.location.href);
+        document.head.appendChild(ogUrlMeta);
+    </script>
     <meta property="og:image" content="https://schwamir.github.io/schwamir-wedding-rsvp/images/preview-image-v2.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
