@@ -1,37 +1,27 @@
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxY7Rjt5sjbf9b-fJ5dvAn1rKj6erboD1YIiooWMcEhtnf_A7bVlRNxrtcmqOih0d9u/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyp9e64X7KTVJ5u6reSLVIAJq1LSmB8AXu-hHGsz2POy3tnbRpdNuPT-oAUqVoshhc6/exec';
 // ==========================================================================
-// 🕹️ STEP 1 DIAGNOSTIC: URL TOKEN CAPTURE ENGINE
+// PRODUCTION TOKEN CAPTURE ENGINE
 // ==========================================================================
 let guestTokenID = null;
 
 window.addEventListener('DOMContentLoaded', () => {
-    console.log("[TOKEN INIT] Booting application frame. Checking URL parameters...");
-    
-    // 1. Extract the ?id= parameter from the address bar
     const urlParams = new URLSearchParams(window.location.search);
     guestTokenID = urlParams.get('id') ? urlParams.get('id').trim() : null;
     
     const findInviteBtn = document.getElementById('btn-find-invite');
     
     if (guestTokenID) {
-        console.log(`%c[TOKEN SUCCESS] Found matching URL token identifier: "${guestTokenID}"`, "color: #2be077; font-weight: bold;");
-        
-        // Ensure our main interactive button is active and displays standard wording
         if (findInviteBtn) {
             findInviteBtn.disabled = false;
             findInviteBtn.textContent = 'View My Invitation';
         }
     } else {
-        console.warn("%c[TOKEN LOCKOUT] No unique identification token found in URL address bar.", "color: #ff3b3b; font-weight: bold;");
-        
-        // Clean interface safety clamp: Disables the button to block blind access paths
         if (findInviteBtn) {
             findInviteBtn.disabled = true;
             findInviteBtn.textContent = 'Personal Link Required';
             findInviteBtn.style.opacity = '0.6';
             findInviteBtn.style.cursor = 'not-allowed';
         }
-        
         showCustomAlert("Please access this wedding suite using the unique personal link sent to you by the couple.");
     }
 });
@@ -81,14 +71,60 @@ function switchScreen(targetScreen) {
     window.scrollTo(0, 0);
 }
 
+// ==========================================================================
+// PRODUCTION PLAYFUL MASTER MODAL MANAGER (TAILORED CUSTOM LAYER)
+// ==========================================================================
 function showCustomAlert(message) {
     const modal = document.getElementById('custom-alert-modal');
     const msgElement = document.getElementById('modal-alert-message');
-    if (modal && msgElement) {
+    
+    // Dynamically targets your original internal typographic selector blocks
+    const modalTitle = modal ? modal.querySelector('.modal-title') : null;
+    const modalEmoji = modal ? modal.querySelector('.modal-emoji') : null;
+    const closeBtn = document.getElementById('btn-close-modal');
+
+    if (!modal || !msgElement) return;
+
+    // Convert the incoming error message payload to lowercase to filter it safely
+    const checkStr = String(message).toLowerCase().trim();
+
+    // 🔒 SCENARIO 1: The Guest is Locked Out / RSVP Already Completed (Idea C)
+    if (checkStr.includes("completed") || checkStr.includes("already") || checkStr.includes("token")) {
+        if (modalEmoji) modalEmoji.textContent = "🔒";
+        if (modalTitle) modalTitle.textContent = "DETAILS SECURED";
+        msgElement.innerHTML = "Oh snap! It looks like an RSVP has already been safely locked in for this household group. If you need to make changes or tweak your choices, just drop Joshua or Jonahmir a message directly and we'll open it right back up for you! 💜";
+    } 
+    // 🥺 SCENARIO 2: Form Validation Error / Checkboxes Left Empty
+    else if (checkStr.includes("selection") || checkStr.includes("every guest") || checkStr.includes("required")) {
+        if (modalEmoji) modalEmoji.textContent = "🥺";
+        if (modalTitle) modalTitle.textContent = "SELECTION REQUIRED";
+        msgElement.innerHTML = "Hold on! Please make a selection for every guest before we can look over the final details. Let's make sure everyone is accounted for! ✨";
+    } 
+    // 📡 SCENARIO 3: General Fallback for unexpected network drops
+    else {
+        if (modalEmoji) modalEmoji.textContent = "📡";
+        if (modalTitle) modalTitle.textContent = "NETWORK HICCUP";
         msgElement.textContent = message;
-        modal.classList.add('show');
     }
+
+    // Smoothly opens up your modal frame using your original layout class hook
+    modal.classList.add('show');
+
+    // Attach click cleanup listener to your original close button ID
+    if (closeBtn) {
+        closeBtn.onclick = function() {
+            modal.classList.remove('show');
+        };
+    }
+
+    // Close the container safely if they tap the background frosted glass area
+    modal.onclick = function(e) {
+        if (e.target === modal) {
+            modal.classList.remove('show');
+        }
+    };
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('btn-close-modal');
@@ -99,113 +135,39 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================================================
-// PRODUCTION PRE-LOAD GUEST NAMES ENGINE
-// ==========================================================================
-window.addEventListener('DOMContentLoaded', () => {
-    const targetUrl = `${SCRIPT_URL}?action=getAll`;
-    
-    fetch(targetUrl)
-        .then(res => {
-            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-            return res.json();
-        })
-        .then(data => {
-            if (data.names) {
-                allGuestNames = data.names;
-            }
-        })
-        .catch(err => {
-        });
-});
-
-
-const searchInput = document.getElementById('search-input');
-const autocompleteList = document.getElementById('autocomplete-list');
-
-searchInput.addEventListener('input', function() {
-    const val = this.value.trim().toLowerCase();
-    autocompleteList.innerHTML = '';
-    
-    if (!val) {
-        autocompleteList.classList.remove('visible');
-        return;
-    }
-
-    const filtered = allGuestNames.filter(name => name.toLowerCase().includes(val));
-    
-    if (filtered.length > 0) {
-        autocompleteList.classList.add('visible'); 
-        
-        filtered.forEach(name => {
-            const item = document.createElement('div');
-            item.className = 'autocomplete-item';
-            item.textContent = name;
-            item.addEventListener('click', () => {
-                searchInput.value = name;
-                autocompleteList.innerHTML = '';
-                autocompleteList.classList.remove('visible'); 
-            });
-            autocompleteList.appendChild(item);
-        });
-    } else {
-        autocompleteList.classList.remove('visible');
-    }
-});
-
-document.addEventListener('click', (e) => {
-    if (e.target !== searchInput) {
-        autocompleteList.innerHTML = '';
-        autocompleteList.classList.remove('visible');
-    }
-});
-
-
-document.addEventListener('click', (e) => {
-    if (e.target !== searchInput) autocompleteList.innerHTML = '';
-});
-
-// ==========================================================================
-// 🔍 STEP 2 DIAGNOSTIC: TOKEN-BASED DATA DISPATCH ROUTER
+// 🔍 UPDATED TOKEN LOOKUP BUTTON EVENT HANDLER (MODAL INTEGRATED)
 // ==========================================================================
 document.getElementById('btn-find-invite').addEventListener('click', function() {
-    const errorElement = document.getElementById('search-error');
     const btn = this;
     
-    // Safety check: Halt if the frontend initialization failed to secure a token
     if (!guestTokenID) {
-        console.error("[LOOKUP REJECTED] Cannot dispatch pipeline. guestTokenID is empty.");
         showCustomAlert("Please access this wedding suite using a valid personal link.");
         return;
     }
     
-    // Start the weightless ring animation loop immediately on click
     const ringImage = document.querySelector('.event-meta img');
     if (ringImage) {
         ringImage.classList.add('spin-active');
-        console.log("[ANIMATION MATRIX] Variable loading spin sequence initialized.");
     }
     
     btn.disabled = true;
     btn.textContent = 'Searching...';
-    if (errorElement) errorElement.style.display = 'none';
 
-    // 🚀 THE PAYLOAD SWAP: Sending the unique ID token instead of a name parameter string
     const finalUrl = `${SCRIPT_URL}?id=${encodeURIComponent(guestTokenID)}`;
-    console.log(`[LOOKUP NETWORK] Dispatching token validation route to Google Sheets: ${finalUrl}`);
     
     fetch(finalUrl)
         .then(res => res.json())
         .then(data => {
-            console.log("[LOOKUP RESULT] Decoded payload token match response received:", data);
             btn.disabled = false;
             btn.textContent = 'View My Invitation';
             
             if (data.error) {
-                console.error(`[LOOKUP DATABASE REFUSAL] Match verification stopped: ${data.error}`);
-                if (errorElement) errorElement.style.display = 'block';
                 if (ringImage) ringImage.classList.remove('spin-active');
+                
+                // 🔥 THE MODAL INTERCEPT TRIGGER: Fires our gorgeous popup window instantly!
+                showCustomAlert("RSVP_ALREADY_COMPLETED");
+                
             } else {
-                console.log("%c[LOOKUP VALIDATED] Success packet verified! Advancing views...", "color: #2be077; font-weight: bold;");
                 currentReservationData = data;
                 setupConfigurationScreen(data);
             }
@@ -213,11 +175,11 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
         .catch(err => {
             btn.disabled = false;
             btn.textContent = 'View My Invitation';
-            console.error("[LOOKUP CRITICAL FAILURE] Connection routing intercepted:", err);
             if (ringImage) ringImage.classList.remove('spin-active');
             showCustomAlert("We couldn't connect to the guest database. Please try again.");
         });
 });
+
 
 
 // ==========================================================================

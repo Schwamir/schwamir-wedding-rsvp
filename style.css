@@ -282,13 +282,12 @@ input:focus {
    ========================================================================== */
 
 .guest-decision-card {
-    background: var(--bg-light);
+    background-color: #e3d4ef !important; 
     border-radius: 14px;
     padding: 16px;
-    border: 1px solid rgba(112, 93, 120, 0.1);
     margin-bottom: 12px;
-    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-    box-sizing: border-box;
+    transition: background-color 0.3s ease, padding 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 14px rgba(81, 61, 92, 0.08); 
 }
 
 .guest-name {
@@ -318,8 +317,9 @@ input:focus {
 }
 
 .guest-decision-card.is-collapsed {
-    padding: 12px 16px; 
-    background: rgba(255, 255, 255, 0.4); 
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.55) !important; 
+    box-shadow: none; 
 }
 
 .guest-decision-card.is-collapsed .guest-name {
@@ -549,7 +549,7 @@ input:focus {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(12, 11, 14, 0.75); 
+    background-color: rgb(43 34 63 / 75%);
     backdrop-filter: blur(15px); 
     -webkit-backdrop-filter: blur(15px);
     display: flex;
@@ -697,13 +697,6 @@ input:focus {
     }
 }
 
-.guest-decision-card {
-    background-color: var(--lavender-light) !important; 
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 12px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
 
 .guest-decision-card:hover {
     transform: translateY(-2px); 
