@@ -775,7 +775,7 @@ input:focus {
     align-items: center;       
     justify-content: center;
     width: 100%;
-    margin: 10px auto 20px auto; 
+    margin: 25px auto 35px auto;
     padding: 0 70px;
     box-sizing: border-box;
 }
@@ -895,7 +895,7 @@ input:focus {
 .b-top, .f-top {
     top: 0;
     line-height: 48px; 
-    border-radius: 8px 8px 0 0;
+    border-radius: 16px 16px 0 0;
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.4); 
     transform-origin: 50% 100%; 
 }
@@ -904,7 +904,7 @@ input:focus {
 .b-bottom, .f-bottom {
     bottom: 0;
     line-height: 0px; 
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 16px 16px;
     border-top: 0.3px solid rgba(255, 255, 255, 0.12); 
     transform-origin: 50% 0%; 
 }
@@ -957,6 +957,7 @@ input:focus {
     text-transform: uppercase;
     margin-top: 8px;
     letter-spacing: 0.5px;
+    
 }
 
 .flip-digit-card::after {
@@ -970,14 +971,6 @@ input:focus {
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.flip-unit-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--lavender-medium);
-    text-transform: uppercase;
-    margin-top: 6px;
-    letter-spacing: 0.3px;
-}
 /* ==========================================================================
    STEP 2: PREMIUM LAYOUT & SECTION CONTRAST STYLES
    ========================================================================== */
@@ -1843,7 +1836,7 @@ body:not(.curtain-active) .rsvp-card {
     animation: confetti-fall linear forwards;
 }
 
-/* 💃 THE FLOATING CINEMATIC MOVEMENT RULES */
+/* THE FLOATING CINEMATIC MOVEMENT RULES */
 @keyframes confetti-fall {
     0% {
         transform: translateY(0) rotate(0deg) translateX(0);
@@ -1855,3 +1848,140 @@ body:not(.curtain-active) .rsvp-card {
         opacity: 0;
     }
 }
+#btn-find-invite:active {
+    transform: scale(0.97); /* Provides a weightless physical click sink indicator */
+    background-color: #43324d; /* Subtle dark color shifting shift */
+    transition: transform 0.1s ease;
+}
+
+
+/* ==========================================================================
+   📱 PREMIUM iPHONE UNLOCK SLIDER SYSTEM (DARK LUSTER GLASS)
+   ========================================================================== */
+.slider-container {
+    position: relative;
+    width: 100%;
+    height: 56px;
+    background-color: #322538; /* Your premium deep root lavender obsidian charcoal */
+    border-radius: 28px;
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    user-select: none;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4), 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+/* 🔒 DISABLED resting state before wax seal is tapped */
+.disabled-slider {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.disabled-slider .slider-handle {
+    pointer-events: none;
+}
+
+/* ⚪ AUTHENTIC ROUND WHITE SLIDER KNOB */
+.slider-handle {
+    position: absolute;
+    left: 3px;
+    width: 50px;
+    height: 50px;
+    background: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+    z-index: 3;
+    transition: transform 0.1s ease-out;
+}
+
+.slider-handle:active {
+    cursor: grabbing;
+}
+
+/* THE MINIMALIST ARROW CHEVRON */
+.slider-chevron {
+    width: 10px;
+    height: 10px;
+    border-top: 2.5px solid #322538;
+    border-right: 2.5px solid #322538;
+    transform: rotate(45deg) translate(-1px, 1px); /* Perfect 45-degree angle chevron pointing right */
+    display: inline-block;
+}
+
+.slider-cape {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0px; /* Controlled dynamically by JavaScript as you drag */
+    height: 100%;
+    background-color: #322538; /* Matches your background track color exactly */
+    z-index: 2; /* Sits over the text (z-index 1) but behind the handle knob (z-index 3) */
+    pointer-events: none;
+}
+
+.slider-text {
+    position: absolute;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    z-index: 1; /* Sits at the bottom layer so it can be covered up cleanly */
+    pointer-events: none;
+    background: linear-gradient(90deg, #504d52 0%, #504d52 25%, #ffffff 50%, #504d52 75%, #504d52 100%);
+    background-size: 300% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: iphone-shimmer 5s infinite linear;
+}
+
+
+/* 🔄 SEAMLESS INFINITE LOOP KEYFRAMES */
+@keyframes iphone-shimmer {
+    0% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: -200% 0; /* Travels the expanded background width smoothly */
+    }
+}
+
+/* ==========================================================================
+   DESIGN 3: THE VENETIAN LUXURY DIAMOND TAPER
+   ========================================================================== */
+.royal-divider-diamond {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 65%;
+    margin: 35px auto;
+}
+
+.royal-divider-diamond::before,
+.royal-divider-diamond::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(81, 61, 92, 0) 0%, rgba(193, 165, 217, 0.6) 80%, rgba(81, 61, 92, 0) 100%);
+}
+
+.royal-divider-diamond::before { margin-right: 15px; }
+.royal-divider-diamond::after { margin-left: 15px; }
+
+.royal-divider-diamond::center-piece {
+    content: '✦';
+    font-size: 14px;
+    color: #513d5c;
+    letter-spacing: 0px;
+}
+
+
+
+

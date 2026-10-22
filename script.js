@@ -19,7 +19,9 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// SECURE MASTER APPLICATION LOOP (SEPARATED INTERCEPT CHECKPOINTS)
+// ==========================================================================
+// 🏛️ SECURE MASTER APPLICATION LOOP (iPHONE SLIDER INTEGRATED ENGINE)
+// ==========================================================================
 let currentReservationData = null;
 let selections = {};
 let allGuestNames = [];
@@ -31,17 +33,24 @@ const screens = {
     success: document.getElementById('step-success')
 };
 
-// CHECKPOINT 1: THE WAX SEAL MECHANICS (ANIMATION & MUSIC GATES)
+// --------------------------------------------------------------------------
+// 💌 CHECKPOINT 1: THE WAX SEAL MECHANICS (ANIMATION & MUSIC GATES)
+// --------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
     const waxSeal = document.getElementById("wedding-wax-seal");
     const envelope = document.getElementById("wedding-envelope");
     const curtain = document.getElementById("music-permission-overlay");
     const weddingMusic = document.getElementById("bg-wedding-music");
 
+    const sliderTrack = document.getElementById("iphone-slider-track");
+    const sliderHandle = document.getElementById("iphone-slider-handle");
+    const hiddenBtn = document.getElementById("btn-find-invite");
+
     document.body.classList.add("curtain-active");
 
     if (waxSeal) {
         waxSeal.addEventListener("click", (e) => {
+            // 🛡️ SECURITY STEP: If no token ID is present, block EVERYTHING instantly!
             if (!guestTokenID) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -49,6 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 showCustomAlert("NO_TOKEN_PROVIDED");
                 return false;
             }
+
+            // 🔓 VALID TOKEN CONFIRMED: Safe to wake up music and execute structural transitions!
             if (weddingMusic) {
                 weddingMusic.volume = 0.5;
                 weddingMusic.play().catch(audioErr => console.warn(audioErr));
@@ -64,15 +75,100 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.body.classList.remove("curtain-active"); 
                 }, 500);
             }
-            const btn = document.getElementById('btn-find-invite');
-            if (btn) {
-                btn.disabled = false;
-                btn.style.cursor = "pointer";
+            
+            // 🔓 ACTIVATE SLIDER: Unlock the track layer to allow physical pointer drags
+            if (sliderTrack) {
+                sliderTrack.classList.remove("disabled-slider");
+                initSliderDragEngine();
             }
         });
     }
+
+     // --------------------------------------------------------------------------
+    // 🎛️ DRAG LOGIC CALCULATOR: RE-TUNED FOR MOBILE TOUCH & COUPLING CAPE
+    // --------------------------------------------------------------------------
+    function initSliderDragEngine() {
+        if (!sliderHandle || !sliderTrack || !hiddenBtn) return;
+
+        const sliderCape = document.getElementById("iphone-slider-cape");
+        let isDragging = false;
+        let startX = 0;
+
+        function startDrag(e) {
+            isDragging = true;
+            // ✔️ FIXED: Correctly extracts the touch coordinates from array index 0
+            const clientX = e.touches && e.touches.length ? e.touches[0].pageX : e.pageX;
+            startX = clientX - sliderHandle.offsetLeft;
+            
+            sliderHandle.style.transition = 'none';
+            if (sliderCape) sliderCape.style.transition = 'none';
+        }
+
+        function doDrag(e) {
+            if (!isDragging) return;
+            
+            // Prevent mobile phones from bouncing or scrolling the page while dragging the knob
+            if (e.cancelable) e.preventDefault();
+            
+            // ✔️ FIXED: Correctly extracts moving touch paths from array index 0
+            const currentX = e.touches && e.touches.length ? e.touches[0].pageX : e.pageX;
+            let leftPosition = currentX - startX;
+            const maxDelta = sliderTrack.clientWidth - sliderHandle.clientWidth - 4;
+
+            // Constrain handle movement inside the track boundaries
+            if (leftPosition < 2) leftPosition = 2;
+            if (leftPosition > maxDelta) leftPosition = maxDelta;
+
+            const currentTranslateX = leftPosition - 2;
+            sliderHandle.style.transform = "translateX(" + currentTranslateX + "px)";
+
+            // 🧥 THE CAPE COUPLING: Smoothly expands the curtain background behind the path
+            if (sliderCape) {
+                // Expanding the cape box past the center radius ensures complete font coverage
+                sliderCape.style.width = (leftPosition + 25) + "px"; 
+            }
+
+            // 🎯 ACTION THRESHOLD REACHED (Pulled past 95% of the total width)
+            if (leftPosition >= maxDelta - 2) {
+                isDragging = false;
+                sliderHandle.style.transform = "translateX(" + (maxDelta - 2) + "px)";
+                if (sliderCape) sliderCape.style.width = "100%";
+                
+                hiddenBtn.disabled = false;
+                hiddenBtn.click();
+            }
+        }
+
+        function endDrag() {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            // Snap back smoothly if let go midway
+            sliderHandle.style.transition = 'transform 0.2s ease-out';
+            sliderHandle.style.transform = 'translateX(0px)';
+            
+            if (sliderCape) {
+                sliderCape.style.transition = 'width 0.2s ease-out';
+                sliderCape.style.width = '0px';
+            }
+        }
+
+        // Mouse listeners for desktop computers
+        sliderHandle.addEventListener("mousedown", startDrag);
+        window.addEventListener("mousemove", doDrag);
+        window.addEventListener("mouseup", endDrag);
+
+        // Touch listeners for mobile smartphones
+        sliderHandle.addEventListener("touchstart", startDrag, { passive: true });
+        window.addEventListener("touchmove", doDrag, { passive: false });
+        window.addEventListener("touchend", endDrag);
+    }
+
 });
 
+// --------------------------------------------------------------------------
+// 🔍 CHECKPOINT 2: NETWORK HOOK (EXECUTED BEHIND THE SCENES BY THE SLIDER)
+// --------------------------------------------------------------------------
 document.getElementById('btn-find-invite').addEventListener('click', function() {
     const btn = this;
     if (!guestTokenID) {
@@ -88,7 +184,7 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
     btn.disabled = true;
     btn.textContent = 'Searching...';
 
-    const finalUrl = `${SCRIPT_URL}?id=${encodeURIComponent(guestTokenID)}`;
+    const finalUrl = SCRIPT_URL + "?id=" + encodeURIComponent(guestTokenID);
     
     fetch(finalUrl)
         .then(res => res.json())
@@ -111,6 +207,7 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
             showCustomAlert("We couldn't connect to the guest database. Please try again.");
         });
 });
+
 
 
 // PRODUCTION ROUTER VIEWPORT TRANSITION ENGINE
