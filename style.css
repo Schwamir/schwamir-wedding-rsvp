@@ -22,7 +22,7 @@ body {
     color: var(--lavender-slate);
 }
 
-/* ✒️ TYPOGRAPHY HIERARCHY UPGRADES */
+/* TYPOGRAPHY HIERARCHY UPGRADES */
 h1 {
     font-family: 'Great Vibes', cursive;
     font-size: 3.8rem;
@@ -59,7 +59,7 @@ p {
 }
 
 /* ==========================================================================
-   📅 EVENT METADATA TIMELINE & LOCATION STYLING
+   EVENT METADATA TIMELINE & LOCATION STYLING
    ========================================================================== */
 
 .event-meta {
@@ -93,7 +93,7 @@ p {
     letter-spacing: 0.3px;
 }
 /* ==========================================================================
-   💍 STEP 2 MANIFEST: CLAMPING ANIMATION BEHIND ACTIVE STATE
+   STEP 2 MANIFEST: CLAMPING ANIMATION BEHIND ACTIVE STATE
    ========================================================================== */
 
 /* Base state: The ring sits completely still on load */
@@ -132,7 +132,7 @@ p {
 
 
 /* ==========================================================================
-   🎬 RSVP CARD ENVELOPE LAYER CONTROLLERS (SIBLING ENGINE FIX)
+   RSVP CARD ENVELOPE LAYER CONTROLLERS (SIBLING ENGINE FIX)
    ========================================================================== */
 
 .rsvp-card {
@@ -155,7 +155,7 @@ p {
     z-index: 100;
 }
 /* ==========================================================================
-   🧼 NESTED RSVP CARD CLEANUP BLOCK (REMOVES REAR GHOST SHAPES)
+   NESTED RSVP CARD CLEANUP BLOCK (REMOVES REAR GHOST SHAPES)
    ========================================================================== */
 body.curtain-active .rsvp-card {
     background: transparent !important;
@@ -278,7 +278,7 @@ input:focus {
 }
 
 /* ==========================================================================
-   👥 ACCORDION STYLES (REPLACING OLD GUEST VIEW CARDS)
+   ACCORDION STYLES (REPLACING OLD GUEST VIEW CARDS)
    ========================================================================== */
 
 .guest-decision-card {
@@ -510,7 +510,7 @@ input:focus {
 }
 
 /* ==========================================================================
-   👗 ADAPTIVE MULTI-ROW COLOR PALETTE CONTROLLERS
+   ADAPTIVE MULTI-ROW COLOR PALETTE CONTROLLERS
    ========================================================================== */
 .color-palette-container {
     display: flex;
@@ -540,7 +540,7 @@ input:focus {
 }
 
 /* ==========================================================================
-   🎨 DYNAMIC COLOR SWATCH LOUPE MODAL STYLES (CINEMATIC FROSTED BLACK)
+ DYNAMIC COLOR SWATCH LOUPE MODAL STYLES (CINEMATIC FROSTED BLACK)
    ========================================================================== */
 
 .swatch-modal-overlay {
@@ -733,8 +733,8 @@ input:focus {
     transform: translateY(1px);
 }
 
-/* ==========================================================================
-   🎵 WELCOME ENTRYWAY PORTRAIT FRAME (RENAMED & ISOLATED)
+/* =========================================================================
+   WELCOME ENTRYWAY PORTRAIT FRAME (RENAMED & ISOLATED)
    ========================================================================== */
 
 .welcome-portrait-frame {
@@ -833,7 +833,7 @@ input:focus {
     letter-spacing: 0.2px;
 }
 /* ==========================================================================
-   🎬 3D MECHANICAL FLIP-CLOCK MATRIX STYLES (BALANCED LAYER STACK)
+   3D MECHANICAL FLIP-CLOCK MATRIX STYLES (BALANCED LAYER STACK)
    ========================================================================== */
 
 .countdown-flip-container {
@@ -915,7 +915,7 @@ input:focus {
 .f-top { z-index: 3; transform: rotateX(0deg); }
 
 /* ==========================================================================
-   🎬 FIXED DYNAMIC TIMING SYNCHRONIZATIONS
+ FIXED DYNAMIC TIMING SYNCHRONIZATIONS
    ========================================================================== */
 
 
@@ -1416,7 +1416,7 @@ input:focus {
 }
 
 /* ==========================================================================
-   🎬 CINEMATIC POST-CREDITS WORD ENGINE 
+   CINEMATIC POST-CREDITS WORD ENGINE 
    ========================================================================== */
 
 .cinematic-blackout {
@@ -1484,7 +1484,7 @@ input:focus {
 }
 
 /* ==========================================================================
-   🖼️ TRANSPARENT VISIBILITY ISOLATION SHEET (NO SOLID TINTS)
+   TRANSPARENT VISIBILITY ISOLATION SHEET (NO SOLID TINTS)
    ========================================================================== */
 
 .welcome-music-curtain {
@@ -1497,7 +1497,7 @@ input:focus {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    z-index: 999999999 !important; 
+    z-index: 4999 !important;
     opacity: 1;
     visibility: visible;
     transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.8s ease;
@@ -1524,7 +1524,7 @@ body:not(.curtain-active) .rsvp-card {
 }
 
 /* ==========================================================================
-   🎬 CINEMATIC ZOOM-AND-FADE ENVELOPE CONFIGURATION
+   CINEMATIC ZOOM-AND-FADE ENVELOPE CONFIGURATION
    ========================================================================== */
 
 .envelope-wrapper {
@@ -1670,7 +1670,7 @@ body:not(.curtain-active) .rsvp-card {
 
 
 /* ==========================================================================
-   🎬 ANIMATED MOTION CHOREOGRAPHY STATES
+   ANIMATED MOTION CHOREOGRAPHY STATES
    ========================================================================== */
 .envelope-wrapper.seal-broken .interactive-wax-seal {
     opacity: 0;
@@ -1684,7 +1684,7 @@ body:not(.curtain-active) .rsvp-card {
 
 
 /* ==========================================================================
-   🎬 WELCOME TAGLINE KINETIC EDITORIAL SLIDE ENGINE
+   WELCOME TAGLINE KINETIC EDITORIAL SLIDE ENGINE
    ========================================================================== */
 
 .text-mobile-break {
@@ -1816,5 +1816,42 @@ body:not(.curtain-active) .rsvp-card {
         font-size: 13px;
         margin-top: 8px !important;
         margin-bottom: 10px !important;
+    }
+}
+/* ==========================================================================
+   LIGHTWEIGHT CELEBRATION CONFETTI ENGINE (CSS LAYER)
+   ========================================================================== */
+.confetti-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none; /* Allows guests to click buttons right through the falling paper */
+    z-index: 9999;
+}
+
+.confetti-piece {
+    position: absolute;
+    top: -20px;
+    width: 10px;
+    height: 10px;
+    opacity: 0.8;
+    border-radius: 2px;
+    /* Runs your custom downward drift and spinning animations simultaneously */
+    animation: confetti-fall linear forwards;
+}
+
+/* 💃 THE FLOATING CINEMATIC MOVEMENT RULES */
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(0) rotate(0deg) translateX(0);
+        opacity: 1;
+    }
+    100% {
+        /* Drifts down past the bottom of the card card row boundaries */
+        transform: translateY(105vh) rotate(720deg) translateX(30px);
+        opacity: 0;
     }
 }

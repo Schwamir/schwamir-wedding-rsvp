@@ -1,4 +1,5 @@
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyp9e64X7KTVJ5u6reSLVIAJq1LSmB8AXu-hHGsz2POy3tnbRpdNuPT-oAUqVoshhc6/exec';
+
 let guestTokenID = null;
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -10,21 +11,15 @@ window.addEventListener('DOMContentLoaded', () => {
     if (guestTokenID) {
         if (findInviteBtn) {
             findInviteBtn.disabled = false;
-            findInviteBtn.textContent = 'View My Invitation';
         }
     } else {
         if (findInviteBtn) {
-            findInviteBtn.disabled = true;
-            findInviteBtn.textContent = 'Personal Link Required';
-            findInviteBtn.style.opacity = '0.6';
             findInviteBtn.style.cursor = 'not-allowed';
         }
-        showCustomAlert("Please access this wedding suite using the unique personal link sent to you by the couple.");
     }
 });
 
-
-
+// SECURE MASTER APPLICATION LOOP (SEPARATED INTERCEPT CHECKPOINTS)
 let currentReservationData = null;
 let selections = {};
 let allGuestNames = [];
@@ -36,6 +31,7 @@ const screens = {
     success: document.getElementById('step-success')
 };
 
+// CHECKPOINT 1: THE WAX SEAL MECHANICS (ANIMATION & MUSIC GATES)
 document.addEventListener("DOMContentLoaded", () => {
     const waxSeal = document.getElementById("wedding-wax-seal");
     const envelope = document.getElementById("wedding-envelope");
@@ -44,95 +40,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.body.classList.add("curtain-active");
 
-    if (waxSeal && envelope && curtain && weddingMusic) {
-        waxSeal.addEventListener("click", () => {
-            weddingMusic.volume = 0.5;
-            weddingMusic.play().catch(audioErr => console.warn(audioErr));
+    if (waxSeal) {
+        waxSeal.addEventListener("click", (e) => {
+            if (!guestTokenID) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                showCustomAlert("NO_TOKEN_PROVIDED");
+                return false;
+            }
+            if (weddingMusic) {
+                weddingMusic.volume = 0.5;
+                weddingMusic.play().catch(audioErr => console.warn(audioErr));
+            }
 
-            envelope.classList.add("seal-broken");
+            if (envelope) {
+                envelope.classList.add("seal-broken");
+            }
 
-            setTimeout(() => {
-                curtain.classList.add("hide-curtain");
-                document.body.classList.remove("curtain-active"); 
-            }, 500); 
+            if (curtain) {
+                setTimeout(() => {
+                    curtain.classList.add("hide-curtain");
+                    document.body.classList.remove("curtain-active"); 
+                }, 500);
+            }
+            const btn = document.getElementById('btn-find-invite');
+            if (btn) {
+                btn.disabled = false;
+                btn.style.cursor = "pointer";
+            }
         });
     }
 });
 
-// ==========================================================================
-// PRODUCTION ROUTER VIEWPORT TRANSITION ENGINE
-// ==========================================================================
-function switchScreen(targetScreen) {
-    Object.values(screens).forEach(s => s.classList.remove('active'));
-    
-    targetScreen.classList.add('active');
-
-    window.scrollTo(0, 0);
-}
-
-// ==========================================================================
-// PRODUCTION PLAYFUL MASTER MODAL MANAGER (TAILORED CUSTOM LAYER)
-// ==========================================================================
-function showCustomAlert(message) {
-    const modal = document.getElementById('custom-alert-modal');
-    const msgElement = document.getElementById('modal-alert-message');
-    
-    // Dynamically targets your original internal typographic selector blocks
-    const modalTitle = modal ? modal.querySelector('.modal-title') : null;
-    const modalEmoji = modal ? modal.querySelector('.modal-emoji') : null;
-    const closeBtn = document.getElementById('btn-close-modal');
-
-    if (!modal || !msgElement) return;
-    const checkStr = String(message).toLowerCase().trim();
-
-    if (checkStr.includes("completed") || checkStr.includes("already") || checkStr.includes("token")) {
-        if (modalEmoji) modalEmoji.textContent = "🔒";
-        if (modalTitle) modalTitle.textContent = "DETAILS SECURED";
-        msgElement.innerHTML = "Oh snap! It looks like an RSVP has already been safely locked in for this household group. If you need to make changes or tweak your choices, just drop Joshua or Jonahmir a message directly and we'll open it right back up for you! 💜";
-    } 
-
-    else if (checkStr.includes("selection") || checkStr.includes("every guest") || checkStr.includes("required")) {
-        if (modalEmoji) modalEmoji.textContent = "🥺";
-        if (modalTitle) modalTitle.textContent = "SELECTION REQUIRED";
-        msgElement.innerHTML = "Hold on! Please make a selection for every guest before we can look over the final details. Let's make sure everyone is accounted for! ✨";
-    } 
-    else {
-        if (modalEmoji) modalEmoji.textContent = "📡";
-        if (modalTitle) modalTitle.textContent = "NETWORK HICCUP";
-        msgElement.textContent = message;
-    }
-
-    modal.classList.add('show');
-
-    if (closeBtn) {
-        closeBtn.onclick = function() {
-            modal.classList.remove('show');
-        };
-    }
-    modal.onclick = function(e) {
-        if (e.target === modal) {
-            modal.classList.remove('show');
-        }
-    };
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    const closeBtn = document.getElementById('btn-close-modal');
-    const modal = document.getElementById('custom-alert-modal');
-    if (closeBtn && modal) {
-        closeBtn.addEventListener('click', () => modal.classList.remove('show'));
-    }
-});
-
-// ==========================================================================
-// UPDATED TOKEN LOOKUP BUTTON EVENT HANDLER (MODAL INTEGRATED)
-// ==========================================================================
 document.getElementById('btn-find-invite').addEventListener('click', function() {
     const btn = this;
-    
     if (!guestTokenID) {
-        showCustomAlert("Please access this wedding suite using a valid personal link.");
+        showCustomAlert("NO_TOKEN_PROVIDED");
         return;
     }
     
@@ -154,9 +98,7 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
             
             if (data.error) {
                 if (ringImage) ringImage.classList.remove('spin-active');
-                
                 showCustomAlert("RSVP_ALREADY_COMPLETED");
-                
             } else {
                 currentReservationData = data;
                 setupConfigurationScreen(data);
@@ -170,6 +112,65 @@ document.getElementById('btn-find-invite').addEventListener('click', function() 
         });
 });
 
+
+// PRODUCTION ROUTER VIEWPORT TRANSITION ENGINE
+function switchScreen(targetScreen) {
+    Object.values(screens).forEach(s => s.classList.remove('active'));
+    
+    targetScreen.classList.add('active');
+
+    window.scrollTo(0, 0);
+}
+
+// SECURE MASTER MODAL MANAGER (WITH STICKY SECURITY WALL)
+function showCustomAlert(message) {
+    const modal = document.getElementById('custom-alert-modal');
+    const msgElement = document.getElementById('modal-alert-message');
+    const modalTitle = modal ? modal.querySelector('.modal-title') : null;
+    const modalEmoji = modal ? modal.querySelector('.modal-emoji') : null;
+    const closeBtn = document.getElementById('btn-close-modal');
+
+    if (!modal || !msgElement) return;
+
+    const checkStr = String(message).toLowerCase().trim();
+    if (checkStr.includes("no_token_provided") || checkStr.includes("personal link required")) {
+        if (modalEmoji) modalEmoji.textContent = "🔒";
+        if (modalTitle) modalTitle.textContent = "LINK REQUIRED";
+        msgElement.innerHTML = "Welcome! 💗 Please access this wedding suite using the unique personal link sent to you by the couple to view your interactive invitation details.";
+        if (closeBtn) closeBtn.style.display = 'none';
+        modal.onclick = null;
+    } 
+    else if (checkStr.includes("completed") || checkStr.includes("already")) {
+        if (modalEmoji) modalEmoji.textContent = "🔒";
+        if (modalTitle) modalTitle.textContent = "DETAILS SECURED";
+        msgElement.innerHTML = "Oh snap! It looks like an RSVP has already been safely locked in for this household group. If you need to make changes, just drop Joshua or Jonahmir a message! 💜";
+        if (closeBtn) closeBtn.style.display = 'inline-block';
+        
+        closeBtn.onclick = function() { modal.classList.remove('show'); };
+        modal.onclick = function(e) { if (e.target === modal) modal.classList.remove('show'); };
+    } 
+    else if (checkStr.includes("selection") || checkStr.includes("every guest")) {
+        if (modalEmoji) modalEmoji.textContent = "🥺";
+        if (modalTitle) modalTitle.textContent = "SELECTION REQUIRED";
+        msgElement.innerHTML = "Hold on! Please make a selection for every guest before moving forward. Let's make sure everyone is accounted for! ✨";
+        if (closeBtn) closeBtn.style.display = 'inline-block';
+        
+        closeBtn.onclick = function() { modal.classList.remove('show'); };
+        modal.onclick = function(e) { if (e.target === modal) modal.classList.remove('show'); };
+    }
+
+    modal.classList.add('show');
+}
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const closeBtn = document.getElementById('btn-close-modal');
+    const modal = document.getElementById('custom-alert-modal');
+    if (closeBtn && modal) {
+        closeBtn.addEventListener('click', () => modal.classList.remove('show'));
+    }
+});
 
 
 // ==========================================================================
@@ -410,7 +411,7 @@ document.getElementById('btn-edit-answers').addEventListener('click', function()
 });
 
 // ==========================================================================
-// PRODUCTION RSVP SUBMISSION SHEET PUSH ENGINE
+// PRODUCTION RSVP SUBMISSION SHEET PUSH ENGINE (CONFETTI RE-TIMED)
 // ==========================================================================
 document.getElementById('btn-submit-rsvp').addEventListener('click', function() {
     const btn = this;
@@ -441,16 +442,23 @@ document.getElementById('btn-submit-rsvp').addEventListener('click', function() 
             cinematicScreen.classList.add('activated-curtain');
             switchScreen(screens.success);
             
+            // 🎬 SCENARIO 1: Guest is attending. Wait for the 7.4-second intro to finish!
             setTimeout(() => {
                 cinematicScreen.classList.add('fade-out-curtain');
+                
+                // 🎉 BURST CONFETTI the exact millisecond the curtain starts dropping!
+                triggerWeddingConfetti(); 
+                
                 setTimeout(() => {
                     cinematicScreen.classList.remove('activated-curtain');
                 }, 800);
             }, 7400);
 
         } else {
+            // 😴 SCENARIO 2: No one is attending. Skip intro and burst confetti instantly!
             if (cinematicScreen) cinematicScreen.style.display = 'none';
             switchScreen(screens.success);
+            triggerWeddingConfetti();
         }
     })
     .catch(err => {
@@ -459,6 +467,7 @@ document.getElementById('btn-submit-rsvp').addEventListener('click', function() 
         showCustomAlert("An error occurred while saving your RSVP. Please try clicking Submit again.");
     });
 });
+
 
 
 // ==========================================================================
@@ -575,6 +584,37 @@ function switchBackToEditMode() {
         switchScreen(screens.config);
     } else {
         switchScreen('step-configure'); 
+    }
+}
+// PRODUCTION CELEBRATION CONFETTI ENGINE (GENERATOR BLOCK)
+function triggerWeddingConfetti() {
+    const wrapper = document.getElementById('confetti-wrapper');
+    if (!wrapper) return;
+
+    // Wipe out any old remnants from previous tests
+    wrapper.innerHTML = '';
+
+    // A collection of luxury celebration colors: Lavenders, Purples, Golds, and White
+    const weddingColors = ['#e3d4ef', '#513d5c', '#c1a5d9', '#ffffff', '#f4effa'];
+    const totalPiecesCount = 80; // Perfectly dense without causing low-end device lag
+
+    for (let i = 0; i < totalPiecesCount; i++) {
+        const piece = document.createElement('div');
+        piece.classList.add('confetti-piece');
+
+        // Randomize the starting positions across the width of your success card
+        piece.style.left = Math.random() * 100 + '%';
+
+        // Mix up the size, speeds, and delays so the drop feels natural and organic
+        const randomSize = Math.floor(Math.random() * 6) + 6; // 6px to 12px
+        piece.style.width = randomSize + 'px';
+        piece.style.height = randomSize + 'px';
+        
+        piece.style.animationDuration = (Math.random() * 2) + 2.5 + 's'; // 2.5s to 4.5s
+        piece.style.animationDelay = (Math.random() * 1.5) + 's'; // Staggers the fall patterns
+        piece.style.backgroundColor = weddingColors[Math.floor(Math.random() * weddingColors.length)];
+
+        wrapper.appendChild(piece);
     }
 }
 
