@@ -144,7 +144,7 @@ p {
     min-height: 85vh;
     border-radius: 28px;
     box-sizing: border-box;
-    padding: 35px 22px;
+    padding: 35px 50px;
     border: 1px solid rgba(255, 255, 255, 0.6);
     position: relative;
     margin: 0 auto;
@@ -472,15 +472,6 @@ input:focus {
     margin-bottom: 10px;
     text-align: center;
 }
-/* ==========================================================================
-   EVENT LOGISTICS & DETAIL CARDS STYLING 
-   ========================================================================== */
-.event-details-guide {
-    margin-top: 25px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
 
 .friendly-gifting {
     font-style: italic;
@@ -776,7 +767,7 @@ input:focus {
     justify-content: center;
     width: 100%;
     margin: 25px auto 35px auto;
-    padding: 0 70px;
+    padding: 0 60px;
     box-sizing: border-box;
 }
 
@@ -1022,10 +1013,9 @@ input:focus {
 
 /* --- LOGISTICS MAP CARDS VISUAL UPGRADES --- */
 .event-details-guide {
-    margin-top: 35px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
 }
 
 .info-card {
@@ -1609,6 +1599,9 @@ body:not(.curtain-active) .rsvp-card {
         height: 210px;
         background: linear-gradient(35deg, #ffffff 50%, transparent 50.5%), linear-gradient(-35deg, #ffffff 50%, transparent 50.5%);
     }
+    .rsvp-card {
+        padding: 30px 30px;
+    }
 }
 .interactive-wax-seal {
     position: absolute;
@@ -1753,7 +1746,7 @@ body:not(.curtain-active) .rsvp-card {
         font-size: 1.6rem;
     }
     .main-wedding-heading {
-        padding: 0 50px;
+        padding: 0 30px;
     }
     .split-closing-lines span {
         display: block;      
@@ -1984,4 +1977,118 @@ body:not(.curtain-active) .rsvp-card {
 
 
 
+/* ==========================================================================
+   🌸 THE FROSTED SHEET REVEAL SYSTEM (TRANSITION LAYER)
+   ========================================================================== */
+#step-configure {
+    position: relative;
+    width: 100%;
+    min-height: 450px; /* Provides a stable container height footprint during transitions */
+    overflow: hidden;
+}
 
+.reveal-sheet {
+    width: 100%;
+    /* Utilizes ease-out cubic bezier for a smoother, premium animation slowdown curve */
+    transition: opacity 0.45s cubic-bezier(0.25, 1, 0.5, 1), 
+                transform 0.45s cubic-bezier(0.25, 1, 0.5, 1), 
+                visibility 0.45s ease-out;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* 👁️ ACTIVE SHEET: Fully visible and perfectly positioned at rest */
+.active-sheet {
+    position: relative;
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    z-index: 2;
+}
+
+/* 🔒 HIDDEN SHEET: Sitting 20px lower, completely invisible, and locked from clicks */
+.hidden-sheet {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transform: translateY(20px); /* Creates the subtle 'glide up' animation lift */
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ==========================================================================
+   🗺️ PREMIUM FULL-SURFACE CLICKABLE LOCATION CARDS
+   ========================================================================== */
+.click-directions-card {
+    display: flex;
+    flex-direction: column;
+    padding: 0 !important; /* Clears inner padding to let the action bar sit flush at the bottom */
+    overflow: hidden;
+    text-decoration: none !important; /* Removes default link text underlines */
+    color: inherit !important;
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), 
+                box-shadow 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+    cursor: pointer;
+}
+
+/* 📱 CARD DETAILS CONTAINER PADDING */
+.click-directions-card .card-details-column {
+    padding: 22px 22px 16px 22px;
+    text-align: left;
+}
+
+/* 🏷️ THE VENUE SUBTEXT ARRANGEMENT */
+.venue-name-highlight {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #513d5c; /* Your signature deep royal purple */
+    margin-top: 4px;
+}
+
+.venue-address-subtext {
+    display: block;
+    font-size: 13px;
+    color: #73697a; /* Elegant soft muted slate */
+    margin-top: 2px;
+    line-height: 1.4;
+}
+
+/* ✨ SHIMMERING FROSTED DIRECTIONS BAR (BOTTOM ALIGNED) */
+.card-directions-action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 22px;
+    background: rgba(81, 61, 92, 0.04); /* Subtly tinted with your signature purple */
+    border-top: 1px solid rgba(81, 61, 92, 0.06);
+    box-sizing: border-box;
+}
+
+.card-directions-action-bar span {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #513d5c;
+}
+
+.action-arrow-chevron {
+    font-size: 18px !important;
+    line-height: 1;
+    transform: translateY(-1px);
+    transition: transform 0.2s ease;
+}
+
+/* 📱 PREMIUM HAPTIC PRESSED TOUCH EFFECT FOR SMARTPHONES */
+.click-directions-card:active {
+    transform: scale(0.98); /* Provides a realistic weighted physical click sink feel */
+    box-shadow: 0 2px 8px rgba(81, 61, 92, 0.08);
+}
+
+.click-directions-card:active .action-arrow-chevron {
+    transform: translate(3px, -1px); /* Softly nudges the chevron right on active tap */
+}

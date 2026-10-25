@@ -95,59 +95,68 @@
 
         <!-- STEP 2: CONFIGURE GUESTS PAGE -->
         <div id="step-configure" class="step-container">
-            <!-- PLAYFUL RETURNING USER ALERT BANNER -->
-            <div id="already-submitted-banner" class="info-alert-banner banner-line-stack" style="display: block;">
-                ✨ Look who's back! Changed your mind? <span>You can update your choices below.</span>
-            </div>
-
-            <p class="greeting-intro intro-line-stack">
-                Josh &amp; Mir are excited to <span>celebrate with</span>
-            </p>
-
-            <h2 id="config-guest-title" class="guest-highlight">GUEST NAME</h2>
             
-            <!-- UPDATED SEATS DISPLAY BANNER LAYER WITH GRAMMAR ID MARKERS -->
-            <div class="seats-banner">
-                <p class="seats-honor-text">We have reserved <span id="text-seats-count">0</span> <span id="text-seats-word">seats</span> in your honor.</p>
-                <span id="allowed-seats-count" class="seats-number">0</span>
-                <span id="allowed-seats-label" class="seats-label">RESERVED SEATS</span>
-            </div>
-            <p id="group-notice" class="sub-notice">Only the guest/s listed below are included in this reservation.</p>
-            <div id="seat-warning-banner" class="warning-alert-banner" style="display:none;">
-                ⚠️ You have selected more guests than your allocated seats. Please adjust your selections.
-            </div>
+            <!-- 🏛️ SHEET A: THE WELCOME SUMMARY ROW (FADES OUT) -->
+            <div id="rsvp-welcome-sheet" class="reveal-sheet active-sheet">
+                <!-- PLAYFUL RETURNING USER ALERT BANNER -->
+                <div id="already-submitted-banner" class="info-alert-banner banner-line-stack" style="display: none;">
+                    ✨ Look who's back! Changed your mind? <span>You can update your choices below.</span>
+                </div>
             
-            <p class="deadline-tag">RSVP DEADLINE: <strong>January 17, 2027</strong></p>
-            <!-- For the diamond, we can just use the clean text glyph directly in the markup -->
-            <div class="royal-divider-diamond" style="color: #513d5c; font-size: 12px;">✦</div>
-
+                <p class="greeting-intro intro-line-stack">
+                    Josh &amp; Mir are excited to <span>celebrate with</span>
+                </p>
             
-            <h3>Confirm each guest (<span id="current-selection-tally">0</span> selected)</h3>
-            <p class="instruction-sub instruction-line-stack">
-                Choose Attending or Not Attending <span>for every name below.</span>
-            </p>
-            <div id="dynamic-guest-list"></div>
-
-            <div class="form-group" style="margin-top: 25px;">
-                <label for="mobile-input">MOBILE NUMBER (Optional)</label>
-                <input type="tel" id="mobile-input" value="+63 ">
-                <p class="input-tip">Format: +63 917 123 4567</p>
+                <h2 id="config-guest-title" class="guest-highlight">JOHN DOE</h2>
+                
+                <!-- UPDATED SEATS DISPLAY BANNER LAYER WITH GRAMMAR ID MARKERS -->
+                <div class="seats-banner">
+                    <p class="seats-honor-text">We have reserved <span id="text-seats-count">1</span> <span id="text-seats-word">seat</span> in your honor.</p>
+                    <span id="allowed-seats-count" class="seats-number">1</span>
+                    <span id="allowed-seats-label" class="seats-label">RESERVED SEAT</span>
+                </div>
+                
+                <p id="group-notice" class="sub-notice">Only the guest/s listed below are included in this reservation.</p>
+                
+                <div id="seat-warning-banner" class="warning-alert-banner" style="display:none;">
+                    ⚠️ You have selected more guests than your allocated seats. Please adjust your selections.
+                </div>
+                
+                <p class="deadline-tag">RSVP DEADLINE: <strong>January 17, 2027</strong></p>
+            
+                <!-- 🎬 NEW PRIMARY INTERACTION TRIGGER BUTTON -->
+                <button type="button" id="btn-start-confirm" class="btn-primary" style="margin-top: 10px;">
+                    Confirm Guest/s Now
+                </button>
+            </div>
+        
+            <!-- ✍️ SHEET B: THE SELECTION INTERACTION LIST (FADES & GLIDES UP) -->
+            <div id="rsvp-selection-sheet" class="reveal-sheet hidden-sheet">
+                <h3>Confirm each guest (<span id="current-selection-tally">0</span> selected)</h3>
+                <p class="instruction-sub instruction-line-stack">
+                    Choose Attending or Not Attending <span>for every name below.</span>
+                </p>
+                
+                <!-- Dynamic guest row cards wrapper -->
+                <div id="dynamic-guest-list"></div>
+            
+                <div class="form-group" style="margin-top: 25px;">
+                    <label for="mobile-input">MOBILE NUMBER (Optional)</label>
+                    <input type="tel" id="mobile-input" value="+63 ">
+                    <p class="input-tip">Format: +63 917 123 4567</p>
+                </div>
+                
+                <!-- Back Navigation Toggle Link -->
+                <p class="back-link-toggle" id="btn-flip-back" style="margin-top: 25px; color: #513d5c; cursor: pointer; font-size: 13px; font-weight: 500; letter-spacing: 0.5px; text-decoration: underline; text-align: center;">
+                    ← View Reservation Summary
+                </p>
             </div>
 
-            <!-- ==========================================
-                 UPDATED LOGISTICS INSERTION SECTION
-                 ========================================== -->
             <div class="event-details-guide">
                 <div class="royal-divider-diamond" style="color: #513d5c; font-size: 12px;">✦</div>
                 
-                <!-- CEREMONY LOCATION CARD (MAP LEFT, TEXT LEFT) -->
-                <div class="info-card location-grid-card">
-                    <div class="card-map-column">
-                        <a href="https://maps.app.goo.gl/Gc2RGobbnrWvrydt8" target="_blank" class="mini-map-wrapper">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7246.6653338077795!2d123.89750428114355!3d10.3094354627568!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a99945a8c6b021%3A0x8b5d0f001d6ce9a1!2sThe%20Archdiocesan%20Shrine%20of%20the%20Most%20Sacred%20Heart%20of%20Jesus!5e1!3m2!1sen!2sph!4v1791924511979!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-                            <div class="map-overlay-label">Directions 🗺️</div>
-                        </a>
-                    </div>
+                <!-- 🏛️ CEREMONY LOCATION CARD (WHOLE CARD IS A LINK) -->
+                <a href="https://maps.app.goo.gl/Gc2RGobbnrWvrydt8" target="_blank" class="info-card location-grid-card click-directions-card">
                     <div class="card-details-column">
                         <h4 class="info-card-title">✨ The Ceremony</h4>
                         <p class="info-card-text">
@@ -155,16 +164,14 @@
                             <span class="venue-address-subtext">242 Dionisio Jakosalem St, Cebu City</span>
                         </p>
                     </div>
-                </div>
-
-                <!-- RECEPTION LOCATION CARD (MAP LEFT, TEXT LEFT) -->
-                <div class="info-card location-grid-card">
-                    <div class="card-map-column">
-                        <a href="https://maps.app.goo.gl/gjRMYw3MVkj2Nfqp7" target="_blank" class="mini-map-wrapper">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d154529.24575425163!2d123.8917503!3d10.3761867!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a99972f04ee017%3A0x239e29fd87e52e92!2sBayfront%20Hotel%20Cebu%20North%20Reclamation!5e1!3m2!1sen!2sph!4v1791924537681!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-                            <div class="map-overlay-label">Directions 📍</div>
-                        </a>
+                    <div class="card-directions-action-bar">
+                        <span>Get Directions 🗺️</span>
+                        <span class="action-arrow-chevron">›</span>
                     </div>
+                </a>
+            
+                <!-- 🏨 RECEPTION LOCATION CARD (WHOLE CARD IS A LINK) -->
+                <a href="https://maps.app.goo.gl/gjRMYw3MVkj2Nfqp7" target="_blank" class="info-card location-grid-card click-directions-card">
                     <div class="card-details-column">
                         <h4 class="info-card-title">🏨 The Reception</h4>
                         <p class="info-card-text">
@@ -172,14 +179,18 @@
                             <span class="venue-address-subtext">North Reclamation Area, Kaohsiung St, Cebu City</span>
                         </p>
                     </div>
-                </div>
-
+                    <div class="card-directions-action-bar">
+                        <span>Get Directions 📍</span>
+                        <span class="action-arrow-chevron">›</span>
+                    </div>
+                </a>
+            
                 <!-- PARKING CARD -->
                 <div class="info-card">
                     <h4 class="info-card-title">🚗 Parking Advisory</h4>
                     <p class="info-card-text">Hotel parking is free for all wedding guests but will be accommodated on a first-come, first-served basis. We highly recommend arriving a bit early!</p>
                 </div>
-
+            
                 <!-- DRESS CODE CARD (WITH INTERACTIVE MODAL VALUES) -->
                 <div class="info-card">
                     <h4 class="info-card-title">👗 Dress Code</h4>
@@ -195,13 +206,13 @@
                         <span class="color-swatch" style="background-color: #d1c2d9;" data-name="Lilac"></span>
                     </div>
                 </div>
-
+            
                 <!-- GIFTING CARD -->
                 <div class="info-card">
                     <h4 class="info-card-title">🎁 Wedding Gifting</h4>
                     <p class="info-card-text friendly-gifting">"We are blessed to already have a home full of love. If you were thinking of giving a gift to help us on our way, a monetary contribution toward our future together would be deeply appreciated, though your presence is our truest treasure."</p>
                 </div>
-
+            
                 <!-- HELPLINE LINK -->
                 <div class="info-card contact-card">
                     <p class="info-card-text">Have questions or need help with your invitation?</p>
@@ -210,6 +221,7 @@
                     </a>
                 </div>
             </div>
+
 
             <button id="btn-go-to-review" class="btn-primary" style="margin-top:20px;">Review Answers</button>
         </div>

@@ -714,6 +714,48 @@ function triggerWeddingConfetti() {
         wrapper.appendChild(piece);
     }
 }
+// ==========================================================================
+// 🌸 FROSTED SHEET REVEAL INTERACTION CORE
+// ==========================================================================
+document.addEventListener("DOMContentLoaded", () => {
+    const btnStartConfirm = document.getElementById("btn-start-confirm");
+    const btnFlipBack = document.getElementById("btn-flip-back");
+    
+    const welcomeSheet = document.getElementById("rsvp-welcome-sheet");
+    const selectionSheet = document.getElementById("rsvp-selection-sheet");
+
+    // 👉 GLIDE FORWARD: Reveal the RSVP Selection Form Sheet
+    if (btnStartConfirm && welcomeSheet && selectionSheet) {
+        btnStartConfirm.addEventListener("click", () => {
+            console.log("[🎬 VIEW SELECTION] Fading out welcome summary, gliding up rsvp forms...");
+            
+            // Swap the animation tracking classes
+            welcomeSheet.classList.remove("active-sheet");
+            welcomeSheet.classList.add("hidden-sheet");
+
+            selectionSheet.classList.remove("hidden-sheet");
+            selectionSheet.classList.add("active-sheet");
+            
+            // Instantly scrolls to the top of the card so mobile users see the header text cleanly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // 👈 SLIDE BACKWARD: Return to the initial Welcome Greeting Summary Sheet
+    if (btnFlipBack && welcomeSheet && selectionSheet) {
+        btnFlipBack.addEventListener("click", () => {
+            console.log("[🎬 RETURN SUMMARY] Sliding back to overview grid...");
+            
+            selectionSheet.classList.remove("active-sheet");
+            selectionSheet.classList.add("hidden-sheet");
+
+            welcomeSheet.classList.remove("hidden-sheet");
+            welcomeSheet.classList.add("active-sheet");
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+});
 
 
 
